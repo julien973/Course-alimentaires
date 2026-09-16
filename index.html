@@ -35,6 +35,9 @@
       .page { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
       .lang-bar { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
       .lang-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
         padding: 8px 16px;
         border: 1.5px solid rgba(255, 255, 255, 0.45);
         border-radius: 10px;
@@ -47,6 +50,7 @@
         font-weight: 700;
         transition: all 0.2s;
       }
+      .flag { width: 20px; height: 13px; border-radius: 2px; flex-shrink: 0; display: inline-block; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25); }
       .lang-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.26); }
       .lang-btn.active { background: #2563eb; color: #ffffff; border-color: #2563eb; }
       .lang-btn.pdf { color: #fecaca; border-color: rgba(248, 113, 113, 0.65); }
@@ -129,8 +133,8 @@
   <body>
     <main class="page">
       <div class="lang-bar">
-        <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')">🇫🇷 FR</button>
-        <button class="lang-btn" id="btn-en" onclick="switchLang('en')">🇬🇧 EN</button>
+        <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
+        <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
         <button class="lang-btn pdf" onclick="window.print()">📄 PDF</button>
       </div>
 
