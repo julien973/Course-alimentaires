@@ -85,7 +85,7 @@
 
       body {
         margin: 0;
-        padding: 20px 24px 48px;
+        padding: 0 0 48px;
         min-height: 100vh;
         color: var(--ink);
         background-color: var(--bg-base);
@@ -102,7 +102,7 @@
         opacity: 0.05;
         z-index: 0;
       }
-      .page { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+      .page { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
       /* ========== Orbes lumineux (thème nuit) ========== */
       .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -116,22 +116,15 @@
       body.day .orbs { display: none; }
 
       /* ========== Barre supérieure sticky + filament de progression ========== */
-      /* Même architecture que le guide Dawnwalker : barre de verre pleine
-         largeur collée en haut, filament posé sur son bord inférieur. */
+      /* Pleine largeur (bord à bord, de gauche à droite), collée en haut.
+         Le contenu reste aligné sur la colonne de 900 px via .topbar-inner. */
       .topbar {
         position: sticky;
         top: 0;
         z-index: 50;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: wrap;
         margin-bottom: 20px;
-        padding: 10px 16px;
-        border-radius: 14px;
         background: var(--topbar-bg);
-        border: 1px solid var(--topbar-border);
+        border-bottom: 1px solid var(--topbar-border);
         backdrop-filter: blur(14px) saturate(1.3);
         -webkit-backdrop-filter: blur(14px) saturate(1.3);
         box-shadow: var(--shadow-md);
@@ -140,13 +133,22 @@
            (même leçon que le guide Dawnwalker v2.12). */
         transform: translateZ(0);
       }
+      .topbar-inner {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 10px 24px;
+      }
       .tb-brand { font-weight: 800; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
       .tb-actions { display: flex; gap: 8px; flex-wrap: wrap; }
       #progress {
         position: absolute;
         left: 0; right: 0; bottom: 0;
         height: 3px;
-        border-radius: 0 0 13px 13px;
         background: var(--progress-grad);
         box-shadow: 0 0 10px var(--progress-glow);
         transform: scaleX(0);
@@ -183,6 +185,8 @@
 
       /* ========== Cartes ========== */
       .card {
+        position: relative;
+        overflow: hidden;
         background: var(--surface);
         backdrop-filter: blur(18px) saturate(1.3);
         -webkit-backdrop-filter: blur(18px) saturate(1.3);
@@ -199,12 +203,24 @@
         border-color: var(--border-strong);
         box-shadow: var(--shadow-md), var(--halo);
       }
+      /* Liseré dégradé vert → turquoise → bleu : présent sur TOUTES les
+         cartes (cartes, KPI, sommaire) pour la cohérence, pas seulement
+         sur les graphiques. */
+      .card::before, .kpi::before, .toc::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #16a34a, #0d9488, #2563eb);
+      }
       h1 { font-size: 24px; margin: 0 0 4px; color: var(--c-ink); }
       h2 { font-size: 17px; margin: 0 0 14px; color: var(--c-h2); text-transform: uppercase; letter-spacing: 0.04em; }
       .meta { display: flex; flex-wrap: wrap; gap: 24px; font-size: 13px; color: var(--c-meta); margin-top: 10px; }
       .meta b { color: var(--c-ink); }
       .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
       .kpi {
+        position: relative;
+        overflow: hidden;
         background: var(--surface-kpi);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
@@ -232,22 +248,22 @@
          se distinguent des autres cartes sans fond noir — la lisibilité
          des cartes claires est conservée dans les deux thèmes. */
       .viz {
-        position: relative;
-        overflow: hidden;
         background:
-          linear-gradient(160deg, rgba(37, 99, 235, 0.07), rgba(124, 58, 237, 0.05)),
+          linear-gradient(160deg, rgba(13, 148, 136, 0.09), rgba(37, 99, 235, 0.06)),
           var(--surface);
       }
-      .viz::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #2563eb, #7c3aed, #0d9488);
+      /* Titre des cartes graphiques en texte dégradé turquoise → bleu */
+      .viz h2 {
+        background: linear-gradient(90deg, #0d9488, #2563eb);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
       /* ========== Sommaire vivant ========== */
       .toc {
+        position: relative;
+        overflow: hidden;
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
@@ -393,7 +409,8 @@
           transform: none !important;
         }
         .viz { background: #ffffff !important; }
-        .viz::before { display: none; }
+        .viz h2 { background: none; -webkit-text-fill-color: #1d4ed8; color: #1d4ed8; }
+        .card::before, .kpi::before, .toc::before { display: none; }
         .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; }
         .bar-fill, .dot, .warn-box, .badge, .sub-warn { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .sous-total, .bar-val { color: #dc2626; }
@@ -409,8 +426,8 @@
     </script>
 
     <div class="orbs" aria-hidden="true"><i class="o1"></i><i class="o2"></i><i class="o3"></i></div>
-    <main class="page">
-      <header class="topbar">
+    <header class="topbar">
+      <div class="topbar-inner">
         <span class="tb-brand">🧾 Course alimentaire</span>
         <div class="tb-actions">
         <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
@@ -418,9 +435,11 @@
         <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
         <button class="lang-btn pdf" onclick="window.print()">📄 PDF</button>
         </div>
-        <i id="progress" aria-hidden="true"></i>
-      </header>
+      </div>
+      <i id="progress" aria-hidden="true"></i>
+    </header>
 
+    <main class="page">
       <!-- ============ FR ============ -->
       <div id="lang-fr">
         <div class="card">
@@ -446,19 +465,6 @@
           <a href="#fr-recap">🧮 Récapitulatif</a>
           <a href="#fr-options">⚙️ Options</a>
           <a href="#fr-proto">📋 Protocoles</a>
-        </nav>
-
-        <nav class="toc" aria-label="Table of contents">
-          <a href="#en-budget">📊 Budget</a>
-          <a href="#en-prot">💪 Protein (g)</a>
-          <a href="#en-s1">1 · Breakfast</a>
-          <a href="#en-s2">2 · Lean proteins</a>
-          <a href="#en-s3">3 · Dairy 0 %</a>
-          <a href="#en-s4">4 · Veg &amp; cream</a>
-          <a href="#en-s5">5 · Legumes</a>
-          <a href="#en-recap">🧮 Summary</a>
-          <a href="#en-options">⚙️ Options</a>
-          <a href="#en-proto">📋 Protocols</a>
         </nav>
 
         <div class="kpis">
@@ -624,7 +630,7 @@
           </ul>
         </div>
 
-        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.1.</p>
+        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.2.</p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -640,6 +646,19 @@
             <span><b>Coverage</b> 7 days</span>
           </div>
         </div>
+
+        <nav class="toc" aria-label="Table of contents">
+          <a href="#en-budget">📊 Budget</a>
+          <a href="#en-prot">💪 Protein (g)</a>
+          <a href="#en-s1">1 · Breakfast</a>
+          <a href="#en-s2">2 · Lean proteins</a>
+          <a href="#en-s3">3 · Dairy 0 %</a>
+          <a href="#en-s4">4 · Veg &amp; cream</a>
+          <a href="#en-s5">5 · Legumes</a>
+          <a href="#en-recap">🧮 Summary</a>
+          <a href="#en-options">⚙️ Options</a>
+          <a href="#en-proto">📋 Protocols</a>
+        </nav>
 
         <div class="kpis">
           <div class="kpi"><div class="label">Basket total</div><div class="value">€55.00</div><div class="sub sub-info">≈ €4.90 / 100 g of protein</div></div>
@@ -804,7 +823,7 @@
           </ul>
         </div>
 
-        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.1.</p>
+        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.2.</p>
       </div>
     </main>
 
