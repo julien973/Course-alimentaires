@@ -52,6 +52,7 @@
         --progress-grad: linear-gradient(90deg, #f06192, #fbbf24, #4ade80, #38bdf8, #a78bfa);
         --progress-glow: rgba(240, 97, 146, 0.55);
         --text-glow: 0 0 9px rgba(226, 232, 240, 0.65);
+        --spot: rgba(255, 255, 255, 0.20);
       }
 
       /* ---------- Thème JOUR ---------- */
@@ -81,6 +82,7 @@
         --progress-grad: linear-gradient(90deg, #fbbf24, #d97706, #b3453e);
         --progress-glow: rgba(217, 119, 6, 0.55);
         --text-glow: 0 0 8px rgba(37, 99, 235, 0.4);
+        --spot: rgba(37, 99, 235, 0.10);
       }
 
       body {
@@ -213,6 +215,20 @@
         height: 3px;
         background: linear-gradient(90deg, #16a34a, #0d9488, #2563eb);
       }
+      /* ========== Spotlight au curseur ========== */
+      /* Un halo suit la souris sur chaque carte (variables --mx / --my
+         posées en JS). Invisible au repos, il s'allume au survol. */
+      .card::after, .kpi::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 65%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+      .card:hover::after, .kpi:hover::after { opacity: 1; }
       h1 { font-size: 24px; margin: 0 0 4px; color: var(--c-ink); }
       h2 { font-size: 17px; margin: 0 0 14px; color: var(--c-h2); text-transform: uppercase; letter-spacing: 0.04em; }
       .meta { display: flex; flex-wrap: wrap; gap: 24px; font-size: 13px; color: var(--c-meta); margin-top: 10px; }
@@ -285,7 +301,7 @@
         border-radius: 999px;
         transition: all 0.18s ease;
       }
-      .toc a:hover { background: var(--row-hover); color: var(--c-ink); }
+      .toc a:hover { background: var(--toc-active); color: #ffffff; box-shadow: 0 3px 10px rgba(37, 99, 235, 0.35); }
       .toc a.active {
         background: var(--toc-active);
         color: #ffffff;
@@ -324,6 +340,33 @@
         box-shadow: 0 2px 8px rgba(22, 163, 74, 0.5);
       }
       body[data-lang="en"] td.copyable.copied::after { content: "Copied ✓"; }
+
+      /* ========== Mode courses : cases à cocher ========== */
+      .check { display: inline-flex; align-items: center; margin-right: 9px; vertical-align: middle; cursor: pointer; user-select: none; -webkit-user-select: none; }
+      .check input {
+        appearance: none; -webkit-appearance: none;
+        width: 17px; height: 17px; border-radius: 5px;
+        border: 1.5px solid #94a3b8; background: #ffffff;
+        cursor: pointer; margin: 0; flex: 0 0 auto;
+        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+      }
+      .check input:checked {
+        background: #16a34a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12l5 5L20 6'/%3E%3C/svg%3E") center / 11px no-repeat;
+        border-color: #16a34a;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      }
+      .check input:active { transform: scale(0.85); }
+      tr.done td { color: #94a3b8; }
+      tr.done td:first-child { text-decoration: line-through; text-decoration-color: #94a3b8; }
+      .cart-count {
+        display: inline-flex; align-items: center;
+        font-weight: 700; font-size: 13px; color: var(--btn-ink);
+        background: var(--btn-bg); border: 1.5px solid var(--btn-border);
+        border-radius: 10px; padding: 8px 14px;
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        white-space: nowrap; transition: all 0.2s;
+      }
+      .cart-count.full { background: #16a34a; border-color: #16a34a; color: #ffffff; }
 
       /* ========== Graphiques ========== */
       .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -430,6 +473,8 @@
       <div class="topbar-inner">
         <span class="tb-brand">🧾 Course alimentaire</span>
         <div class="tb-actions">
+        <span class="cart-count" id="cart-count">🛒 0/21</span>
+        <button class="lang-btn" id="btn-reset" onclick="resetCart()" title="Tout décocher / Uncheck all">↺</button>
         <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
         <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
         <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
@@ -630,7 +675,7 @@
           </ul>
         </div>
 
-        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.2.</p>
+        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.3.</p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -823,7 +868,7 @@
           </ul>
         </div>
 
-        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.2.</p>
+        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.3.</p>
       </div>
     </main>
 
@@ -837,6 +882,9 @@
         document.body.dataset.lang = lang;
         try { localStorage.setItem('courses-lang', lang); } catch (e) {}
         document.querySelectorAll('.toc a.active').forEach(function (a) { a.classList.remove('active'); });
+        updateToc();
+        updateCartCount();
+        animateKpis();
       }
 
       /* ---------- Thème jour / nuit (mémorisé) ---------- */
@@ -870,6 +918,7 @@
       });
       document.addEventListener('click', function (e) {
         if (!e.target || !e.target.closest) return;
+        if (e.target.closest('label.check, input')) return; /* cocher ne copie pas */
         var td = e.target.closest('td.copyable');
         if (!td) return;
         var txt = td.textContent.trim();
@@ -883,18 +932,192 @@
         }
       });
 
-      /* ---------- Sommaire vivant (section lue = surlignée) ---------- */
-      if ('IntersectionObserver' in window) {
-        var obs = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) {
-            if (!en.isIntersecting) return;
-            document.querySelectorAll('.toc a.active').forEach(function (a) { a.classList.remove('active'); });
-            var link = document.querySelector('.toc a[href="#' + en.target.id + '"]');
-            if (link) link.classList.add('active');
-          });
-        }, { rootMargin: '-15% 0px -75% 0px' });
-        document.querySelectorAll('[id^="fr-"], [id^="en-"]').forEach(function (s) { obs.observe(s); });
+      /* ---------- Sommaire vivant (scrollspy) ---------- */
+      /* La pilule bleue suit la section EN COURS DE LECTURE : la dernière
+         section dont le haut a franchi le repère à 22 % de l'écran.
+         En haut de page aucune section n'est active → plus de bleu fantôme. */
+      function updateToc() {
+        var line = window.innerHeight * 0.22;
+        var current = null;
+        document.querySelectorAll('[id^="fr-"], [id^="en-"]').forEach(function (s) {
+          if (!s.offsetParent) return; /* section masquée = autre langue */
+          if (s.getBoundingClientRect().top <= line) current = s.id;
+        });
+        document.querySelectorAll('.toc a.active').forEach(function (a) { a.classList.remove('active'); });
+        if (current) {
+          var link = document.querySelector('.toc a[href="#' + current + '"]');
+          if (link) link.classList.add('active');
+        }
       }
+      window.addEventListener('scroll', updateToc, { passive: true });
+      window.addEventListener('resize', updateToc);
+
+      /* ---------- Mode courses : cases à cocher mémorisées ---------- */
+      /* Chaque ligne d'article des sections 1 à 5 reçoit une case.
+         Clé stable identique en FR et EN (ex. s1-t0-r2) : cocher en
+         français garde la case cochée après bascule en anglais. */
+      var CART_KEY = 'courses-checked';
+      function cartRead() {
+        try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) { return []; }
+      }
+      function cartWrite(list) {
+        try { localStorage.setItem(CART_KEY, JSON.stringify(list)); } catch (e) {}
+      }
+      function rowKey(tr) {
+        var card = tr.closest('[id^="fr-s"], [id^="en-s"]');
+        var table = tr.closest('table');
+        var sec = card.id.replace(/^(fr|en)-/, '');
+        var tIdx = Array.prototype.indexOf.call(card.querySelectorAll('table'), table);
+        var rIdx = Array.prototype.indexOf.call(tr.closest('tbody').querySelectorAll('tr'), tr);
+        return sec + '-t' + tIdx + '-r' + rIdx;
+      }
+      function initCart() {
+        var checked = cartRead();
+        document.querySelectorAll('[id^="fr-s"], [id^="en-s"]').forEach(function (card) {
+          card.querySelectorAll('tbody tr').forEach(function (tr) {
+            var td = tr.querySelector('td:first-child');
+            if (!td || td.querySelector('label.check')) return;
+            var key = rowKey(tr);
+            var label = document.createElement('label');
+            label.className = 'check';
+            var input = document.createElement('input');
+            input.type = 'checkbox';
+            input.checked = checked.indexOf(key) !== -1;
+            input.addEventListener('change', function () {
+              var list = cartRead();
+              if (input.checked) { if (list.indexOf(key) === -1) list.push(key); }
+              else { list = list.filter(function (k) { return k !== key; }); }
+              cartWrite(list);
+              tr.classList.toggle('done', input.checked);
+              updateCartCount();
+            });
+            label.appendChild(input);
+            td.insertBefore(label, td.firstChild);
+            tr.classList.toggle('done', input.checked);
+          });
+        });
+        updateCartCount();
+      }
+      function updateCartCount() {
+        var vis = document.body.dataset.lang === 'en' ? 'en' : 'fr';
+        var boxes = document.querySelectorAll('[id^="' + vis + '-s"] input[type="checkbox"]');
+        var done = 0;
+        boxes.forEach(function (b) { if (b.checked) done++; });
+        var el = document.getElementById('cart-count');
+        if (el) {
+          el.textContent = '🛒 ' + done + '/' + boxes.length;
+          el.classList.toggle('full', boxes.length > 0 && done === boxes.length);
+        }
+      }
+      function resetCart() {
+        cartWrite([]);
+        document.querySelectorAll('label.check input').forEach(function (b) {
+          b.checked = false;
+          var tr = b.closest('tr');
+          if (tr) tr.classList.remove('done');
+        });
+        updateCartCount();
+      }
+
+      /* ---------- Compteurs animés (KPI) ---------- */
+      /* Le nombre garde le format d'origine (virgule FR, décimales,
+         espaces de milliers) pendant toute la montée. */
+      function formatLike(numStr, v) {
+        var grouped = /^-?\d{1,3}(,\d{3})+$/.test(numStr); /* 2,400 = milliers EN */
+        var dec = 0;
+        var dm = numStr.match(/[.,](\d+)/);
+        if (dm && !grouped) dec = dm[1].length;
+        var parts = v.toFixed(dec).split('.');
+        if (grouped) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        else if (/\d\u00a0\d|\d \d/.test(numStr)) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+        return parts[0] + (parts[1] ? (numStr.indexOf(',') !== -1 && !grouped ? ',' : '.') + parts[1] : '');
+      }
+      function animateKpis() {
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.querySelectorAll('.kpi .value').forEach(function (el) {
+          if (el.closest('.hidden')) return;
+          var raw = el.textContent;
+          var m = raw.match(/-?[\d.,\u00a0 ]+/);
+          if (!m) return;
+          var numStr = m[0].replace(/[\u00a0 ]+$/, '');
+          var grouped = /^-?\d{1,3}(,\d{3})+$/.test(numStr);
+          var target = parseFloat(grouped ? numStr.replace(/,/g, '') : numStr.replace(/[\u00a0 ]/g, '').replace(',', '.'));
+          if (isNaN(target)) return;
+          var prefix = raw.slice(0, m.index);
+          var suffix = raw.slice(m.index + numStr.length);
+          if (reduce) return; /* mouvement réduit : valeur finale affichée */
+          var t0 = null, dur = 1100;
+          function step(ts) {
+            if (t0 === null) t0 = ts;
+            var p = Math.min(1, (ts - t0) / dur);
+            var e = 1 - Math.pow(1 - p, 3); /* easeOutCubic */
+            el.textContent = prefix + formatLike(numStr, target * e) + suffix;
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      }
+
+      /* ---------- Graphiques animés à l'apparition ---------- */
+      /* Barres : largeur 0 → cible. Donut : chaque segment se dessine
+         (stroke-dasharray 0 → longueur) avec un décalage en cascade. */
+      function initViz() {
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) return;
+        document.querySelectorAll('.viz').forEach(function (card) {
+          var bars = card.querySelectorAll('.bar-fill');
+          var circles = card.querySelectorAll('circle[stroke-dasharray]');
+          bars.forEach(function (b) {
+            b.dataset.target = b.style.width;
+            b.style.width = '0%';
+            b.style.transition = 'width 0.9s cubic-bezier(0.22, 1, 0.36, 1)';
+          });
+          circles.forEach(function (c) {
+            c.dataset.dash = c.getAttribute('stroke-dasharray');
+            c.style.strokeDasharray = '0 376.99';
+            c.style.opacity = '0';
+            c.style.transition = 'stroke-dasharray 1s ease, opacity 0.35s ease';
+          });
+          var fired = false;
+          var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (!en.isIntersecting || fired) return;
+              fired = true;
+              bars.forEach(function (b, i) {
+                b.style.transitionDelay = (i * 70) + 'ms';
+                b.style.width = b.dataset.target;
+              });
+              circles.forEach(function (c, i) {
+                c.style.transitionDelay = (120 + i * 140) + 'ms';
+                c.style.strokeDasharray = c.dataset.dash;
+                c.style.opacity = '1';
+              });
+              obs.disconnect();
+            });
+          }, { threshold: 0.2 });
+          obs.observe(card);
+        });
+      }
+
+      /* ---------- Spotlight au curseur ---------- */
+      document.addEventListener('pointermove', function (e) {
+        if (!e.target || !e.target.closest) return;
+        var card = e.target.closest('.card, .kpi');
+        if (!card) return;
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+
+      /* ---------- Impression : graphiques finalisés ---------- */
+      window.addEventListener('beforeprint', function () {
+        document.querySelectorAll('.bar-fill').forEach(function (b) {
+          if (b.dataset.target) b.style.width = b.dataset.target;
+        });
+        document.querySelectorAll('.viz circle[stroke-dasharray]').forEach(function (c) {
+          if (c.dataset.dash) c.style.strokeDasharray = c.dataset.dash;
+        });
+      });
 
       /* ---------- Filament de progression : repli JS ---------- */
       if (!window.CSS || !CSS.supports || !CSS.supports('animation-timeline: scroll()')) {
@@ -917,6 +1140,10 @@
       var savedLang = null;
       try { savedLang = localStorage.getItem('courses-lang'); } catch (e) {}
       if (savedLang === 'en') switchLang('en');
+      initCart();
+      initViz();
+      animateKpis();
+      updateToc();
     </script>
   </body>
 </html>
