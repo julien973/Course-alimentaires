@@ -5,23 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Devis de courses — FR/EN</title>
     <style>
-      :root {
-        font-family: Inter, "Segoe UI", system-ui, sans-serif;
-        color: #0f172a;
-      }
+      @property --surface-alpha { syntax: "<number>"; inherits: true; initial-value: 0.9; }
+      :root { font-family: Inter, "Segoe UI", system-ui, sans-serif; }
       * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        padding: 24px;
-        min-height: 100vh;
-        background-color: #0b1220;
-        background-image:
+
+      /* ========== Variables de thème ========== */
+      /* Couleurs communes à l'intérieur des cartes (blanches dans les 2 thèmes) */
+      body.night, body.day {
+        --c-ink: #0f172a;
+        --c-body: #334155;
+        --c-muted: #64748b;
+        --c-meta: #475569;
+        --c-h2: #1d4ed8;
+        --line: #eef2f7;
+        --line-strong: #dfe6ef;
+        --track-bg: #eff3f8;
+        --track-border: #e2e8f0;
+        --toc-active: linear-gradient(135deg, #2563eb, #7c3aed);
+      }
+
+      /* ---------- Thème NUIT (défaut) ---------- */
+      body.night {
+        --bg-base: #0b1220;
+        --bg-image:
           radial-gradient(ellipse 80% 60% at 15% 8%, rgba(109, 40, 217, 0.42), transparent 62%),
           radial-gradient(ellipse 70% 55% at 88% 18%, rgba(37, 99, 235, 0.35), transparent 62%),
           radial-gradient(ellipse 85% 70% at 82% 92%, rgba(13, 148, 136, 0.38), transparent 62%),
           radial-gradient(ellipse 60% 50% at 12% 88%, rgba(30, 64, 175, 0.35), transparent 62%),
           linear-gradient(160deg, #0b1220 0%, #141d33 48%, #0c1b1c 100%);
+        --ink: #f1f5f9;
+        --muted: #94a3b8;
+        --surface: rgba(255, 255, 255, 0.9);
+        --surface-kpi: rgba(255, 255, 255, 0.82);
+        --card-border: rgba(255, 255, 255, 0.65);
+        --border-strong: rgba(255, 255, 255, 0.95);
+        --btn-bg: rgba(255, 255, 255, 0.14);
+        --btn-hover: rgba(255, 255, 255, 0.26);
+        --btn-ink: #f1f5f9;
+        --btn-border: rgba(255, 255, 255, 0.45);
+        --row-even: rgba(15, 23, 42, 0.035);
+        --row-hover: rgba(37, 99, 235, 0.09);
+        --shadow-md: 0 8px 32px rgba(2, 6, 23, 0.35);
+        --halo: 0 0 0 1px rgba(255, 255, 255, 0.28), 0 14px 44px rgba(2, 6, 23, 0.5), 0 0 26px rgba(124, 58, 237, 0.28);
+        --viz-bg: linear-gradient(160deg, rgba(18, 26, 46, 0.94), rgba(9, 14, 26, 0.96));
+        --viz-border: rgba(255, 255, 255, 0.16);
+        --progress-grad: linear-gradient(90deg, #f06192, #fbbf24, #4ade80, #38bdf8, #a78bfa);
+        --progress-glow: rgba(240, 97, 146, 0.55);
+        --text-glow: 0 0 9px rgba(226, 232, 240, 0.65);
+      }
+
+      /* ---------- Thème JOUR ---------- */
+      body.day {
+        --bg-base: #eef1f6;
+        --bg-image:
+          radial-gradient(ellipse 80% 60% at 15% 8%, rgba(109, 40, 217, 0.10), transparent 62%),
+          radial-gradient(ellipse 70% 55% at 88% 18%, rgba(37, 99, 235, 0.10), transparent 62%),
+          radial-gradient(ellipse 85% 70% at 82% 92%, rgba(13, 148, 136, 0.12), transparent 62%),
+          linear-gradient(160deg, #f3f6fb 0%, #e9eef6 55%, #e7f0ed 100%);
+        --ink: #0f172a;
+        --muted: #64748b;
+        --surface: rgba(255, 255, 255, var(--surface-alpha));
+        --surface-kpi: rgba(255, 255, 255, calc(var(--surface-alpha) - 0.06));
+        --card-border: rgba(255, 255, 255, 0.85);
+        --border-strong: rgba(15, 23, 42, 0.4);
+        --btn-bg: rgba(255, 255, 255, 0.6);
+        --btn-hover: rgba(255, 255, 255, 0.95);
+        --btn-ink: #0f172a;
+        --btn-border: rgba(15, 23, 42, 0.28);
+        --row-even: rgba(15, 23, 42, 0.03);
+        --row-hover: rgba(37, 99, 235, 0.08);
+        --shadow-md: 0 8px 32px rgba(2, 6, 23, 0.14);
+        --halo: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 14px 40px rgba(2, 6, 23, 0.18), 0 0 26px rgba(37, 99, 235, 0.2);
+        --viz-bg: linear-gradient(160deg, #131d33, #0b1220);
+        --viz-border: rgba(15, 23, 42, 0.55);
+        --progress-grad: linear-gradient(90deg, #fbbf24, #d97706, #b3453e);
+        --progress-glow: rgba(217, 119, 6, 0.55);
+        --text-glow: 0 0 8px rgba(37, 99, 235, 0.4);
+      }
+
+      body {
+        margin: 0;
+        padding: 20px 24px 48px;
+        min-height: 100vh;
+        color: var(--ink);
+        background-color: var(--bg-base);
+        background-image: var(--bg-image);
         background-attachment: fixed;
+        transition: background-color 0.45s ease, color 0.45s ease;
       }
       body::before {
         content: "";
@@ -33,88 +103,273 @@
         z-index: 0;
       }
       .page { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
-      .lang-bar { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+
+      /* ========== Orbes lumineux (thème nuit) ========== */
+      .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+      .orbs i { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.45; }
+      .orbs .o1 { width: 360px; height: 360px; background: #7c3aed; top: -80px; left: -100px; animation: drift1 26s ease-in-out infinite alternate; }
+      .orbs .o2 { width: 320px; height: 320px; background: #ec4899; top: 34%; right: -110px; animation: drift2 32s ease-in-out infinite alternate; }
+      .orbs .o3 { width: 300px; height: 300px; background: #0ea5e9; bottom: -90px; left: 32%; animation: drift3 38s ease-in-out infinite alternate; }
+      @keyframes drift1 { to { transform: translate(70px, 50px) scale(1.12); } }
+      @keyframes drift2 { to { transform: translate(-60px, -70px) scale(1.08); } }
+      @keyframes drift3 { to { transform: translate(50px, -60px) scale(1.15); } }
+      body.day .orbs { display: none; }
+
+      /* ========== Barre supérieure sticky + filament de progression ========== */
+      .topbar {
+        position: sticky;
+        top: 10px;
+        z-index: 50;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        /* translateZ(0) fige la barre sur son propre calque GPU :
+           évite le trait parasite qui clignote au bord pendant le scroll
+           (même leçon que le guide Dawnwalker v2.12). */
+        transform: translateZ(0);
+      }
+      #progress {
+        position: absolute;
+        left: 2px; right: 2px; bottom: -8px;
+        height: 3px;
+        border-radius: 999px;
+        background: var(--progress-grad);
+        box-shadow: 0 0 10px var(--progress-glow);
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        will-change: transform;
+      }
+      @supports (animation-timeline: scroll()) {
+        #progress { animation: progressGrow linear both; animation-timeline: scroll(root); }
+      }
+      @keyframes progressGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
       .lang-btn {
         display: inline-flex;
         align-items: center;
         gap: 7px;
         padding: 8px 16px;
-        border: 1.5px solid rgba(255, 255, 255, 0.45);
+        border: 1.5px solid var(--btn-border);
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.14);
+        background: var(--btn-bg);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        color: #f1f5f9;
+        color: var(--btn-ink);
         cursor: pointer;
         font-size: 13px;
         font-weight: 700;
         transition: all 0.2s;
       }
       .flag { width: 20px; height: 13px; border-radius: 2px; flex-shrink: 0; display: inline-block; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25); }
-      .lang-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.26); }
+      .lang-btn:hover:not(.active) { background: var(--btn-hover); }
       .lang-btn.active { background: #2563eb; color: #ffffff; border-color: #2563eb; }
       .lang-btn.pdf { color: #fecaca; border-color: rgba(248, 113, 113, 0.65); }
+      body.day .lang-btn.pdf { color: #b91c1c; border-color: rgba(220, 38, 38, 0.45); }
       .lang-btn.pdf:hover { background: rgba(220, 38, 38, 0.28); }
+
+      /* ========== Cartes ========== */
       .card {
-        background: rgba(255, 255, 255, 0.9);
+        background: var(--surface);
         backdrop-filter: blur(18px) saturate(1.3);
         -webkit-backdrop-filter: blur(18px) saturate(1.3);
-        border: 1px solid rgba(255, 255, 255, 0.65);
+        border: 1px solid var(--card-border);
         border-radius: 16px;
         padding: 24px 28px;
         margin-bottom: 20px;
-        box-shadow: 0 8px 32px rgba(2, 6, 23, 0.35);
+        box-shadow: var(--shadow-md);
+        color: var(--c-ink);
+        transition: transform 0.18s ease, box-shadow 0.25s ease, border-color 0.25s ease;
       }
-      h1 { font-size: 24px; margin: 0 0 4px; color: #0f172a; }
-      h2 { font-size: 17px; margin: 0 0 14px; color: #1d4ed8; text-transform: uppercase; letter-spacing: 0.04em; }
-      .meta { display: flex; flex-wrap: wrap; gap: 24px; font-size: 13px; color: #475569; margin-top: 10px; }
-      .meta b { color: #0f172a; }
+      .card:hover {
+        transform: translateY(-2px);
+        border-color: var(--border-strong);
+        box-shadow: var(--shadow-md), var(--halo);
+      }
+      h1 { font-size: 24px; margin: 0 0 4px; color: var(--c-ink); }
+      h2 { font-size: 17px; margin: 0 0 14px; color: var(--c-h2); text-transform: uppercase; letter-spacing: 0.04em; }
+      .meta { display: flex; flex-wrap: wrap; gap: 24px; font-size: 13px; color: var(--c-meta); margin-top: 10px; }
+      .meta b { color: var(--c-ink); }
       .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
       .kpi {
-        background: rgba(255, 255, 255, 0.82);
+        background: var(--surface-kpi);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255, 255, 255, 0.6);
+        border: 1px solid var(--card-border);
         border-radius: 14px;
         padding: 16px 18px;
-        box-shadow: 0 8px 28px rgba(2, 6, 23, 0.3);
+        box-shadow: var(--shadow-md);
+        color: var(--c-ink);
+        transition: transform 0.18s ease, box-shadow 0.25s ease, border-color 0.25s ease;
       }
-      .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 6px; }
-      .kpi .value { font-size: 26px; font-weight: 700; color: #0f172a; }
+      .kpi:hover {
+        transform: translateY(-2px);
+        border-color: var(--border-strong);
+        box-shadow: var(--shadow-md), var(--halo);
+      }
+      .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-muted); margin-bottom: 6px; }
+      .kpi .value { font-size: 26px; font-weight: 700; color: var(--c-ink); }
       .kpi .sub { font-size: 12px; margin-top: 4px; font-weight: 600; }
       .sub-ok { color: #16a34a; }
       .sub-info { color: #2563eb; }
       .sub-warn { color: #854d0e; background: #fef9c3; border-radius: 6px; padding: 2px 8px; display: inline-block; }
+
+      /* ========== Cartes « data-viz » sombres (graphiques) ========== */
+      .viz {
+        --c-ink: #f8fafc;
+        --c-body: #cbd5e1;
+        --c-muted: #94a3b8;
+        --c-h2: #7da6ff;
+        --line: rgba(255, 255, 255, 0.08);
+        --line-strong: rgba(255, 255, 255, 0.14);
+        --track-bg: rgba(255, 255, 255, 0.10);
+        --track-border: rgba(255, 255, 255, 0.16);
+        background: var(--viz-bg);
+        border: 1px solid var(--viz-border);
+      }
+      @media screen {
+        .viz svg text[y="84"] { fill: #f8fafc !important; }
+        .viz svg text[y="100"] { fill: #94a3b8 !important; }
+      }
+
+      /* ========== Sommaire vivant ========== */
+      .toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        background: var(--surface);
+        backdrop-filter: blur(18px) saturate(1.3);
+        -webkit-backdrop-filter: blur(18px) saturate(1.3);
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow-md);
+      }
+      .toc a {
+        text-decoration: none;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--c-body);
+        padding: 5px 12px;
+        border-radius: 999px;
+        transition: all 0.18s ease;
+      }
+      .toc a:hover { background: var(--row-hover); color: var(--c-ink); }
+      .toc a.active {
+        background: var(--toc-active);
+        color: #ffffff;
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.35);
+      }
+      [id^="fr-"], [id^="en-"] { scroll-margin-top: 78px; }
+
+      /* ========== Tableaux ========== */
       table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-      th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; border-bottom: 2px solid #dfe6ef; padding: 8px 6px; }
-      td { padding: 8px 6px; border-bottom: 1px solid #eef2f7; vertical-align: top; }
+      th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-muted); border-bottom: 2px solid var(--line-strong); padding: 8px 6px; }
+      td { padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      tbody tr { transition: background 0.15s ease; }
+      tbody tr:nth-child(even) { background: var(--row-even); }
+      tbody tr:hover { background: var(--row-hover); }
       .num { text-align: right; white-space: nowrap; }
       .sous-total { font-weight: 700; color: #dc2626; text-align: right; margin: 10px 0 0; font-size: 14px; }
       .badge { display: inline-block; background: #dcfce7; color: #15803d; border: 1px solid #86efac; border-radius: 999px; font-size: 10.5px; padding: 1px 8px; font-weight: 600; white-space: nowrap; }
-      .note { font-size: 11.5px; color: #94a3b8; }
+      .note { font-size: 11.5px; color: var(--c-muted); }
+
+      /* ========== Copier en un clic ========== */
+      td.copyable { cursor: copy; }
+      td.copyable.copied { position: relative; }
+      td.copyable.copied::after {
+        content: "✓ Copié";
+        position: absolute;
+        top: 2px; right: 4px;
+        background: #16a34a;
+        color: #ffffff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 7px;
+        border-radius: 999px;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 2;
+        box-shadow: 0 2px 8px rgba(22, 163, 74, 0.5);
+      }
+      body[data-lang="en"] td.copyable.copied::after { content: "Copied ✓"; }
+
+      /* ========== Graphiques ========== */
       .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
       @media (max-width: 720px) { .charts { grid-template-columns: 1fr; } }
       .bar-row { display: grid; grid-template-columns: 175px 1fr 60px; align-items: center; gap: 10px; margin: 7px 0; font-size: 12.5px; }
-      .bar-row .bar-label { color: #334155; }
-      .bar-track { background: #eff3f8; border-radius: 6px; height: 18px; overflow: hidden; border: 1px solid #e2e8f0; }
+      .bar-row .bar-label { color: var(--c-body); }
+      .bar-track { background: var(--track-bg); border-radius: 6px; height: 18px; overflow: hidden; border: 1px solid var(--track-border); }
       .bar-fill { height: 100%; border-radius: 6px; }
-      .bar-val { text-align: right; font-weight: 600; color: #0f172a; }
-      .legend { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; font-size: 12.5px; color: #334155; }
+      .bar-val { text-align: right; font-weight: 600; color: var(--c-ink); }
+      .legend { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; font-size: 12.5px; color: var(--c-body); }
       .legend span { display: inline-flex; align-items: center; gap: 8px; }
       .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex-shrink: 0; }
       .donut-wrap { display: flex; align-items: center; gap: 20px; }
-      .total-row { background: linear-gradient(135deg, #dc2626, #b91c1c); color: #ffffff; border-radius: 10px; padding: 12px 18px; display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; margin-top: 12px; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); }
+      .total-row { background: linear-gradient(135deg, #dc2626, #b91c1c); color: #ffffff; border-radius: 10px; padding: 12px 18px; display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; margin-top: 12px; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); animation: totalPulse 2.8s ease-in-out infinite; }
+      @keyframes totalPulse {
+        0%, 100% { box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); }
+        50% { box-shadow: 0 4px 26px rgba(220, 38, 38, 0.62); }
+      }
       .proto { margin: 0; padding-left: 18px; }
-      .proto li { margin: 8px 0; font-size: 13.5px; color: #334155; line-height: 1.55; }
-      .proto li strong, .proto li b { color: #0f172a; }
+      .proto li { margin: 8px 0; font-size: 13.5px; color: var(--c-body); line-height: 1.55; }
+      .proto li strong, .proto li b { color: var(--c-ink); }
       .warn-box { background: #fef9c3; border-left: 4px solid #eab308; border-radius: 6px; padding: 6px 10px; color: #713f12; list-style: none; margin-left: -28px; }
       .warn-box strong, .warn-box b { color: #854d0e; }
-      .footer { text-align: center; font-size: 11.5px; color: rgba(226, 232, 240, 0.75); margin-top: 8px; }
+      .footer { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 8px; }
       .hidden { display: none; }
+
+      /* ========== Glow de lisibilité au survol ========== */
+      .card td, .card th, .bar-label, .bar-val, .proto li, .legend span, .kpi .value, .meta span {
+        transition: text-shadow 0.18s ease;
+      }
+      .card tbody tr:hover td, .bar-row:hover .bar-val, .bar-row:hover .bar-label,
+      .proto li:hover, .legend span:hover, .kpi:hover .value {
+        text-shadow: var(--text-glow);
+      }
+
+      /* ========== Cartes vivantes (thème jour) ========== */
+      /* --surface-alpha est animé au scroll : les surfaces blanchissent
+         en descendant dans la page (lisibilité sur fond clair). */
+      @supports (animation-timeline: scroll()) {
+        body.day { animation: surfaceWhiten linear both; animation-timeline: scroll(root); }
+      }
+      @keyframes surfaceWhiten {
+        0% { --surface-alpha: 0.86; }
+        40% { --surface-alpha: 0.93; }
+        100% { --surface-alpha: 0.98; }
+      }
+
+      /* ========== Accessibilité mouvement ========== */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; }
+      }
+
+      /* ========== Impression ========== */
       @media print {
-        body { background: #ffffff !important; padding: 0; }
+        body, body.day, body.night {
+          background: #ffffff !important;
+          background-image: none !important;
+          padding: 0;
+          color: #0f172a;
+          --c-ink: #0f172a;
+          --c-body: #334155;
+          --c-muted: #64748b;
+          --c-meta: #475569;
+          --c-h2: #1d4ed8;
+          --line: #eef2f7;
+          --line-strong: #dfe6ef;
+          --track-bg: #eff3f8;
+          --track-border: #e2e8f0;
+          --row-even: rgba(15, 23, 42, 0.03);
+          --row-hover: transparent;
+        }
         body::before { display: none; }
-        .lang-bar { display: none; }
+        .orbs { display: none; }
+        .topbar { display: none; }
+        .toc { display: none; }
         .card, .kpi {
           background: #ffffff !important;
           backdrop-filter: none !important;
@@ -122,21 +377,43 @@
           box-shadow: none;
           border: 1px solid #e2e8f0;
           break-inside: avoid;
+          transform: none !important;
         }
-        .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .viz {
+          background: #ffffff !important;
+          border: 1px solid #e2e8f0;
+          --c-ink: #0f172a;
+          --c-body: #334155;
+          --c-muted: #64748b;
+          --c-h2: #1d4ed8;
+          --line: #eef2f7;
+          --line-strong: #dfe6ef;
+          --track-bg: #eff3f8;
+          --track-border: #e2e8f0;
+        }
+        .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; }
         .bar-fill, .dot, .warn-box, .badge, .sub-warn { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .sous-total, .bar-val { color: #dc2626; }
         .footer { color: #94a3b8; }
+        td.copyable.copied::after { display: none; }
       }
     </style>
   </head>
-  <body>
+  <body class="night">
+    <script>
+      /* Applique le thème mémorisé AVANT le premier rendu (anti-flash). */
+      try { if (localStorage.getItem('courses-theme') === 'day') document.body.className = 'day'; } catch (e) {}
+    </script>
+
+    <div class="orbs" aria-hidden="true"><i class="o1"></i><i class="o2"></i><i class="o3"></i></div>
     <main class="page">
-      <div class="lang-bar">
+      <header class="topbar">
         <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
         <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
+        <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
         <button class="lang-btn pdf" onclick="window.print()">📄 PDF</button>
-      </div>
+        <i id="progress" aria-hidden="true"></i>
+      </header>
 
       <!-- ============ FR ============ -->
       <div id="lang-fr">
@@ -152,6 +429,32 @@
           </div>
         </div>
 
+        <nav class="toc" aria-label="Sommaire">
+          <a href="#fr-budget">📊 Budget</a>
+          <a href="#fr-prot">💪 Protéines (g)</a>
+          <a href="#fr-s1">1 · Petit-déj</a>
+          <a href="#fr-s2">2 · Protéines maigres</a>
+          <a href="#fr-s3">3 · Laitiers 0 %</a>
+          <a href="#fr-s4">4 · Légumes &amp; crème</a>
+          <a href="#fr-s5">5 · Légumineuses</a>
+          <a href="#fr-recap">🧮 Récapitulatif</a>
+          <a href="#fr-options">⚙️ Options</a>
+          <a href="#fr-proto">📋 Protocoles</a>
+        </nav>
+
+        <nav class="toc" aria-label="Table of contents">
+          <a href="#en-budget">📊 Budget</a>
+          <a href="#en-prot">💪 Protein (g)</a>
+          <a href="#en-s1">1 · Breakfast</a>
+          <a href="#en-s2">2 · Lean proteins</a>
+          <a href="#en-s3">3 · Dairy 0 %</a>
+          <a href="#en-s4">4 · Veg &amp; cream</a>
+          <a href="#en-s5">5 · Legumes</a>
+          <a href="#en-recap">🧮 Summary</a>
+          <a href="#en-options">⚙️ Options</a>
+          <a href="#en-proto">📋 Protocols</a>
+        </nav>
+
         <div class="kpis">
           <div class="kpi"><div class="label">Total panier</div><div class="value">55,00 €</div><div class="sub sub-info">≈ 4,90 € / 100 g de protéines</div></div>
           <div class="kpi"><div class="label">Protéines / jour</div><div class="value">~160 g</div><div class="sub sub-ok">✅ Cible 156 g atteinte</div></div>
@@ -159,7 +462,7 @@
           <div class="kpi"><div class="label">Volume / assiette</div><div class="value">~900 g</div><div class="sub sub-info">Faible densité calorique</div></div>
         </div>
 
-        <div class="card">
+        <div class="card viz" id="fr-budget">
           <h2>Répartition du budget</h2>
           <div class="charts">
             <div>
@@ -190,7 +493,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card viz" id="fr-prot">
           <h2>Apport en protéines par source (g / semaine)</h2>
           <div class="bar-row"><span class="bar-label">Poulet (1 kg)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">230 g</span></div>
           <div class="bar-row"><span class="bar-label">Haricots rouges (1 kg sec)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">230 g</span></div>
@@ -203,7 +506,7 @@
           <div class="bar-row"><span class="bar-label">Jambon (180 g)</span><div class="bar-track"><div class="bar-fill" style="width:15%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">34 g</span></div>
         </div>
 
-        <div class="card">
+        <div class="card" id="fr-s1">
           <h2>1. Petit-déjeuner &amp; anti-faim nocturne</h2>
           <table>
             <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g)</th></tr></thead>
@@ -216,7 +519,7 @@
           <p class="sous-total">Sous-total : 7,40 €</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="fr-s2">
           <h2>2. Protéines maigres</h2>
           <table>
             <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g)</th></tr></thead>
@@ -229,7 +532,7 @@
           <p class="sous-total">Sous-total : 13,50 €</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="fr-s3">
           <h2>3. Laitiers 0 %</h2>
           <table>
             <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g)</th></tr></thead>
@@ -240,7 +543,7 @@
           <p class="sous-total">Sous-total : 3,60 €</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="fr-s4">
           <h2>4. Légumes &amp; crème</h2>
           <table>
             <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g)</th></tr></thead>
@@ -258,7 +561,7 @@
           <p class="sous-total">Sous-total : 16,90 €</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="fr-s5">
           <h2>5. Légumineuses &amp; base</h2>
           <table>
             <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g cuits)</th></tr></thead>
@@ -274,7 +577,7 @@
           <p class="sous-total">Sous-total : 13,60 €</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="fr-recap">
           <h2>Récapitulatif</h2>
           <table>
             <thead><tr><th>Catégorie</th><th class="num">Total</th></tr></thead>
@@ -290,7 +593,7 @@
           <p style="font-size: 11.5px; color: #94a3b8; margin-bottom: 0;">Prix estimatifs — susceptibles de varier selon le magasin et les promotions en cours.</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="fr-options">
           <h2>Options</h2>
           <table>
             <thead><tr><th>Option</th><th>Ajustement</th><th class="num">Nouveau total</th></tr></thead>
@@ -301,7 +604,7 @@
           </table>
         </div>
 
-        <div class="card">
+        <div class="card" id="fr-proto">
           <h2>Protocoles associés</h2>
           <ul class="proto">
             <li><b>Petit-déjeuner type</b> (≈ 700 kcal / 46 g prot.) : 3 tranches pain complet + 3 œufs + 2 tranches jambon + 400 ml lait.</li>
@@ -315,7 +618,7 @@
           </ul>
         </div>
 
-        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF ».</p>
+        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.0.</p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -339,7 +642,7 @@
           <div class="kpi"><div class="label">Volume / plate</div><div class="value">~900 g</div><div class="sub sub-info">Low calorie density</div></div>
         </div>
 
-        <div class="card">
+        <div class="card viz" id="en-budget">
           <h2>Budget Breakdown</h2>
           <div class="charts">
             <div>
@@ -370,7 +673,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card viz" id="en-prot">
           <h2>Protein Intake by Source (g / week)</h2>
           <div class="bar-row"><span class="bar-label">Chicken (1 kg)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">230 g</span></div>
           <div class="bar-row"><span class="bar-label">Red kidney beans (1 kg dry)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">230 g</span></div>
@@ -383,7 +686,7 @@
           <div class="bar-row"><span class="bar-label">Ham (180 g)</span><div class="bar-track"><div class="bar-fill" style="width:15%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">34 g</span></div>
         </div>
 
-        <div class="card">
+        <div class="card" id="en-s1">
           <h2>1. Breakfast &amp; Night-Time Hunger Management</h2>
           <table>
             <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g)</th></tr></thead>
@@ -396,7 +699,7 @@
           <p class="sous-total">Subtotal: €7.40</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="en-s2">
           <h2>2. Lean Proteins</h2>
           <table>
             <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g)</th></tr></thead>
@@ -409,7 +712,7 @@
           <p class="sous-total">Subtotal: €13.50</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="en-s3">
           <h2>3. Fat-Free Dairy</h2>
           <table>
             <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g)</th></tr></thead>
@@ -420,7 +723,7 @@
           <p class="sous-total">Subtotal: €3.60</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="en-s4">
           <h2>4. Vegetables &amp; Cream</h2>
           <table>
             <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g)</th></tr></thead>
@@ -438,7 +741,7 @@
           <p class="sous-total">Subtotal: €16.90</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="en-s5">
           <h2>5. Legumes &amp; Staples</h2>
           <table>
             <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g cooked)</th></tr></thead>
@@ -454,7 +757,7 @@
           <p class="sous-total">Subtotal: €13.60</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="en-recap">
           <h2>Summary</h2>
           <table>
             <thead><tr><th>Category</th><th class="num">Total</th></tr></thead>
@@ -470,7 +773,7 @@
           <p class="note" style="margin-bottom: 0;">Estimated prices — may vary depending on the store and ongoing promotions. Prices are in euros, from French supermarkets.</p>
         </div>
 
-        <div class="card">
+        <div class="card" id="en-options">
           <h2>Options</h2>
           <table>
             <thead><tr><th>Option</th><th>Adjustment</th><th class="num">New total</th></tr></thead>
@@ -481,7 +784,7 @@
           </table>
         </div>
 
-        <div class="card">
+        <div class="card" id="en-proto">
           <h2>Related Protocols</h2>
           <ul class="proto">
             <li><b>Typical breakfast</b> (≈ 700 kcal / 46 g protein): 3 slices wholemeal bread + 3 eggs + 2 slices ham + 400 ml milk.</li>
@@ -495,17 +798,100 @@
           </ul>
         </div>
 
-        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF".</p>
+        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.0.</p>
       </div>
     </main>
 
     <script>
+      /* ---------- Langue (mémorisée) ---------- */
       function switchLang(lang) {
         document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
         document.getElementById('btn-en').classList.toggle('active', lang === 'en');
         document.getElementById('lang-fr').classList.toggle('hidden', lang === 'en');
         document.getElementById('lang-en').classList.toggle('hidden', lang === 'fr');
+        document.body.dataset.lang = lang;
+        try { localStorage.setItem('courses-lang', lang); } catch (e) {}
+        document.querySelectorAll('.toc a.active').forEach(function (a) { a.classList.remove('active'); });
       }
+
+      /* ---------- Thème jour / nuit (mémorisé) ---------- */
+      function setTheme(t) {
+        document.body.classList.toggle('night', t === 'night');
+        document.body.classList.toggle('day', t === 'day');
+        document.getElementById('btn-theme').textContent = t === 'day' ? '🌙' : '☀️';
+        try { localStorage.setItem('courses-theme', t); } catch (e) {}
+      }
+      function toggleTheme() {
+        setTheme(document.body.classList.contains('day') ? 'night' : 'day');
+      }
+
+      /* ---------- Copier en un clic (prix + noms d'articles) ---------- */
+      function flashCopy(el) {
+        el.classList.add('copied');
+        setTimeout(function () { el.classList.remove('copied'); }, 1300);
+      }
+      function legacyCopy(txt, td) {
+        var ta = document.createElement('textarea');
+        ta.value = txt;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); flashCopy(td); } catch (err) {}
+        document.body.removeChild(ta);
+      }
+      document.querySelectorAll('tbody td.num, tbody td:first-child').forEach(function (td) {
+        td.classList.add('copyable');
+      });
+      document.addEventListener('click', function (e) {
+        if (!e.target || !e.target.closest) return;
+        var td = e.target.closest('td.copyable');
+        if (!td) return;
+        var txt = td.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(
+            function () { flashCopy(td); },
+            function () { legacyCopy(txt, td); }
+          );
+        } else {
+          legacyCopy(txt, td);
+        }
+      });
+
+      /* ---------- Sommaire vivant (section lue = surlignée) ---------- */
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            document.querySelectorAll('.toc a.active').forEach(function (a) { a.classList.remove('active'); });
+            var link = document.querySelector('.toc a[href="#' + en.target.id + '"]');
+            if (link) link.classList.add('active');
+          });
+        }, { rootMargin: '-15% 0px -75% 0px' });
+        document.querySelectorAll('[id^="fr-"], [id^="en-"]').forEach(function (s) { obs.observe(s); });
+      }
+
+      /* ---------- Filament de progression : repli JS ---------- */
+      if (!window.CSS || !CSS.supports || !CSS.supports('animation-timeline: scroll()')) {
+        var prog = document.getElementById('progress');
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            var h = document.documentElement;
+            var max = h.scrollHeight - h.clientHeight;
+            prog.style.transform = 'scaleX(' + (max > 0 ? h.scrollTop / max : 0) + ')';
+            ticking = false;
+          });
+        }, { passive: true });
+      }
+
+      /* ---------- Init ---------- */
+      setTheme(document.body.classList.contains('day') ? 'day' : 'night');
+      var savedLang = null;
+      try { savedLang = localStorage.getItem('courses-lang'); } catch (e) {}
+      if (savedLang === 'en') switchLang('en');
     </script>
   </body>
 </html>
