@@ -47,8 +47,8 @@
         --row-hover: rgba(37, 99, 235, 0.09);
         --shadow-md: 0 8px 32px rgba(2, 6, 23, 0.35);
         --halo: 0 0 0 1px rgba(255, 255, 255, 0.28), 0 14px 44px rgba(2, 6, 23, 0.5), 0 0 26px rgba(124, 58, 237, 0.28);
-        --viz-bg: linear-gradient(160deg, rgba(18, 26, 46, 0.94), rgba(9, 14, 26, 0.96));
-        --viz-border: rgba(255, 255, 255, 0.16);
+        --topbar-bg: rgba(13, 20, 36, 0.62);
+        --topbar-border: rgba(255, 255, 255, 0.14);
         --progress-grad: linear-gradient(90deg, #f06192, #fbbf24, #4ade80, #38bdf8, #a78bfa);
         --progress-glow: rgba(240, 97, 146, 0.55);
         --text-glow: 0 0 9px rgba(226, 232, 240, 0.65);
@@ -76,8 +76,8 @@
         --row-hover: rgba(37, 99, 235, 0.08);
         --shadow-md: 0 8px 32px rgba(2, 6, 23, 0.14);
         --halo: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 14px 40px rgba(2, 6, 23, 0.18), 0 0 26px rgba(37, 99, 235, 0.2);
-        --viz-bg: linear-gradient(160deg, #131d33, #0b1220);
-        --viz-border: rgba(15, 23, 42, 0.55);
+        --topbar-bg: rgba(255, 255, 255, 0.62);
+        --topbar-border: rgba(15, 23, 42, 0.12);
         --progress-grad: linear-gradient(90deg, #fbbf24, #d97706, #b3453e);
         --progress-glow: rgba(217, 119, 6, 0.55);
         --text-glow: 0 0 8px rgba(37, 99, 235, 0.4);
@@ -116,25 +116,37 @@
       body.day .orbs { display: none; }
 
       /* ========== Barre supérieure sticky + filament de progression ========== */
+      /* Même architecture que le guide Dawnwalker : barre de verre pleine
+         largeur collée en haut, filament posé sur son bord inférieur. */
       .topbar {
         position: sticky;
-        top: 10px;
+        top: 0;
         z-index: 50;
         display: flex;
-        justify-content: flex-end;
-        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
         flex-wrap: wrap;
         margin-bottom: 20px;
+        padding: 10px 16px;
+        border-radius: 14px;
+        background: var(--topbar-bg);
+        border: 1px solid var(--topbar-border);
+        backdrop-filter: blur(14px) saturate(1.3);
+        -webkit-backdrop-filter: blur(14px) saturate(1.3);
+        box-shadow: var(--shadow-md);
         /* translateZ(0) fige la barre sur son propre calque GPU :
            évite le trait parasite qui clignote au bord pendant le scroll
            (même leçon que le guide Dawnwalker v2.12). */
         transform: translateZ(0);
       }
+      .tb-brand { font-weight: 800; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
+      .tb-actions { display: flex; gap: 8px; flex-wrap: wrap; }
       #progress {
         position: absolute;
-        left: 2px; right: 2px; bottom: -8px;
+        left: 0; right: 0; bottom: 0;
         height: 3px;
-        border-radius: 999px;
+        border-radius: 0 0 13px 13px;
         background: var(--progress-grad);
         box-shadow: 0 0 10px var(--progress-glow);
         transform: scaleX(0);
@@ -215,22 +227,23 @@
       .sub-info { color: #2563eb; }
       .sub-warn { color: #854d0e; background: #fef9c3; border-radius: 6px; padding: 2px 8px; display: inline-block; }
 
-      /* ========== Cartes « data-viz » sombres (graphiques) ========== */
+      /* ========== Cartes « data-viz » (graphiques) ========== */
+      /* Verre teinté bleu-violet + liseré dégradé en haut : les graphiques
+         se distinguent des autres cartes sans fond noir — la lisibilité
+         des cartes claires est conservée dans les deux thèmes. */
       .viz {
-        --c-ink: #f8fafc;
-        --c-body: #cbd5e1;
-        --c-muted: #94a3b8;
-        --c-h2: #7da6ff;
-        --line: rgba(255, 255, 255, 0.08);
-        --line-strong: rgba(255, 255, 255, 0.14);
-        --track-bg: rgba(255, 255, 255, 0.10);
-        --track-border: rgba(255, 255, 255, 0.16);
-        background: var(--viz-bg);
-        border: 1px solid var(--viz-border);
+        position: relative;
+        overflow: hidden;
+        background:
+          linear-gradient(160deg, rgba(37, 99, 235, 0.07), rgba(124, 58, 237, 0.05)),
+          var(--surface);
       }
-      @media screen {
-        .viz svg text[y="84"] { fill: #f8fafc !important; }
-        .viz svg text[y="100"] { fill: #94a3b8 !important; }
+      .viz::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #2563eb, #7c3aed, #0d9488);
       }
 
       /* ========== Sommaire vivant ========== */
@@ -379,18 +392,8 @@
           break-inside: avoid;
           transform: none !important;
         }
-        .viz {
-          background: #ffffff !important;
-          border: 1px solid #e2e8f0;
-          --c-ink: #0f172a;
-          --c-body: #334155;
-          --c-muted: #64748b;
-          --c-h2: #1d4ed8;
-          --line: #eef2f7;
-          --line-strong: #dfe6ef;
-          --track-bg: #eff3f8;
-          --track-border: #e2e8f0;
-        }
+        .viz { background: #ffffff !important; }
+        .viz::before { display: none; }
         .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; }
         .bar-fill, .dot, .warn-box, .badge, .sub-warn { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .sous-total, .bar-val { color: #dc2626; }
@@ -408,10 +411,13 @@
     <div class="orbs" aria-hidden="true"><i class="o1"></i><i class="o2"></i><i class="o3"></i></div>
     <main class="page">
       <header class="topbar">
+        <span class="tb-brand">🧾 Course alimentaire</span>
+        <div class="tb-actions">
         <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
         <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
         <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
         <button class="lang-btn pdf" onclick="window.print()">📄 PDF</button>
+        </div>
         <i id="progress" aria-hidden="true"></i>
       </header>
 
@@ -618,7 +624,7 @@
           </ul>
         </div>
 
-        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.0.</p>
+        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.1.</p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -798,7 +804,7 @@
           </ul>
         </div>
 
-        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.0.</p>
+        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.1.</p>
       </div>
     </main>
 
