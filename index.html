@@ -311,6 +311,12 @@
 
       /* ========== Tableaux ========== */
       table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+      /* Mobile : tableaux défilables au doigt (gauche ↔ droite), comme un
+         tableau BB-code — les colonnes gardent leur largeur naturelle.
+         @media screen : l'impression garde des tables normales. */
+      @media screen {
+        table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      }
       th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-muted); border-bottom: 2px solid var(--line-strong); padding: 8px 6px; }
       td { padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
       tbody tr { transition: background 0.15s ease; }
@@ -370,7 +376,12 @@
 
       /* ========== Graphiques ========== */
       .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-      @media (max-width: 720px) { .charts { grid-template-columns: 1fr; } }
+      @media (max-width: 720px) {
+        .charts { grid-template-columns: 1fr; }
+        .bar-row { grid-template-columns: minmax(80px, 42%) 1fr auto; font-size: 11.5px; }
+        .donut-wrap { flex-direction: column; align-items: flex-start; }
+        .meta { gap: 12px 20px; }
+      }
       .bar-row { display: grid; grid-template-columns: 175px 1fr 60px; align-items: center; gap: 10px; margin: 7px 0; font-size: 12.5px; }
       .bar-row .bar-label { color: var(--c-body); }
       .bar-track { background: var(--track-bg); border-radius: 6px; height: 18px; overflow: hidden; border: 1px solid var(--track-border); }
@@ -675,7 +686,7 @@
           </ul>
         </div>
 
-        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.3.</p>
+        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.4.</p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -868,7 +879,7 @@
           </ul>
         </div>
 
-        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.3.</p>
+        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.4.</p>
       </div>
     </main>
 
