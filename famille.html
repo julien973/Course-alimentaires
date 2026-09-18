@@ -107,7 +107,11 @@
       .src.soeur { background: rgba(217, 119, 6, 0.14); color: #b45309; }
       .src.commun { background: rgba(22, 163, 74, 0.14); color: #15803d; }
 
-      .callout { border-left: 4px solid #d97706; background: rgba(217, 119, 6, 0.08); border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 13.5px; line-height: 1.6; color: var(--c-body); }
+      .callout { border: 1px solid var(--card-border); border-left: 4px solid #d97706; background: var(--surface); border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 13.5px; line-height: 1.6; color: var(--c-body); box-shadow: var(--shadow-md); }
+      td.chk, th.chk { width: 34px; text-align: center; }
+      .item-check { width: 18px; height: 18px; accent-color: #2563eb; cursor: pointer; }
+      .fam-row.done td { opacity: 0.55; }
+      .fam-row.done td.name { text-decoration: line-through; }
       .opt-item { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.6; }
       .opt-item:first-of-type { border-top: none; }
       .opt-ico { font-size: 18px; }
@@ -156,7 +160,7 @@
           <p>Fusion automatique de deux devis : le devis perso de Julien (sèche, high-protein) et le devis famille à intégrer. Articles communs détectés et cumulés, budget consolidé, optimisations prix et protéines.</p>
         </div>
         <div class="kpis">
-          <div class="kpi"><div class="label">Total fusionné</div><div class="value" id="kpi-total-fr">—</div><div class="sub" id="kpi-total-sub-fr">—</div></div>
+          <div class="kpi"><div class="label">Panier en cours</div><div class="value" id="kpi-total-fr">—</div><div class="sub" id="kpi-total-sub-fr">—</div></div>
           <div class="kpi"><div class="label">Articles</div><div class="value" id="kpi-items-fr">—</div><div class="sub" id="kpi-items-sub-fr">—</div></div>
           <div class="kpi"><div class="label">Économies fusion</div><div class="value" id="kpi-save-fr">—</div><div class="sub">Dédoublonnage des achats</div></div>
           <div class="kpi"><div class="label">Articles communs</div><div class="value" id="kpi-commun-fr">—</div><div class="sub">Présents chez les deux</div></div>
@@ -175,7 +179,7 @@
           <p>Automatic merge of two quotes: Julien's personal quote (cut, high-protein) and the family quote to be added. Common items detected and combined, consolidated budget, price and protein optimizations.</p>
         </div>
         <div class="kpis">
-          <div class="kpi"><div class="label">Merged total</div><div class="value" id="kpi-total-en">—</div><div class="sub" id="kpi-total-sub-en">—</div></div>
+          <div class="kpi"><div class="label">Running basket</div><div class="value" id="kpi-total-en">—</div><div class="sub" id="kpi-total-sub-en">—</div></div>
           <div class="kpi"><div class="label">Items</div><div class="value" id="kpi-items-en">—</div><div class="sub" id="kpi-items-sub-en">—</div></div>
           <div class="kpi"><div class="label">Merge savings</div><div class="value" id="kpi-save-en">—</div><div class="sub">Deduplicated purchases</div></div>
           <div class="kpi"><div class="label">Common items</div><div class="value" id="kpi-commun-en">—</div><div class="sub">Present in both lists</div></div>
@@ -288,6 +292,36 @@
         fr: { julien: "🧑 Julien", soeur: "👩 Famille", commun: "👥 Commun" },
         en: { julien: "🧑 Julien", soeur: "👩 Family", commun: "👥 Shared" }
       };
+      /* ===== Cases à cocher : le total ne compte que ce qui est coché.
+         L'état est mémorisé dans localStorage (clé famille-checks),
+         donc un rafraîchissement ou un changement de langue garde
+         les cochages. ===== */
+      function loadChecks() {
+        try { return JSON.parse(localStorage.getItem("famille-checks") || "{}"); }
+        catch (e) { return {}; }
+      }
+      function wireChecks(lang, itemCount) {
+        var boxes = document.querySelectorAll("#" + lang + "-merge .item-check");
+        function refresh() {
+          var sum = 0, n = 0, state = {};
+          boxes.forEach(function (b) {
+            var row = b.closest("tr");
+            state[row.dataset.key] = b.checked;
+            if (b.checked) { row.classList.add("done"); sum += parseFloat(b.dataset.price) || 0; n++; }
+            else { row.classList.remove("done"); }
+          });
+          try { localStorage.setItem("famille-checks", JSON.stringify(state)); } catch (e) {}
+          document.getElementById("kpi-total-" + lang).textContent = fmtEur(sum, lang);
+          document.getElementById("kpi-total-sub-" + lang).textContent =
+            n + " / " + itemCount + (lang === "en" ? " picked up" : " cochés");
+        }
+        var saved = loadChecks();
+        boxes.forEach(function (b) {
+          b.checked = !!saved[b.closest("tr").dataset.key];
+          b.addEventListener("change", refresh);
+        });
+        refresh();
+      }
       function renderMerge() {
         var merged = mergeLists();
         var lang = document.body.dataset.lang === "en" ? "en" : "fr";
@@ -306,12 +340,13 @@
           var catTotal = 0;
           var rows = byCat[cat].map(function (m) {
             catTotal += m.price;
-            return "<tr><td>" + m.item[lang === "en" ? "en" : "fr"] + "</td><td>" + m.item.qty +
+            var k = keyOf(m.item).replace(/"/g, "");
+            return "<tr class=\"fam-row\" data-key=\"" + k + "\"><td class=\"chk\"><input type=\"checkbox\" class=\"item-check\" data-price=\"" + m.price + "\"></td><td class=\"name\">" + m.item[lang === "en" ? "en" : "fr"] + "</td><td>" + m.item.qty +
               "</td><td class=\"num\">" + fmtEur(m.price, lang) + "</td><td><span class=\"src " + m.src + "\">" +
               SRC_LABEL[lang][m.src] + "</span></td></tr>";
           }).join("");
           html += '<div class="card"><h2>' + CATS[cat][lang] + '</h2>' +
-            '<table><thead><tr><th>' + (lang === "en" ? "Item" : "Article") + '</th><th>' + (lang === "en" ? "Qty" : "Qté") +
+            '<table><thead><tr><th class="chk">✓</th><th>' + (lang === "en" ? "Item" : "Article") + '</th><th>' + (lang === "en" ? "Qty" : "Qté") +
             '</th><th class="num">' + (lang === "en" ? "Total" : "Total") + '</th><th>' + (lang === "en" ? "Source" : "Source") + '</th></tr></thead>' +
             '<tbody>' + rows + '</tbody></table><p class="sous-total">' + (lang === "en" ? "Subtotal: " : "Sous-total : ") + fmtEur(catTotal, lang) + '</p></div>';
         });
@@ -326,10 +361,8 @@
 
         var savings = 0;
         merged.forEach(function (m) { if (m.commun) savings += Math.min(m.item.price, m.price / 2); });
-        document.getElementById("kpi-total-" + lang).textContent = fmtEur(total, lang);
-        document.getElementById("kpi-total-sub-" + lang).textContent = FAMILY_LIST.length === 0
-          ? (lang === "en" ? "Base: personal quote" : "Base : devis perso")
-          : (lang === "en" ? "Both quotes combined" : "Devis fusionnés");
+        document.getElementById("kpi-total-" + lang).textContent = fmtEur(0, lang);
+        wireChecks(lang, items);
         document.getElementById("kpi-items-" + lang).textContent = items;
         document.getElementById("kpi-items-sub-" + lang).textContent =
           (lang === "en" ? "from " : "dont ") + commun + (lang === "en" ? " shared" : " communs");
