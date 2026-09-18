@@ -1091,21 +1091,33 @@
           return;
         }
         var total = 0;
+        var items = [];
         document.querySelectorAll('label.check input:checked').forEach(function (b) {
           var tr = b.closest('tr');
           if (!tr) return;
+          var tds = tr.querySelectorAll('td');
           var nums = tr.querySelectorAll('td.num');
+          var price = 0;
           if (nums.length > 0) {
             var v = parseFloat(nums[nums.length - 1].textContent.replace(',', '.').replace(/[^\d.]/g, ''));
             if (!isNaN(v)) total += v;
+            price = isNaN(v) ? 0 : v;
           }
+          /* Détail archivé pour la fiche de course : nom, qté, prix, nutrition */
+          items.push({
+            name: (tds[0] ? tds[0].textContent : '').trim(),
+            qty: (tds[1] ? tds[1].textContent : '').trim(),
+            price: price,
+            nut: tds.length > 4 ? tds[4].textContent.trim() : ''
+          });
         });
         var list = historyRead();
         list.unshift({
           date: new Date().toISOString(),
           devis: '2026-0916',
           checked: checked.length,
-          total: Math.round(total * 100) / 100
+          total: Math.round(total * 100) / 100,
+          items: items
         });
         try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch (e) {}
         var cc = document.getElementById('cart-count');
