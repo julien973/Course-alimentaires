@@ -112,6 +112,19 @@
       .item-check { width: 18px; height: 18px; accent-color: #2563eb; cursor: pointer; }
       .fam-row.done td { opacity: 0.55; }
       .fam-row.done td.name { text-decoration: line-through; }
+      /* Pastille panier flottante : suit le défilement, miroir du KPI en haut */
+      .float-basket {
+        position: fixed; bottom: 88px; right: 18px; z-index: 60;
+        display: flex; align-items: center; gap: 10px;
+        background: var(--topbar-bg); backdrop-filter: blur(14px) saturate(1.4);
+        -webkit-backdrop-filter: blur(14px) saturate(1.4);
+        border: 1px solid var(--topbar-border); border-radius: 999px;
+        padding: 10px 18px; font-size: 14px; font-weight: 700; color: var(--ink);
+        box-shadow: var(--shadow-md); max-width: calc(100vw - 36px);
+        transition: transform 0.2s ease;
+      }
+      .float-basket .fb-count { font-size: 12.5px; font-weight: 600; color: var(--muted); }
+      .float-basket .fb-amount { color: #2563eb; font-variant-numeric: tabular-nums; }
       .opt-item { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.6; }
       .opt-item:first-of-type { border-top: none; }
       .opt-ico { font-size: 18px; }
@@ -128,7 +141,7 @@
       .botbar .bb-brand { font-weight: 700; font-size: 14px; color: var(--ink); }
       .botbar .bb-ver { font-size: 13px; color: var(--muted); font-weight: 600; }
       body { padding-bottom: 88px; }
-      @media print { .topbar, .orbs { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } }
+      @media print { .topbar, .orbs, .float-basket { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } }
       @media (max-width: 720px) { .card { padding: 18px 16px; } table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } .kpi .value { font-size: 21px; } }
       @media screen and (min-width: 721px), print { td { overflow-wrap: anywhere; } }
     </style>
@@ -199,6 +212,12 @@
         <span class="bb-ver">v3.0 · 2026</span>
       </div>
     </footer>
+
+    <div class="float-basket" id="float-basket">
+      <span>🛒</span>
+      <span class="fb-amount" id="fb-amount-fr">0,00 €</span>
+      <span class="fb-count" id="fb-count-fr">0 / 21 cochés</span>
+    </div>
 
     <script>
       /* ================= DONNÉES =================
@@ -314,6 +333,15 @@
           document.getElementById("kpi-total-" + lang).textContent = fmtEur(sum, lang);
           document.getElementById("kpi-total-sub-" + lang).textContent =
             n + " / " + itemCount + (lang === "en" ? " picked up" : " cochés");
+          /* Miroir flottant : même info, visible pendant le défilement */
+          var fb = document.getElementById("float-basket");
+          if (fb) {
+            document.getElementById("fb-amount-fr").textContent = fmtEur(sum, lang);
+            document.getElementById("fb-count-fr").textContent =
+              n + " / " + itemCount + (lang === "en" ? " picked up" : " cochés");
+            fb.style.transform = n > 0 ? "scale(1.04)" : "scale(1)";
+            setTimeout(function () { fb.style.transform = "scale(1)"; }, 180);
+          }
         }
         var saved = loadChecks();
         boxes.forEach(function (b) {
