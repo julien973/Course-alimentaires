@@ -74,9 +74,6 @@
       .topbar-inner { max-width: 900px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       .tb-brand { font-weight: 700; font-size: 14px; color: var(--ink); }
       .tb-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-      /* Libellé texte à côté de l'icône des boutons importants :
-         reconnaissable sans deviner, cliquable partout sur le bouton. */
-      .btn-label { font-weight: 600; }
       .lang-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--btn-border); background: var(--btn-bg); color: var(--btn-ink); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all 0.18s ease; font-family: inherit; }
       .lang-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
       .lang-btn.active { background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; border-color: transparent; }
@@ -131,11 +128,11 @@
       <div class="topbar-inner">
         <span class="tb-brand">👨‍👩‍👧‍👦 Liste famille</span>
         <div class="tb-actions">
-          <button class="lang-btn" onclick="location.href='index.html'" title="Accueil / Home">🏠 <span class="btn-label" data-fr="Accueil" data-en="Home">Accueil</span></button>
+          <button class="lang-btn" onclick="location.href='index.html'" title="Accueil / Home">🏠 <span class="btn-txt" data-fr="Accueil" data-en="Home">Accueil</span></button>
           <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
           <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
-          <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
-          <button class="lang-btn pdf" onclick="window.print()">📄 <span class="btn-label" data-fr="PDF" data-en="PDF">PDF</span></button>
+          <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme"><span id="btn-theme-ico">☀️</span> <span class="btn-txt" data-fr="Thème" data-en="Theme">Thème</span></button>
+          <button class="lang-btn pdf" onclick="window.print()">📄 <span class="btn-txt">PDF</span></button>
         </div>
       </div>
       <i id="progress" aria-hidden="true"></i>
@@ -346,8 +343,8 @@
         document.getElementById("lang-en").classList.toggle("hidden", lang === "fr");
         document.body.dataset.lang = lang;
         try { localStorage.setItem("courses-lang", lang); } catch (e) {}
-        document.querySelectorAll('[data-fr]').forEach(function (el) {
-          el.textContent = (lang === "fr") ? el.getAttribute("data-fr") : el.getAttribute("data-en");
+        document.querySelectorAll(".btn-txt[data-fr]").forEach(function (s) {
+          s.textContent = lang === "fr" ? s.getAttribute("data-fr") : s.getAttribute("data-en");
         });
         renderMerge();
       }

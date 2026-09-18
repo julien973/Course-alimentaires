@@ -147,9 +147,6 @@
       }
       .tb-brand { font-weight: 800; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
       .tb-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-      /* Libellé texte à côté de l'icône des boutons importants :
-         reconnaissable sans deviner, cliquable partout sur le bouton. */
-      .btn-label { font-weight: 600; }
       #progress {
         position: absolute;
         left: 0; right: 0; bottom: 0;
@@ -488,13 +485,13 @@
         <span class="tb-brand">🧾 Course alimentaire</span>
         <div class="tb-actions">
         <span class="cart-count" id="cart-count">🛒 0/21</span>
-        <button class="lang-btn" onclick="location.href='index.html'" title="Accueil / Home">🏠 <span class="btn-label" data-fr="Accueil" data-en="Home">Accueil</span></button>
-        <button class="lang-btn" id="btn-reset" onclick="resetCart()" title="Tout décocher / Uncheck all">↺ <span class="btn-label" data-fr="Décocher" data-en="Uncheck all">Décocher</span></button>
-        <button class="lang-btn" id="btn-finish" onclick="finishShopping()" title="Terminer la course : archive le panier dans l'historique / Finish: archive cart to history">✅ <span class="btn-label" data-fr="Terminer la course" data-en="Finish run">Terminer la course</span></button>
+        <button class="lang-btn" onclick="location.href='index.html'" title="Accueil / Home">🏠 <span class="btn-txt" data-fr="Accueil" data-en="Home">Accueil</span></button>
+        <button class="lang-btn" id="btn-reset" onclick="resetCart()" title="Tout décocher / Uncheck all">↺ <span class="btn-txt" data-fr="Tout décocher" data-en="Uncheck all">Tout décocher</span></button>
+        <button class="lang-btn" id="btn-finish" onclick="finishShopping()" title="Terminer la course : archive le panier dans l'historique / Finish: archive cart to history">✅ <span class="btn-txt" data-fr="Terminer" data-en="Finish">Terminer</span></button>
         <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
         <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
-        <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
-        <button class="lang-btn pdf" onclick="window.print()">📄 <span class="btn-label" data-fr="PDF" data-en="PDF">PDF</span></button>
+        <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme"><span id="btn-theme-ico">☀️</span> <span class="btn-txt">Thème</span></button>
+        <button class="lang-btn pdf" onclick="window.print()">📄 <span class="btn-txt">PDF</span></button>
         </div>
       </div>
       <i id="progress" aria-hidden="true"></i>
@@ -897,8 +894,9 @@
         document.getElementById('lang-en').classList.toggle('hidden', lang === 'fr');
         document.body.dataset.lang = lang;
         try { localStorage.setItem('courses-lang', lang); } catch (e) {}
-        document.querySelectorAll('[data-fr]').forEach(function (el) {
-          el.textContent = (lang === 'fr') ? el.getAttribute('data-fr') : el.getAttribute('data-en');
+        /* Libellés bilingues des boutons (Accueil, Tout décocher…) */
+        document.querySelectorAll('.btn-txt[data-fr]').forEach(function (s) {
+          s.textContent = lang === 'fr' ? s.getAttribute('data-fr') : s.getAttribute('data-en');
         });
         document.querySelectorAll('.toc a.active').forEach(function (a) { a.classList.remove('active'); });
         updateToc();
@@ -910,7 +908,7 @@
       function setTheme(t) {
         document.body.classList.toggle('night', t === 'night');
         document.body.classList.toggle('day', t === 'day');
-        document.getElementById('btn-theme').textContent = t === 'day' ? '🌙' : '☀️';
+        document.getElementById('btn-theme-ico').textContent = t === 'day' ? '🌙' : '☀️';
         try { localStorage.setItem('courses-theme', t); } catch (e) {}
       }
       function toggleTheme() {
