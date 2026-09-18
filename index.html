@@ -3,28 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Devis de courses — FR/EN</title>
+    <title>Courses Alimentaires — Accueil</title>
     <style>
       @property --surface-alpha { syntax: "<number>"; inherits: true; initial-value: 0.9; }
       :root { font-family: Inter, "Segoe UI", system-ui, sans-serif; }
       * { box-sizing: border-box; }
 
-      /* ========== Variables de thème ========== */
-      /* Couleurs communes à l'intérieur des cartes (blanches dans les 2 thèmes) */
+      /* ========== Variables de thème (identiques au devis) ========== */
       body.night, body.day {
-        --c-ink: #0f172a;
-        --c-body: #334155;
-        --c-muted: #64748b;
-        --c-meta: #475569;
-        --c-h2: #1d4ed8;
-        --line: #eef2f7;
-        --line-strong: #dfe6ef;
-        --track-bg: #eff3f8;
-        --track-border: #e2e8f0;
+        --c-ink: #0f172a; --c-body: #334155; --c-muted: #64748b;
+        --line: #eef2f7; --line-strong: #dfe6ef;
         --toc-active: linear-gradient(135deg, #2563eb, #7c3aed);
       }
-
-      /* ---------- Thème NUIT (défaut) ---------- */
       body.night {
         --bg-base: #0b1220;
         --bg-image:
@@ -33,29 +23,19 @@
           radial-gradient(ellipse 85% 70% at 82% 92%, rgba(13, 148, 136, 0.38), transparent 62%),
           radial-gradient(ellipse 60% 50% at 12% 88%, rgba(30, 64, 175, 0.35), transparent 62%),
           linear-gradient(160deg, #0b1220 0%, #141d33 48%, #0c1b1c 100%);
-        --ink: #f1f5f9;
-        --muted: #94a3b8;
-        --surface: rgba(255, 255, 255, 0.9);
-        --surface-kpi: rgba(255, 255, 255, 0.82);
-        --card-border: rgba(255, 255, 255, 0.65);
-        --border-strong: rgba(255, 255, 255, 0.95);
-        --btn-bg: rgba(255, 255, 255, 0.14);
-        --btn-hover: rgba(255, 255, 255, 0.26);
-        --btn-ink: #f1f5f9;
-        --btn-border: rgba(255, 255, 255, 0.45);
-        --row-even: rgba(15, 23, 42, 0.035);
-        --row-hover: rgba(37, 99, 235, 0.09);
+        --ink: #f1f5f9; --muted: #94a3b8;
+        --surface: rgba(255, 255, 255, 0.9); --surface-kpi: rgba(255, 255, 255, 0.82);
+        --card-border: rgba(255, 255, 255, 0.65); --border-strong: rgba(255, 255, 255, 0.95);
+        --btn-bg: rgba(255, 255, 255, 0.14); --btn-hover: rgba(255, 255, 255, 0.26);
+        --btn-ink: #f1f5f9; --btn-border: rgba(255, 255, 255, 0.45);
+        --row-even: rgba(15, 23, 42, 0.035); --row-hover: rgba(37, 99, 235, 0.09);
         --shadow-md: 0 8px 32px rgba(2, 6, 23, 0.35);
         --halo: 0 0 0 1px rgba(255, 255, 255, 0.28), 0 14px 44px rgba(2, 6, 23, 0.5), 0 0 26px rgba(124, 58, 237, 0.28);
-        --topbar-bg: rgba(13, 20, 36, 0.62);
-        --topbar-border: rgba(255, 255, 255, 0.14);
+        --topbar-bg: rgba(13, 20, 36, 0.62); --topbar-border: rgba(255, 255, 255, 0.14);
         --progress-grad: linear-gradient(90deg, #f06192, #fbbf24, #4ade80, #38bdf8, #a78bfa);
         --progress-glow: rgba(240, 97, 146, 0.55);
-        --text-glow: 0 0 9px rgba(226, 232, 240, 0.65);
         --spot: rgba(255, 255, 255, 0.20);
       }
-
-      /* ---------- Thème JOUR ---------- */
       body.day {
         --bg-base: #eef1f6;
         --bg-image:
@@ -63,50 +43,36 @@
           radial-gradient(ellipse 70% 55% at 88% 18%, rgba(37, 99, 235, 0.10), transparent 62%),
           radial-gradient(ellipse 85% 70% at 82% 92%, rgba(13, 148, 136, 0.12), transparent 62%),
           linear-gradient(160deg, #f3f6fb 0%, #e9eef6 55%, #e7f0ed 100%);
-        --ink: #0f172a;
-        --muted: #64748b;
+        --ink: #0f172a; --muted: #64748b;
         --surface: rgba(255, 255, 255, var(--surface-alpha));
         --surface-kpi: rgba(255, 255, 255, calc(var(--surface-alpha) - 0.06));
-        --card-border: rgba(255, 255, 255, 0.85);
-        --border-strong: rgba(15, 23, 42, 0.4);
-        --btn-bg: rgba(255, 255, 255, 0.6);
-        --btn-hover: rgba(255, 255, 255, 0.95);
-        --btn-ink: #0f172a;
-        --btn-border: rgba(15, 23, 42, 0.28);
-        --row-even: rgba(15, 23, 42, 0.03);
-        --row-hover: rgba(37, 99, 235, 0.08);
+        --card-border: rgba(255, 255, 255, 0.85); --border-strong: rgba(15, 23, 42, 0.4);
+        --btn-bg: rgba(255, 255, 255, 0.6); --btn-hover: rgba(255, 255, 255, 0.95);
+        --btn-ink: #0f172a; --btn-border: rgba(15, 23, 42, 0.28);
+        --row-even: rgba(15, 23, 42, 0.03); --row-hover: rgba(37, 99, 235, 0.08);
         --shadow-md: 0 8px 32px rgba(2, 6, 23, 0.14);
         --halo: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 14px 40px rgba(2, 6, 23, 0.18), 0 0 26px rgba(37, 99, 235, 0.2);
-        --topbar-bg: rgba(255, 255, 255, 0.62);
-        --topbar-border: rgba(15, 23, 42, 0.12);
+        --topbar-bg: rgba(255, 255, 255, 0.62); --topbar-border: rgba(15, 23, 42, 0.12);
         --progress-grad: linear-gradient(90deg, #fbbf24, #d97706, #b3453e);
         --progress-glow: rgba(217, 119, 6, 0.55);
-        --text-glow: 0 0 8px rgba(37, 99, 235, 0.4);
         --spot: rgba(37, 99, 235, 0.10);
       }
 
       body {
-        margin: 0;
-        padding: 0 0 48px;
-        min-height: 100vh;
-        color: var(--ink);
-        background-color: var(--bg-base);
-        background-image: var(--bg-image);
-        background-attachment: fixed;
+        margin: 0; padding: 0 0 48px; min-height: 100vh;
+        color: var(--ink); background-color: var(--bg-base);
+        background-image: var(--bg-image); background-attachment: fixed;
         transition: background-color 0.45s ease, color 0.45s ease;
       }
       body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
+        content: ""; position: fixed; inset: 0; pointer-events: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        opacity: 0.05;
-        z-index: 0;
+        opacity: 0.05; z-index: 0;
       }
       .page { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+      .hidden { display: none; }
 
-      /* ========== Orbes lumineux (thème nuit) ========== */
+      /* Orbes (nuit) */
       .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
       .orbs i { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.45; }
       .orbs .o1 { width: 360px; height: 360px; background: #7c3aed; top: -80px; left: -100px; animation: drift1 26s ease-in-out infinite alternate; }
@@ -117,379 +83,76 @@
       @keyframes drift3 { to { transform: translate(50px, -60px) scale(1.15); } }
       body.day .orbs { display: none; }
 
-      /* ========== Barre supérieure sticky + filament de progression ========== */
-      /* Pleine largeur (bord à bord, de gauche à droite), collée en haut.
-         Le contenu reste aligné sur la colonne de 900 px via .topbar-inner. */
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        margin-bottom: 20px;
-        background: var(--topbar-bg);
-        border-bottom: 1px solid var(--topbar-border);
-        backdrop-filter: blur(14px) saturate(1.3);
-        -webkit-backdrop-filter: blur(14px) saturate(1.3);
-        box-shadow: var(--shadow-md);
-        /* translateZ(0) fige la barre sur son propre calque GPU :
-           évite le trait parasite qui clignote au bord pendant le scroll
-           (même leçon que le guide Dawnwalker v2.12). */
-        transform: translateZ(0);
-      }
-      .topbar-inner {
-        max-width: 900px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: wrap;
-        padding: 10px 24px;
-      }
-      .tb-brand { font-weight: 800; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
-      .tb-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-      #progress {
-        position: absolute;
-        left: 0; right: 0; bottom: 0;
-        height: 3px;
-        background: var(--progress-grad);
-        box-shadow: 0 0 10px var(--progress-glow);
-        transform: scaleX(0);
-        transform-origin: 0 50%;
-        will-change: transform;
-      }
-      @supports (animation-timeline: scroll()) {
-        #progress { animation: progressGrow linear both; animation-timeline: scroll(root); }
-      }
-      @keyframes progressGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      /* Topbar */
+      .topbar { position: sticky; top: 0; z-index: 50; width: 100%; background: var(--topbar-bg); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); border-bottom: 1px solid var(--topbar-border); }
+      .topbar-inner { max-width: 900px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .tb-brand { font-weight: 700; font-size: 14px; letter-spacing: 0.01em; color: var(--ink); }
+      .tb-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .lang-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--btn-border); background: var(--btn-bg); color: var(--btn-ink); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all 0.18s ease; font-family: inherit; }
+      .lang-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
+      .lang-btn.active { background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; border-color: transparent; }
+      .flag { width: 17px; height: 12px; border-radius: 2px; display: inline-block; }
+      #progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0%; background: var(--progress-grad); border-radius: 999px; transition: width 0.18s linear; box-shadow: var(--progress-glow); }
 
-      .lang-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 8px 16px;
-        border: 1.5px solid var(--btn-border);
-        border-radius: 10px;
-        background: var(--btn-bg);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        color: var(--btn-ink);
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 700;
-        transition: all 0.2s;
-      }
-      .flag { width: 20px; height: 13px; border-radius: 2px; flex-shrink: 0; display: inline-block; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25); }
-      .lang-btn:hover:not(.active) { background: var(--btn-hover); }
-      .lang-btn.active { background: #2563eb; color: #ffffff; border-color: #2563eb; }
-      .lang-btn.pdf { color: #fecaca; border-color: rgba(248, 113, 113, 0.65); }
-      body.day .lang-btn.pdf { color: #b91c1c; border-color: rgba(220, 38, 38, 0.45); }
-      .lang-btn.pdf:hover { background: rgba(220, 38, 38, 0.28); }
-
-      /* ========== Cartes ========== */
-      .card {
-        position: relative;
-        overflow: hidden;
-        background: var(--surface);
-        backdrop-filter: blur(18px) saturate(1.3);
-        -webkit-backdrop-filter: blur(18px) saturate(1.3);
-        border: 1px solid var(--card-border);
-        border-radius: 16px;
-        padding: 24px 28px;
-        margin-bottom: 20px;
-        box-shadow: var(--shadow-md);
-        color: var(--c-ink);
-        transition: transform 0.18s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-      }
-      .card:hover {
-        transform: translateY(-2px);
-        border-color: var(--border-strong);
-        box-shadow: var(--shadow-md), var(--halo);
-      }
-      /* Liseré dégradé vert → turquoise → bleu : présent sur TOUTES les
-         cartes (cartes, KPI, sommaire) pour la cohérence, pas seulement
-         sur les graphiques. */
-      .card::before, .kpi::before, .toc::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #16a34a, #0d9488, #2563eb);
-      }
-      /* ========== Spotlight au curseur ========== */
-      /* Un halo suit la souris sur chaque carte (variables --mx / --my
-         posées en JS). Invisible au repos, il s'allume au survol. */
-      .card::after, .kpi::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        border-radius: inherit;
-        background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 65%);
-        opacity: 0;
-        transition: opacity 0.35s ease;
-      }
-      .card:hover::after, .kpi:hover::after { opacity: 1; }
-      h1 { font-size: 24px; margin: 0 0 4px; color: var(--c-ink); }
-      h2 { font-size: 17px; margin: 0 0 14px; color: var(--c-h2); text-transform: uppercase; letter-spacing: 0.04em; }
-      .meta { display: flex; flex-wrap: wrap; gap: 24px; font-size: 13px; color: var(--c-meta); margin-top: 10px; }
-      .meta b { color: var(--c-ink); }
+      /* KPIs */
       .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
-      .kpi {
-        position: relative;
-        overflow: hidden;
-        background: var(--surface-kpi);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid var(--card-border);
-        border-radius: 14px;
-        padding: 16px 18px;
-        box-shadow: var(--shadow-md);
-        color: var(--c-ink);
-        transition: transform 0.18s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-      }
-      .kpi:hover {
-        transform: translateY(-2px);
-        border-color: var(--border-strong);
-        box-shadow: var(--shadow-md), var(--halo);
-      }
+      .kpi { position: relative; border: 1px solid var(--card-border); border-radius: 14px; padding: 16px 18px; background: var(--surface-kpi); box-shadow: var(--shadow-md); overflow: hidden; }
+      .kpi::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, #16a34a, #0d9488, #2563eb); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.55; pointer-events: none; }
       .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-muted); margin-bottom: 6px; }
       .kpi .value { font-size: 26px; font-weight: 700; color: var(--c-ink); }
-      .kpi .sub { font-size: 12px; margin-top: 4px; font-weight: 600; }
-      .sub-ok { color: #16a34a; }
-      .sub-info { color: #2563eb; }
-      .sub-warn { color: #854d0e; background: #fef9c3; border-radius: 6px; padding: 2px 8px; display: inline-block; }
+      .kpi .sub { font-size: 12px; margin-top: 4px; font-weight: 600; color: var(--c-muted); }
 
-      /* ========== Cartes « data-viz » (graphiques) ========== */
-      /* Verre teinté bleu-violet + liseré dégradé en haut : les graphiques
-         se distinguent des autres cartes sans fond noir — la lisibilité
-         des cartes claires est conservée dans les deux thèmes. */
-      .viz {
-        background:
-          linear-gradient(160deg, rgba(13, 148, 136, 0.09), rgba(37, 99, 235, 0.06)),
-          var(--surface);
-      }
-      /* Titre des cartes graphiques en texte dégradé turquoise → bleu */
-      .viz h2 {
-        background: linear-gradient(90deg, #0d9488, #2563eb);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+      /* Cartes */
+      .card { position: relative; border: 1px solid var(--card-border); border-radius: 16px; padding: 24px 28px; margin-bottom: 20px; background: var(--surface); color: var(--c-body); box-shadow: var(--shadow-md); overflow: hidden; }
+      .card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, #16a34a, #0d9488, #2563eb); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.55; pointer-events: none; }
+      .card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 65%); opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
+      .card:hover::after { opacity: 1; }
+      .card h1 { margin: 0 0 6px; font-size: 24px; color: var(--c-ink); }
+      .card h2 { margin: 0 0 14px; font-size: 17px; color: #1d4ed8; }
+      .card p { margin: 0 0 12px; font-size: 14px; line-height: 1.65; }
 
-      /* ========== Sommaire vivant ========== */
-      .toc {
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        background: var(--surface);
-        backdrop-filter: blur(18px) saturate(1.3);
-        -webkit-backdrop-filter: blur(18px) saturate(1.3);
-        border: 1px solid var(--card-border);
-        border-radius: 14px;
-        padding: 12px 14px;
-        margin-bottom: 20px;
-        box-shadow: var(--shadow-md);
-      }
-      .toc a {
-        text-decoration: none;
-        font-size: 12.5px;
-        font-weight: 600;
-        color: var(--c-body);
-        padding: 5px 12px;
-        border-radius: 999px;
-        transition: all 0.18s ease;
-      }
-      .toc a:hover { background: var(--toc-active); color: #ffffff; box-shadow: 0 3px 10px rgba(37, 99, 235, 0.35); }
-      .toc a.active {
-        background: var(--toc-active);
-        color: #ffffff;
-        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.35);
-      }
-      [id^="fr-"], [id^="en-"] { scroll-margin-top: 78px; }
+      /* Cartes vitrines cliquables (Concept A) */
+      .vitrines { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 20px; }
+      .vitrine { position: relative; display: block; text-decoration: none; border: 1px solid var(--card-border); border-radius: 18px; padding: 26px 26px 22px; background: var(--surface); color: var(--c-body); box-shadow: var(--shadow-md); overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+      .vitrine::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; background: linear-gradient(135deg, #16a34a, #0d9488, #2563eb); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.6; pointer-events: none; }
+      .vitrine::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 65%); opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
+      .vitrine:hover { transform: translateY(-4px); box-shadow: var(--halo); }
+      .vitrine:hover::after { opacity: 1; }
+      .vitrine .vt-icon { font-size: 34px; margin-bottom: 10px; display: block; }
+      .vitrine .vt-title { font-size: 19px; font-weight: 700; color: var(--c-ink); margin-bottom: 8px; }
+      .vitrine .vt-desc { font-size: 13.5px; line-height: 1.6; margin-bottom: 14px; }
+      .vitrine .vt-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+      .vt-pill { font-size: 11.5px; font-weight: 700; padding: 4px 11px; border-radius: 999px; background: rgba(37, 99, 235, 0.1); color: #1d4ed8; }
+      .vt-pill.wait { background: rgba(217, 119, 6, 0.12); color: #b45309; }
+      .vitrine .vt-go { position: absolute; right: 20px; top: 24px; font-size: 18px; opacity: 0.5; transition: transform 0.25s ease, opacity 0.25s ease; }
+      .vitrine:hover .vt-go { transform: translateX(4px); opacity: 1; }
 
-      /* ========== Tableaux ========== */
-      table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-      /* Mobile : tableaux défilables au doigt (gauche ↔ droite), comme un
-         tableau BB-code — les colonnes gardent leur largeur naturelle.
-         @media screen : l'impression garde des tables normales. */
-      @media screen {
-        table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      }
-      th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-muted); border-bottom: 2px solid var(--line-strong); padding: 8px 6px; }
-      td { padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
-      tbody tr { transition: background 0.15s ease; }
+      /* Tableau historique */
+      table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.9rem; background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--line-strong); }
+      th { background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.10)), #f8fafc; color: #475569; text-align: left; padding: 0.65rem 0.8rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+      td { padding: 0.6rem 0.8rem; border-top: 1px solid var(--line); vertical-align: top; }
       tbody tr:nth-child(even) { background: var(--row-even); }
-      tbody tr:hover { background: var(--row-hover); }
-      .num { text-align: right; white-space: nowrap; }
-      .sous-total { font-weight: 700; color: #dc2626; text-align: right; margin: 10px 0 0; font-size: 14px; }
-      .badge { display: inline-block; background: #dcfce7; color: #15803d; border: 1px solid #86efac; border-radius: 999px; font-size: 10.5px; padding: 1px 8px; font-weight: 600; white-space: nowrap; }
-      .note { font-size: 11.5px; color: var(--c-muted); }
+      td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+      .empty-note { text-align: center; color: var(--c-muted); font-size: 13px; padding: 18px 0; }
 
-      /* ========== Copier en un clic ========== */
-      td.copyable { cursor: copy; }
-      td.copyable.copied { position: relative; }
-      td.copyable.copied::after {
-        content: "✓ Copié";
-        position: absolute;
-        top: 2px; right: 4px;
-        background: #16a34a;
-        color: #ffffff;
-        font-size: 10px;
-        font-weight: 700;
-        padding: 1px 7px;
-        border-radius: 999px;
-        white-space: nowrap;
-        pointer-events: none;
-        z-index: 2;
-        box-shadow: 0 2px 8px rgba(22, 163, 74, 0.5);
-      }
-      body[data-lang="en"] td.copyable.copied::after { content: "Copied ✓"; }
-
-      /* ========== Mode courses : cases à cocher ========== */
-      .check { display: inline-flex; align-items: center; margin-right: 9px; vertical-align: middle; cursor: pointer; user-select: none; -webkit-user-select: none; }
-      .check input {
-        appearance: none; -webkit-appearance: none;
-        width: 17px; height: 17px; border-radius: 5px;
-        border: 1.5px solid #94a3b8; background: #ffffff;
-        cursor: pointer; margin: 0; flex: 0 0 auto;
-        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
-      }
-      .check input:checked {
-        background: #16a34a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12l5 5L20 6'/%3E%3C/svg%3E") center / 11px no-repeat;
-        border-color: #16a34a;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-      }
-      .check input:active { transform: scale(0.85); }
-      tr.done td { color: #94a3b8; }
-      tr.done td:first-child { text-decoration: line-through; text-decoration-color: #94a3b8; }
-      .cart-count {
-        display: inline-flex; align-items: center;
-        font-weight: 700; font-size: 13px; color: var(--btn-ink);
-        background: var(--btn-bg); border: 1.5px solid var(--btn-border);
-        border-radius: 10px; padding: 8px 14px;
-        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        white-space: nowrap; transition: all 0.2s;
-      }
-      .cart-count.full { background: #16a34a; border-color: #16a34a; color: #ffffff; }
-
-      /* ========== Graphiques ========== */
-      .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-      @media (max-width: 720px) {
-        .charts { grid-template-columns: 1fr; }
-        .bar-row { grid-template-columns: minmax(80px, 42%) 1fr auto; font-size: 11.5px; }
-        .donut-wrap { flex-direction: column; align-items: flex-start; }
-        .meta { gap: 12px 20px; }
-      }
-      .bar-row { display: grid; grid-template-columns: 175px 1fr 60px; align-items: center; gap: 10px; margin: 7px 0; font-size: 12.5px; }
-      .bar-row .bar-label { color: var(--c-body); }
-      .bar-track { background: var(--track-bg); border-radius: 6px; height: 18px; overflow: hidden; border: 1px solid var(--track-border); }
-      .bar-fill { height: 100%; border-radius: 6px; }
-      .bar-val { text-align: right; font-weight: 600; color: var(--c-ink); }
-      .legend { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; font-size: 12.5px; color: var(--c-body); }
-      .legend span { display: inline-flex; align-items: center; gap: 8px; }
-      .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex-shrink: 0; }
-      .donut-wrap { display: flex; align-items: center; gap: 20px; }
-      .total-row { background: linear-gradient(135deg, #dc2626, #b91c1c); color: #ffffff; border-radius: 10px; padding: 12px 18px; display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; margin-top: 12px; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); animation: totalPulse 2.8s ease-in-out infinite; }
-      @keyframes totalPulse {
-        0%, 100% { box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); }
-        50% { box-shadow: 0 4px 26px rgba(220, 38, 38, 0.62); }
-      }
-      .proto { margin: 0; padding-left: 18px; }
-      .proto li { margin: 8px 0; font-size: 13.5px; color: var(--c-body); line-height: 1.55; }
-      .proto li strong, .proto li b { color: var(--c-ink); }
-      .warn-box { background: #fef9c3; border-left: 4px solid #eab308; border-radius: 6px; padding: 6px 10px; color: #713f12; list-style: none; margin-left: -28px; }
-      .warn-box strong, .warn-box b { color: #854d0e; }
       .footer { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 8px; }
-      .hidden { display: none; }
-
-      /* ========== Glow de lisibilité au survol ========== */
-      .card td, .card th, .bar-label, .bar-val, .proto li, .legend span, .kpi .value, .meta span {
-        transition: text-shadow 0.18s ease;
-      }
-      .card tbody tr:hover td, .bar-row:hover .bar-val, .bar-row:hover .bar-label,
-      .proto li:hover, .legend span:hover, .kpi:hover .value {
-        text-shadow: var(--text-glow);
-      }
-
-      /* ========== Cartes vivantes (thème jour) ========== */
-      /* --surface-alpha est animé au scroll : les surfaces blanchissent
-         en descendant dans la page (lisibilité sur fond clair). */
-      @supports (animation-timeline: scroll()) {
-        body.day { animation: surfaceWhiten linear both; animation-timeline: scroll(root); }
-      }
-      @keyframes surfaceWhiten {
-        0% { --surface-alpha: 0.86; }
-        40% { --surface-alpha: 0.93; }
-        100% { --surface-alpha: 0.98; }
-      }
-
-      /* ========== Accessibilité mouvement ========== */
-      @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { animation: none !important; transition: none !important; }
-      }
-
-      /* ========== Impression ========== */
-      @media print {
-        body, body.day, body.night {
-          background: #ffffff !important;
-          background-image: none !important;
-          padding: 0;
-          color: #0f172a;
-          --c-ink: #0f172a;
-          --c-body: #334155;
-          --c-muted: #64748b;
-          --c-meta: #475569;
-          --c-h2: #1d4ed8;
-          --line: #eef2f7;
-          --line-strong: #dfe6ef;
-          --track-bg: #eff3f8;
-          --track-border: #e2e8f0;
-          --row-even: rgba(15, 23, 42, 0.03);
-          --row-hover: transparent;
-        }
-        body::before { display: none; }
-        .orbs { display: none; }
-        .topbar { display: none; }
-        .toc { display: none; }
-        .card, .kpi {
-          background: #ffffff !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
-          box-shadow: none;
-          border: 1px solid #e2e8f0;
-          break-inside: avoid;
-          transform: none !important;
-        }
-        .viz { background: #ffffff !important; }
-        .viz h2 { background: none; -webkit-text-fill-color: #1d4ed8; color: #1d4ed8; }
-        .card::before, .kpi::before, .toc::before { display: none; }
-        .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; }
-        .bar-fill, .dot, .warn-box, .badge, .sub-warn { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        .sous-total, .bar-val { color: #dc2626; }
-        .footer { color: #94a3b8; }
-        td.copyable.copied::after { display: none; }
-      }
+      @media print { .topbar, .orbs { display: none; } body { background: #fff; } .card, .kpi, .vitrine { box-shadow: none; } .card::before, .kpi::before, .vitrine::before { display: none; } }
+      @media (max-width: 720px) { .card { padding: 18px 16px; } .vitrine { padding: 20px 18px; } .kpi .value { font-size: 21px; } }
     </style>
   </head>
   <body class="night">
     <script>
-      /* Applique le thème mémorisé AVANT le premier rendu (anti-flash). */
       try { if (localStorage.getItem('courses-theme') === 'day') document.body.className = 'day'; } catch (e) {}
     </script>
 
     <div class="orbs" aria-hidden="true"><i class="o1"></i><i class="o2"></i><i class="o3"></i></div>
     <header class="topbar">
       <div class="topbar-inner">
-        <span class="tb-brand">🧾 Course alimentaire</span>
+        <span class="tb-brand">🧾 Courses Alimentaires</span>
         <div class="tb-actions">
-        <span class="cart-count" id="cart-count">🛒 0/21</span>
-        <button class="lang-btn" id="btn-reset" onclick="resetCart()" title="Tout décocher / Uncheck all">↺</button>
-        <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
-        <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
-        <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
-        <button class="lang-btn pdf" onclick="window.print()">📄 PDF</button>
+          <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
+          <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
+          <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
         </div>
       </div>
       <i id="progress" aria-hidden="true"></i>
@@ -498,388 +161,96 @@
     <main class="page">
       <!-- ============ FR ============ -->
       <div id="lang-fr">
-        <div class="card">
-          <h1>🧾 Devis de courses — Semaine du 16 au 22 septembre 2026</h1>
-          <div class="meta">
-            <span><b>Devis n°</b> 2026-0916</span>
-            <span><b>Établi le</b> 16 septembre 2026</span>
-            <span><b>Client</b> Julien D.</span>
-            <span><b>Objectif</b> Sèche — 2 500 kcal / 156 g protéines / jour</span>
-            <span><b>Magasins</b> Carrefour / Lidl (prix estimatifs)</span>
-            <span><b>Couverture</b> 7 jours</span>
-          </div>
+        <div class="card" style="margin-top: 20px">
+          <h1>🧾 Courses Alimentaires — le QG familial</h1>
+          <p>Portail des listes de courses : ton devis personnalisé (sèche, high-protein) et la liste globale de la famille. Coche en magasin, archive tes courses, garde la traçabilité des dépenses.</p>
         </div>
-
-        <nav class="toc" aria-label="Sommaire">
-          <a href="#fr-budget">📊 Budget</a>
-          <a href="#fr-prot">💪 Protéines (g)</a>
-          <a href="#fr-s1">1 · Petit-déj</a>
-          <a href="#fr-s2">2 · Protéines maigres</a>
-          <a href="#fr-s3">3 · Laitiers 0 %</a>
-          <a href="#fr-s4">4 · Légumes &amp; crème</a>
-          <a href="#fr-s5">5 · Légumineuses</a>
-          <a href="#fr-recap">🧮 Récapitulatif</a>
-          <a href="#fr-options">⚙️ Options</a>
-          <a href="#fr-proto">📋 Protocoles</a>
-        </nav>
 
         <div class="kpis">
-          <div class="kpi"><div class="label">Total panier</div><div class="value">55,00 €</div><div class="sub sub-info">≈ 4,90 € / 100 g de protéines</div></div>
-          <div class="kpi"><div class="label">Protéines / jour</div><div class="value">~160 g</div><div class="sub sub-ok">✅ Cible 156 g atteinte</div></div>
-          <div class="kpi"><div class="label">Calories / jour</div><div class="value">~2 400</div><div class="sub sub-warn">⚠️ Marge serrée ≤ 2 500</div></div>
-          <div class="kpi"><div class="label">Volume / assiette</div><div class="value">~900 g</div><div class="sub sub-info">Faible densité calorique</div></div>
+          <div class="kpi"><div class="label">Devis perso</div><div class="value">55,00 €</div><div class="sub">21 articles · 7 jours</div></div>
+          <div class="kpi"><div class="label">Protéines / jour</div><div class="value">~160 g</div><div class="sub">✅ Cible sèche atteinte</div></div>
+          <div class="kpi"><div class="label">Liste famille</div><div class="value">En attente</div><div class="sub">Devis de ta sœur à intégrer</div></div>
+          <div class="kpi"><div class="label">Courses archivées</div><div class="value" id="hist-count-fr">0</div><div class="sub">Historique local</div></div>
         </div>
 
-        <div class="card viz" id="fr-budget">
-          <h2>Répartition du budget</h2>
-          <div class="charts">
-            <div>
-              <div class="bar-row"><span class="bar-label">Petit-déjeuner &amp; nuit</span><div class="bar-track"><div class="bar-fill" style="width:44%;background:#2563eb"></div></div><span class="bar-val">7,40 €</span></div>
-              <div class="bar-row"><span class="bar-label">Protéines maigres</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:#dc2626"></div></div><span class="bar-val">13,50 €</span></div>
-              <div class="bar-row"><span class="bar-label">Laitiers 0 %</span><div class="bar-track"><div class="bar-fill" style="width:21%;background:#7c3aed"></div></div><span class="bar-val">3,60 €</span></div>
-              <div class="bar-row"><span class="bar-label">Légumes &amp; crème</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:#16a34a"></div></div><span class="bar-val">16,90 €</span></div>
-              <div class="bar-row"><span class="bar-label">Légumineuses &amp; base</span><div class="bar-track"><div class="bar-fill" style="width:81%;background:#0d9488"></div></div><span class="bar-val">13,60 €</span></div>
-            </div>
-            <div class="donut-wrap">
-              <svg width="170" height="170" viewBox="0 0 170 170" role="img" aria-label="Donut : répartition du budget">
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#2563eb" stroke-width="26" stroke-dasharray="50.72 376.99" transform="rotate(-90 85 85)"></circle>
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#dc2626" stroke-width="26" stroke-dasharray="92.53 376.99" transform="rotate(-41.56 85 85)"></circle>
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#7c3aed" stroke-width="26" stroke-dasharray="24.68 376.99" transform="rotate(46.8 85 85)"></circle>
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#16a34a" stroke-width="26" stroke-dasharray="115.84 376.99" transform="rotate(70.36 85 85)"></circle>
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#0d9488" stroke-width="26" stroke-dasharray="93.22 376.99" transform="rotate(180.98 85 85)"></circle>
-                <text x="85" y="84" text-anchor="middle" style="font-size: 17px; font-weight: 700; fill: #0f172a;">55,00 €</text>
-                <text x="85" y="100" text-anchor="middle" style="font-size: 10px; fill: #64748b;">total panier</text>
-              </svg>
-              <div class="legend">
-                <span><span class="dot" style="background:#2563eb"></span>Petit-déjeuner &amp; nuit — 13 %</span>
-                <span><span class="dot" style="background:#dc2626"></span>Protéines maigres — 25 %</span>
-                <span><span class="dot" style="background:#7c3aed"></span>Laitiers 0 % — 7 %</span>
-                <span><span class="dot" style="background:#16a34a"></span>Légumes &amp; crème — 31 %</span>
-                <span><span class="dot" style="background:#0d9488"></span>Légumineuses &amp; base — 25 %</span>
-              </div>
-            </div>
+        <div class="vitrines">
+          <a class="vitrine" href="devis.html">
+            <span class="vt-go">→</span>
+            <span class="vt-icon">📋</span>
+            <div class="vt-title">Mon devis perso</div>
+            <div class="vt-desc">Sèche — 2 500 kcal / 156 g protéines par jour. Panier détaillé par catégorie, mode courses avec cases à cocher, graphiques budget et protéines.</div>
+            <div class="vt-meta"><span class="vt-pill">55,00 €</span><span class="vt-pill">21 articles</span><span class="vt-pill">Semaine 16–22 sept.</span></div>
+          </a>
+          <a class="vitrine" href="famille.html">
+            <span class="vt-go">→</span>
+            <span class="vt-icon">👨‍👩‍👧‍👦</span>
+            <div class="vt-title">Liste globale famille</div>
+            <div class="vt-desc">Fusion intelligente du devis de ta sœur et du tien : dédoublonnage, quantités cumulées, budget consolidé et optimisations (prix, protéines).</div>
+            <div class="vt-meta"><span class="vt-pill wait">⏳ En attente du devis de ta sœur</span></div>
+          </a>
+        </div>
+
+        <div class="card" id="fr-hist">
+          <h2>🕘 Historique des courses</h2>
+          <p>Chaque course terminée (bouton ✅ dans le devis) est archivée ici : date, articles pris, total dépensé. Stocké dans ce navigateur.</p>
+          <table>
+            <thead><tr><th>Date</th><th>Devis</th><th class="num">Articles</th><th class="num">Total</th></tr></thead>
+            <tbody id="hist-body-fr"></tbody>
+          </table>
+          <div class="tb-actions">
+            <button class="lang-btn" onclick="exportCsv()">⬇️ Exporter CSV</button>
+            <button class="lang-btn" onclick="clearHistory()">🗑️ Vider</button>
           </div>
         </div>
 
-        <div class="card viz" id="fr-prot">
-          <h2>Apport en protéines par source (g / semaine)</h2>
-          <div class="bar-row"><span class="bar-label">Poulet (1 kg)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">230 g</span></div>
-          <div class="bar-row"><span class="bar-label">Haricots rouges (1 kg sec)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">230 g</span></div>
-          <div class="bar-row"><span class="bar-label">Fromage blanc 0 % (2 kg)</span><div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">150 g</span></div>
-          <div class="bar-row"><span class="bar-label">Lait (4 L)</span><div class="bar-track"><div class="bar-fill" style="width:56%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">128 g</span></div>
-          <div class="bar-row"><span class="bar-label">Thon (6 boîtes)</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">126 g</span></div>
-          <div class="bar-row"><span class="bar-label">Lentilles (500 g sec)</span><div class="bar-track"><div class="bar-fill" style="width:52%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">120 g</span></div>
-          <div class="bar-row"><span class="bar-label">Œufs (12)</span><div class="bar-track"><div class="bar-fill" style="width:34%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">78 g</span></div>
-          <div class="bar-row"><span class="bar-label">Pain de mie (550 g)</span><div class="bar-track"><div class="bar-fill" style="width:23%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">52 g</span></div>
-          <div class="bar-row"><span class="bar-label">Jambon (180 g)</span><div class="bar-track"><div class="bar-fill" style="width:15%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">34 g</span></div>
-        </div>
-
-        <div class="card" id="fr-s1">
-          <h2>1. Petit-déjeuner &amp; anti-faim nocturne</h2>
-          <table>
-            <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g)</th></tr></thead>
-            <tbody>
-              <tr><td>Pain de mie complet 550 g</td><td>1 paquet</td><td class="num">1,50 €</td><td class="num">1,50 €</td><td>253 kcal / 9,4 g prot. <span class="badge">vérifié OFF</span></td></tr>
-              <tr><td>Lait demi-écrémé</td><td>4 × 1 L</td><td class="num">0,85 €</td><td class="num">3,40 €</td><td>46 kcal / 3,2 g prot. (100 ml)</td></tr>
-              <tr><td>Jambon blanc découenné</td><td>6 tranches (180 g)</td><td class="num">2,50 €</td><td class="num">2,50 €</td><td>~110 kcal / 19 g prot.</td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Sous-total : 7,40 €</p>
-        </div>
-
-        <div class="card" id="fr-s2">
-          <h2>2. Protéines maigres</h2>
-          <table>
-            <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g)</th></tr></thead>
-            <tbody>
-              <tr><td>Filets de poulet surgelés</td><td>1 kg</td><td class="num">6,00 €</td><td class="num">6,00 €</td><td>~110 kcal / 23 g prot.</td></tr>
-              <tr><td>Thon au naturel (boîtes 112 g)</td><td>6</td><td class="num">0,75 €</td><td class="num">4,50 €</td><td>102 kcal / 25 g prot. <span class="badge">vérifié OFF</span></td></tr>
-              <tr><td>Œufs</td><td>12</td><td class="num">3,00 €</td><td class="num">3,00 €</td><td>75 kcal / 6,5 g prot. (unité)</td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Sous-total : 13,50 €</p>
-        </div>
-
-        <div class="card" id="fr-s3">
-          <h2>3. Laitiers 0 %</h2>
-          <table>
-            <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g)</th></tr></thead>
-            <tbody>
-              <tr><td>Fromage blanc nature 0 % (1 kg)</td><td>2 pots</td><td class="num">1,80 €</td><td class="num">3,60 €</td><td>48 kcal / 7,5 g prot. <span class="badge">vérifié OFF</span></td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Sous-total : 3,60 €</p>
-        </div>
-
-        <div class="card" id="fr-s4">
-          <h2>4. Légumes &amp; crème</h2>
-          <table>
-            <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g)</th></tr></thead>
-            <tbody>
-              <tr><td>Poivrons (rouges et verts)</td><td>~800 g</td><td class="num">3,00 €</td><td class="num">3,00 €</td><td>20-30 kcal / 1 g prot.</td></tr>
-              <tr><td>Aubergines</td><td>3 (~900 g)</td><td class="num">0,90 €</td><td class="num">2,70 €</td><td>25 kcal / 1 g prot.</td></tr>
-              <tr><td>Patates douces</td><td>1 kg</td><td class="num">2,00 €</td><td class="num">2,00 €</td><td>86 kcal / 1,6 g prot. (cuites)</td></tr>
-              <tr><td>Carottes</td><td>1 kg</td><td class="num">1,20 €</td><td class="num">1,20 €</td><td>36 kcal / 0,9 g prot.</td></tr>
-              <tr><td>Crème fraîche légère 15 %</td><td>50 cl</td><td class="num">1,50 €</td><td class="num">1,50 €</td><td>167 kcal / 15 g MG <span class="badge">vérifié OFF</span></td></tr>
-              <tr><td>Champignons de Paris</td><td>500 g</td><td class="num">2,00 €</td><td class="num">2,00 €</td><td>22 kcal / 3 g prot.</td></tr>
-              <tr><td>Haricots verts surgelés</td><td>1 kg</td><td class="num">2,00 €</td><td class="num">2,00 €</td><td>30 kcal / 1,8 g prot.</td></tr>
-              <tr><td>Épinards surgelés</td><td>1 kg</td><td class="num">2,50 €</td><td class="num">2,50 €</td><td>25 kcal / 2,9 g prot.</td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Sous-total : 16,90 €</p>
-        </div>
-
-        <div class="card" id="fr-s5">
-          <h2>5. Légumineuses &amp; base</h2>
-          <table>
-            <thead><tr><th>Article</th><th>Qté</th><th class="num">P.U. estimé</th><th class="num">Total</th><th>Nutrition (100 g cuits)</th></tr></thead>
-            <tbody>
-              <tr><td>Haricots rouges secs</td><td>1 kg</td><td class="num">2,50 €</td><td class="num">2,50 €</td><td>96 kcal / 7,2 g prot. <span class="badge">vérifié OFF</span></td></tr>
-              <tr><td>Lentilles vertes</td><td>500 g</td><td class="num">1,50 €</td><td class="num">1,50 €</td><td>115 kcal / 9 g prot.</td></tr>
-              <tr><td>Riz long grain</td><td>1 kg</td><td class="num">2,00 €</td><td class="num">2,00 €</td><td>130 kcal / 2,7 g prot.</td></tr>
-              <tr><td>Concentré de tomate</td><td>1 boîte</td><td class="num">0,80 €</td><td class="num">0,80 €</td><td>—</td></tr>
-              <tr><td>Lait de coco (400 ml)</td><td>3 boîtes</td><td class="num">1,60 €</td><td class="num">4,80 €</td><td>170 kcal / 17 g MG <span class="badge">vérifié OFF</span></td></tr>
-              <tr><td>Oignons (1 kg) + ail + persil</td><td>—</td><td class="num">2,00 €</td><td class="num">2,00 €</td><td>—</td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Sous-total : 13,60 €</p>
-        </div>
-
-        <div class="card" id="fr-recap">
-          <h2>Récapitulatif</h2>
-          <table>
-            <thead><tr><th>Catégorie</th><th class="num">Total</th></tr></thead>
-            <tbody>
-              <tr><td>1. Petit-déjeuner &amp; nuit</td><td class="num">7,40 €</td></tr>
-              <tr><td>2. Protéines maigres</td><td class="num">13,50 €</td></tr>
-              <tr><td>3. Laitiers 0 %</td><td class="num">3,60 €</td></tr>
-              <tr><td>4. Légumes &amp; crème</td><td class="num">16,90 €</td></tr>
-              <tr><td>5. Légumineuses &amp; base</td><td class="num">13,60 €</td></tr>
-            </tbody>
-          </table>
-          <div class="total-row"><span>TOTAL GÉNÉRAL</span><span>55,00 €</span></div>
-          <p style="font-size: 11.5px; color: #94a3b8; margin-bottom: 0;">Prix estimatifs — susceptibles de varier selon le magasin et les promotions en cours.</p>
-        </div>
-
-        <div class="card" id="fr-options">
-          <h2>Options</h2>
-          <table>
-            <thead><tr><th>Option</th><th>Ajustement</th><th class="num">Nouveau total</th></tr></thead>
-            <tbody>
-              <tr><td><b>Version resserrée</b></td><td>Retirer patates douces, haricots verts et 1 L de lait (−4,85 €)</td><td class="num">50,15 €</td></tr>
-              <tr><td><b>Version premium</b></td><td>Ajouter cabillaud surgelé 1 kg (+7,00 €) et christophines (+2,50 €)</td><td class="num">64,50 €</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="card" id="fr-proto">
-          <h2>Protocoles associés</h2>
-          <ul class="proto">
-            <li><b>Petit-déjeuner type</b> (≈ 700 kcal / 46 g prot.) : 3 tranches pain complet + 3 œufs + 2 tranches jambon + 400 ml lait.</li>
-            <li><b>Kit nuit anti-biscuits</b> : bol préparé au frigo — 250 g fromage blanc 0 % + 1 banane (≈ 200 kcal / 20 g prot.). Grand verre de lait avant le dodo (caséine = digestion lente toute la nuit).</li>
-            <li><b>Sauce volume</b> : haricots rouges + aubergine + poivrons + lait de coco + champignons fondus = 400 g de sauce pour quasi les mêmes calories.</li>
-            <li><b>Lait de coco</b> : obligatoire pour haricots rouges et petits pois — 1 boîte de 400 ml par marmite (≈ 140 kcal par part). À logger dans Cronometer.</li>
-            <li class="warn-box">⚠️ <b>Crème fraîche</b> : toujours la légère 15 % (167 kcal/100 g au lieu de ~300 pour l'entière). 2 c. à soupe ≈ 50 kcal. Pour alléger : moitié crème légère / moitié fromage blanc 0 %.</li>
-            <li><b>Patate douce</b> : remplaçant du riz (1 portion = ~150 kcal pour 175 g cuites).</li>
-            <li><b>Assiette type</b> (≈ 800 kcal / 75 g prot.) : 150 g riz cuit + 250 g haricots rouges + 250 g blanc de poulet + 250 g légumes volume.</li>
-            <li class="warn-box">⚠️ <b>Huile de cuisson</b> : à peser sur Cronometer — max 1 c. à soupe par plat (90 kcal).</li>
-          </ul>
-        </div>
-
-        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v2.4.</p>
+        <p class="footer">Site statique GitHub Pages — historique stocké localement dans le navigateur — v3.0.</p>
       </div>
 
       <!-- ============ EN ============ -->
       <div id="lang-en" class="hidden">
-        <div class="card">
-          <h1>🧾 Grocery Quote — Week of September 16-22, 2026</h1>
-          <div class="meta">
-            <span><b>Quote No.</b> 2026-0916</span>
-            <span><b>Issued on</b> September 16, 2026</span>
-            <span><b>Client</b> Julien D.</span>
-            <span><b>Goal</b> Cutting phase — 2,500 kcal / 156 g protein per day</span>
-            <span><b>Stores</b> Carrefour / Lidl (France — estimated prices)</span>
-            <span><b>Coverage</b> 7 days</span>
-          </div>
+        <div class="card" style="margin-top: 20px">
+          <h1>🧾 Grocery Lists — the family HQ</h1>
+          <p>Portal for your shopping lists: your personal quote (cut, high-protein) and the global family list. Tick items in store, archive your runs, keep spending traceability.</p>
         </div>
-
-        <nav class="toc" aria-label="Table of contents">
-          <a href="#en-budget">📊 Budget</a>
-          <a href="#en-prot">💪 Protein (g)</a>
-          <a href="#en-s1">1 · Breakfast</a>
-          <a href="#en-s2">2 · Lean proteins</a>
-          <a href="#en-s3">3 · Dairy 0 %</a>
-          <a href="#en-s4">4 · Veg &amp; cream</a>
-          <a href="#en-s5">5 · Legumes</a>
-          <a href="#en-recap">🧮 Summary</a>
-          <a href="#en-options">⚙️ Options</a>
-          <a href="#en-proto">📋 Protocols</a>
-        </nav>
 
         <div class="kpis">
-          <div class="kpi"><div class="label">Basket total</div><div class="value">€55.00</div><div class="sub sub-info">≈ €4.90 / 100 g of protein</div></div>
-          <div class="kpi"><div class="label">Protein / day</div><div class="value">~160 g</div><div class="sub sub-ok">✅ Target 156 g met</div></div>
-          <div class="kpi"><div class="label">Calories / day</div><div class="value">~2,400</div><div class="sub sub-warn">⚠️ Tight margin ≤ 2,500</div></div>
-          <div class="kpi"><div class="label">Volume / plate</div><div class="value">~900 g</div><div class="sub sub-info">Low calorie density</div></div>
+          <div class="kpi"><div class="label">Personal quote</div><div class="value">55,00 €</div><div class="sub">21 items · 7 days</div></div>
+          <div class="kpi"><div class="label">Protein / day</div><div class="value">~160 g</div><div class="sub">✅ Cut target met</div></div>
+          <div class="kpi"><div class="label">Family list</div><div class="value">Pending</div><div class="sub">Sister's quote to merge</div></div>
+          <div class="kpi"><div class="label">Archived runs</div><div class="value" id="hist-count-en">0</div><div class="sub">Local history</div></div>
         </div>
 
-        <div class="card viz" id="en-budget">
-          <h2>Budget Breakdown</h2>
-          <div class="charts">
-            <div>
-              <div class="bar-row"><span class="bar-label">Breakfast &amp; night</span><div class="bar-track"><div class="bar-fill" style="width:44%;background:#2563eb"></div></div><span class="bar-val">€7.40</span></div>
-              <div class="bar-row"><span class="bar-label">Lean proteins</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:#dc2626"></div></div><span class="bar-val">€13.50</span></div>
-              <div class="bar-row"><span class="bar-label">Fat-free dairy</span><div class="bar-track"><div class="bar-fill" style="width:21%;background:#7c3aed"></div></div><span class="bar-val">€3.60</span></div>
-              <div class="bar-row"><span class="bar-label">Vegetables &amp; cream</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:#16a34a"></div></div><span class="bar-val">€16.90</span></div>
-              <div class="bar-row"><span class="bar-label">Legumes &amp; staples</span><div class="bar-track"><div class="bar-fill" style="width:81%;background:#0d9488"></div></div><span class="bar-val">€13.60</span></div>
-            </div>
-            <div class="donut-wrap">
-              <svg width="170" height="170" viewBox="0 0 170 170" role="img" aria-label="Donut: budget breakdown">
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#2563eb" stroke-width="26" stroke-dasharray="50.72 376.99" transform="rotate(-90 85 85)"></circle>
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#dc2626" stroke-width="26" stroke-dasharray="92.53 376.99" transform="rotate(-41.56 85 85)"></circle>
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#7c3aed" stroke-width="26" stroke-dasharray="24.68 376.99" transform="rotate(46.8 85 85)"></circle>
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#16a34a" stroke-width="26" stroke-dasharray="115.84 376.99" transform="rotate(70.36 85 85)"></circle>
-                <circle cx="85" cy="85" r="60" fill="none" stroke="#0d9488" stroke-width="26" stroke-dasharray="93.22 376.99" transform="rotate(180.98 85 85)"></circle>
-                <text x="85" y="84" text-anchor="middle" style="font-size: 17px; font-weight: 700; fill: #0f172a;">€55.00</text>
-                <text x="85" y="100" text-anchor="middle" style="font-size: 10px; fill: #64748b;">basket total</text>
-              </svg>
-              <div class="legend">
-                <span><span class="dot" style="background:#2563eb"></span>Breakfast &amp; night — 13%</span>
-                <span><span class="dot" style="background:#dc2626"></span>Lean proteins — 25%</span>
-                <span><span class="dot" style="background:#7c3aed"></span>Fat-free dairy — 7%</span>
-                <span><span class="dot" style="background:#16a34a"></span>Vegetables &amp; cream — 31%</span>
-                <span><span class="dot" style="background:#0d9488"></span>Legumes &amp; staples — 25%</span>
-              </div>
-            </div>
+        <div class="vitrines">
+          <a class="vitrine" href="devis.html">
+            <span class="vt-go">→</span>
+            <span class="vt-icon">📋</span>
+            <div class="vt-title">My personal quote</div>
+            <div class="vt-desc">Cut — 2,500 kcal / 156 g protein per day. Detailed basket by category, shopping mode with checkboxes, budget and protein charts.</div>
+            <div class="vt-meta"><span class="vt-pill">55,00 €</span><span class="vt-pill">21 items</span><span class="vt-pill">Week Sep 16–22</span></div>
+          </a>
+          <a class="vitrine" href="famille.html">
+            <span class="vt-go">→</span>
+            <span class="vt-icon">👨‍👩‍👧‍👦</span>
+            <div class="vt-title">Global family list</div>
+            <div class="vt-desc">Smart merge of your sister's quote and yours: deduplication, combined quantities, consolidated budget and optimizations (price, protein).</div>
+            <div class="vt-meta"><span class="vt-pill wait">⏳ Awaiting sister's quote</span></div>
+          </a>
+        </div>
+
+        <div class="card" id="en-hist">
+          <h2>🕘 Shopping history</h2>
+          <p>Every finished run (✅ button in the quote) is archived here: date, items taken, total spent. Stored in this browser.</p>
+          <table>
+            <thead><tr><th>Date</th><th>Quote</th><th class="num">Items</th><th class="num">Total</th></tr></thead>
+            <tbody id="hist-body-en"></tbody>
+          </table>
+          <div class="tb-actions">
+            <button class="lang-btn" onclick="exportCsv()">⬇️ Export CSV</button>
+            <button class="lang-btn" onclick="clearHistory()">🗑️ Clear</button>
           </div>
         </div>
 
-        <div class="card viz" id="en-prot">
-          <h2>Protein Intake by Source (g / week)</h2>
-          <div class="bar-row"><span class="bar-label">Chicken (1 kg)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">230 g</span></div>
-          <div class="bar-row"><span class="bar-label">Red kidney beans (1 kg dry)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">230 g</span></div>
-          <div class="bar-row"><span class="bar-label">Fromage blanc 0% (2 kg)</span><div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">150 g</span></div>
-          <div class="bar-row"><span class="bar-label">Milk (4 L)</span><div class="bar-track"><div class="bar-fill" style="width:56%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">128 g</span></div>
-          <div class="bar-row"><span class="bar-label">Tuna (6 cans)</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">126 g</span></div>
-          <div class="bar-row"><span class="bar-label">Green lentils (500 g dry)</span><div class="bar-track"><div class="bar-fill" style="width:52%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">120 g</span></div>
-          <div class="bar-row"><span class="bar-label">Eggs (12)</span><div class="bar-track"><div class="bar-fill" style="width:34%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">78 g</span></div>
-          <div class="bar-row"><span class="bar-label">Sandwich bread (550 g)</span><div class="bar-track"><div class="bar-fill" style="width:23%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">52 g</span></div>
-          <div class="bar-row"><span class="bar-label">Ham (180 g)</span><div class="bar-track"><div class="bar-fill" style="width:15%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div><span class="bar-val">34 g</span></div>
-        </div>
-
-        <div class="card" id="en-s1">
-          <h2>1. Breakfast &amp; Night-Time Hunger Management</h2>
-          <table>
-            <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g)</th></tr></thead>
-            <tbody>
-              <tr><td>Wholemeal sandwich bread 550 g</td><td>1 pack</td><td class="num">€1.50</td><td class="num">€1.50</td><td>253 kcal / 9.4 g protein <span class="badge">verified OFF</span></td></tr>
-              <tr><td>Semi-skimmed milk</td><td>4 × 1 L</td><td class="num">€0.85</td><td class="num">€3.40</td><td>46 kcal / 3.2 g protein (per 100 ml)</td></tr>
-              <tr><td>Lean cooked ham (de-rinded)</td><td>6 slices (180 g)</td><td class="num">€2.50</td><td class="num">€2.50</td><td>~110 kcal / 19 g protein</td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Subtotal: €7.40</p>
-        </div>
-
-        <div class="card" id="en-s2">
-          <h2>2. Lean Proteins</h2>
-          <table>
-            <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g)</th></tr></thead>
-            <tbody>
-              <tr><td>Frozen chicken fillets</td><td>1 kg</td><td class="num">€6.00</td><td class="num">€6.00</td><td>~110 kcal / 23 g protein</td></tr>
-              <tr><td>Tuna in water (112 g cans)</td><td>6</td><td class="num">€0.75</td><td class="num">€4.50</td><td>102 kcal / 25 g protein <span class="badge">verified OFF</span></td></tr>
-              <tr><td>Eggs</td><td>12</td><td class="num">€3.00</td><td class="num">€3.00</td><td>75 kcal / 6.5 g protein (per egg)</td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Subtotal: €13.50</p>
-        </div>
-
-        <div class="card" id="en-s3">
-          <h2>3. Fat-Free Dairy</h2>
-          <table>
-            <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g)</th></tr></thead>
-            <tbody>
-              <tr><td>Plain fat-free fromage blanc (1 kg) <span class="note">— French fresh curd cheese, similar to quark</span></td><td>2 tubs</td><td class="num">€1.80</td><td class="num">€3.60</td><td>48 kcal / 7.5 g protein <span class="badge">verified OFF</span></td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Subtotal: €3.60</p>
-        </div>
-
-        <div class="card" id="en-s4">
-          <h2>4. Vegetables &amp; Cream</h2>
-          <table>
-            <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g)</th></tr></thead>
-            <tbody>
-              <tr><td>Bell peppers (red and green)</td><td>~800 g</td><td class="num">€3.00</td><td class="num">€3.00</td><td>20-30 kcal / 1 g protein</td></tr>
-              <tr><td>Aubergines (eggplants)</td><td>3 (~900 g)</td><td class="num">€0.90</td><td class="num">€2.70</td><td>25 kcal / 1 g protein</td></tr>
-              <tr><td>Sweet potatoes</td><td>1 kg</td><td class="num">€2.00</td><td class="num">€2.00</td><td>86 kcal / 1.6 g protein (cooked)</td></tr>
-              <tr><td>Carrots</td><td>1 kg</td><td class="num">€1.20</td><td class="num">€1.20</td><td>36 kcal / 0.9 g protein</td></tr>
-              <tr><td>Light crème fraîche 15% fat (50 cl) <span class="note">— French cultured cream, like sour cream</span></td><td>1</td><td class="num">€1.50</td><td class="num">€1.50</td><td>167 kcal / 15 g fat <span class="badge">verified OFF</span></td></tr>
-              <tr><td>Button mushrooms</td><td>500 g</td><td class="num">€2.00</td><td class="num">€2.00</td><td>22 kcal / 3 g protein</td></tr>
-              <tr><td>Frozen green beans</td><td>1 kg</td><td class="num">€2.00</td><td class="num">€2.00</td><td>30 kcal / 1.8 g protein</td></tr>
-              <tr><td>Frozen spinach</td><td>1 kg</td><td class="num">€2.50</td><td class="num">€2.50</td><td>25 kcal / 2.9 g protein</td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Subtotal: €16.90</p>
-        </div>
-
-        <div class="card" id="en-s5">
-          <h2>5. Legumes &amp; Staples</h2>
-          <table>
-            <thead><tr><th>Item</th><th>Qty</th><th class="num">Est. unit price</th><th class="num">Total</th><th>Nutrition (per 100 g cooked)</th></tr></thead>
-            <tbody>
-              <tr><td>Dried red kidney beans</td><td>1 kg</td><td class="num">€2.50</td><td class="num">€2.50</td><td>96 kcal / 7.2 g protein <span class="badge">verified OFF</span></td></tr>
-              <tr><td>Green lentils</td><td>500 g</td><td class="num">€1.50</td><td class="num">€1.50</td><td>115 kcal / 9 g protein</td></tr>
-              <tr><td>Long grain rice</td><td>1 kg</td><td class="num">€2.00</td><td class="num">€2.00</td><td>130 kcal / 2.7 g protein</td></tr>
-              <tr><td>Tomato paste</td><td>1 can</td><td class="num">€0.80</td><td class="num">€0.80</td><td>—</td></tr>
-              <tr><td>Coconut milk (400 ml) <span class="note">— essential for Caribbean red bean &amp; pea dishes</span></td><td>3 cans</td><td class="num">€1.60</td><td class="num">€4.80</td><td>170 kcal / 17 g fat <span class="badge">verified OFF</span></td></tr>
-              <tr><td>Onions (1 kg) + garlic + parsley</td><td>—</td><td class="num">€2.00</td><td class="num">€2.00</td><td>—</td></tr>
-            </tbody>
-          </table>
-          <p class="sous-total">Subtotal: €13.60</p>
-        </div>
-
-        <div class="card" id="en-recap">
-          <h2>Summary</h2>
-          <table>
-            <thead><tr><th>Category</th><th class="num">Total</th></tr></thead>
-            <tbody>
-              <tr><td>1. Breakfast &amp; night</td><td class="num">€7.40</td></tr>
-              <tr><td>2. Lean proteins</td><td class="num">€13.50</td></tr>
-              <tr><td>3. Fat-free dairy</td><td class="num">€3.60</td></tr>
-              <tr><td>4. Vegetables &amp; cream</td><td class="num">€16.90</td></tr>
-              <tr><td>5. Legumes &amp; staples</td><td class="num">€13.60</td></tr>
-            </tbody>
-          </table>
-          <div class="total-row"><span>GRAND TOTAL</span><span>€55.00</span></div>
-          <p class="note" style="margin-bottom: 0;">Estimated prices — may vary depending on the store and ongoing promotions. Prices are in euros, from French supermarkets.</p>
-        </div>
-
-        <div class="card" id="en-options">
-          <h2>Options</h2>
-          <table>
-            <thead><tr><th>Option</th><th>Adjustment</th><th class="num">New total</th></tr></thead>
-            <tbody>
-              <tr><td><b>Trimmed version</b></td><td>Remove sweet potatoes, green beans and 1 L of milk (−€4.85)</td><td class="num">€50.15</td></tr>
-              <tr><td><b>Premium version</b></td><td>Add 1 kg frozen cod (+€7.00) and chayotes (+€2.50)</td><td class="num">€64.50</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="card" id="en-proto">
-          <h2>Related Protocols</h2>
-          <ul class="proto">
-            <li><b>Typical breakfast</b> (≈ 700 kcal / 46 g protein): 3 slices wholemeal bread + 3 eggs + 2 slices ham + 400 ml milk.</li>
-            <li><b>Night-time anti-biscuit kit</b>: bowl prepared in the fridge — 250 g fat-free fromage blanc + 1 banana (≈ 200 kcal / 20 g protein). A large glass of milk before bed (casein = slow digestion all night long).</li>
-            <li><b>Volume sauce</b>: red kidney beans + aubergine + bell peppers + coconut milk + mushrooms = 400 g of sauce for almost the same calories.</li>
-            <li><b>Coconut milk</b>: mandatory for red kidney beans and stewed peas (Caribbean cooking) — 1 can of 400 ml per batch (≈ 140 kcal per serving). Log it in a calorie tracker.</li>
-            <li class="warn-box">⚠️ <b>Crème fraîche</b>: always the light 15% version (167 kcal/100 g instead of ~300 for the full-fat one). 2 tablespoons ≈ 50 kcal. To lighten a sauce: half light cream / half fat-free fromage blanc.</li>
-            <li><b>Sweet potato</b>: a rice substitute (1 portion = ~150 kcal for 175 g cooked) — to vary the plates.</li>
-            <li><b>Typical plate</b> (≈ 800 kcal / 75 g protein): 150 g cooked rice + 250 g red kidney beans + 250 g chicken breast + 250 g volume vegetables.</li>
-            <li class="warn-box">⚠️ <b>Cooking oil</b>: weigh it in your tracker — max 1 tablespoon per dish (90 kcal).</li>
-          </ul>
-        </div>
-
-        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v2.4.</p>
+        <p class="footer">Static GitHub Pages site — history stored locally in the browser — v3.0.</p>
       </div>
     </main>
 
@@ -892,269 +263,81 @@
         document.getElementById('lang-en').classList.toggle('hidden', lang === 'fr');
         document.body.dataset.lang = lang;
         try { localStorage.setItem('courses-lang', lang); } catch (e) {}
-        document.querySelectorAll('.toc a.active').forEach(function (a) { a.classList.remove('active'); });
-        updateToc();
-        updateCartCount();
-        animateKpis();
+        renderHistory();
       }
-
-      /* ---------- Thème jour / nuit (mémorisé) ---------- */
+      /* ---------- Thème (mémorisé) ---------- */
       function setTheme(t) {
         document.body.classList.toggle('night', t === 'night');
         document.body.classList.toggle('day', t === 'day');
         document.getElementById('btn-theme').textContent = t === 'day' ? '🌙' : '☀️';
         try { localStorage.setItem('courses-theme', t); } catch (e) {}
       }
-      function toggleTheme() {
-        setTheme(document.body.classList.contains('day') ? 'night' : 'day');
-      }
+      function toggleTheme() { setTheme(document.body.classList.contains('day') ? 'night' : 'day'); }
 
-      /* ---------- Copier en un clic (prix + noms d'articles) ---------- */
-      function flashCopy(el) {
-        el.classList.add('copied');
-        setTimeout(function () { el.classList.remove('copied'); }, 1300);
-      }
-      function legacyCopy(txt, td) {
-        var ta = document.createElement('textarea');
-        ta.value = txt;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); flashCopy(td); } catch (err) {}
-        document.body.removeChild(ta);
-      }
-      document.querySelectorAll('tbody td.num, tbody td:first-child').forEach(function (td) {
-        td.classList.add('copyable');
-      });
-      document.addEventListener('click', function (e) {
-        if (!e.target || !e.target.closest) return;
-        if (e.target.closest('label.check, input')) return; /* cocher ne copie pas */
-        var td = e.target.closest('td.copyable');
-        if (!td) return;
-        var txt = td.textContent.trim();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(txt).then(
-            function () { flashCopy(td); },
-            function () { legacyCopy(txt, td); }
-          );
-        } else {
-          legacyCopy(txt, td);
-        }
-      });
-
-      /* ---------- Sommaire vivant (scrollspy) ---------- */
-      /* La pilule bleue suit la section EN COURS DE LECTURE : la dernière
-         section dont le haut a franchi le repère à 22 % de l'écran.
-         En haut de page aucune section n'est active → plus de bleu fantôme. */
-      function updateToc() {
-        var line = window.innerHeight * 0.22;
-        var current = null;
-        document.querySelectorAll('[id^="fr-"], [id^="en-"]').forEach(function (s) {
-          if (!s.offsetParent) return; /* section masquée = autre langue */
-          if (s.getBoundingClientRect().top <= line) current = s.id;
-        });
-        document.querySelectorAll('.toc a.active').forEach(function (a) { a.classList.remove('active'); });
-        if (current) {
-          var link = document.querySelector('.toc a[href="#' + current + '"]');
-          if (link) link.classList.add('active');
-        }
-      }
-      window.addEventListener('scroll', updateToc, { passive: true });
-      window.addEventListener('resize', updateToc);
-
-      /* ---------- Mode courses : cases à cocher mémorisées ---------- */
-      /* Chaque ligne d'article des sections 1 à 5 reçoit une case.
-         Clé stable identique en FR et EN (ex. s1-t0-r2) : cocher en
-         français garde la case cochée après bascule en anglais. */
-      var CART_KEY = 'courses-checked';
-      function cartRead() {
-        try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) { return []; }
-      }
-      function cartWrite(list) {
-        try { localStorage.setItem(CART_KEY, JSON.stringify(list)); } catch (e) {}
-      }
-      function rowKey(tr) {
-        var card = tr.closest('[id^="fr-s"], [id^="en-s"]');
-        var table = tr.closest('table');
-        var sec = card.id.replace(/^(fr|en)-/, '');
-        var tIdx = Array.prototype.indexOf.call(card.querySelectorAll('table'), table);
-        var rIdx = Array.prototype.indexOf.call(tr.closest('tbody').querySelectorAll('tr'), tr);
-        return sec + '-t' + tIdx + '-r' + rIdx;
-      }
-      function initCart() {
-        var checked = cartRead();
-        document.querySelectorAll('[id^="fr-s"], [id^="en-s"]').forEach(function (card) {
-          card.querySelectorAll('tbody tr').forEach(function (tr) {
-            var td = tr.querySelector('td:first-child');
-            if (!td || td.querySelector('label.check')) return;
-            var key = rowKey(tr);
-            var label = document.createElement('label');
-            label.className = 'check';
-            var input = document.createElement('input');
-            input.type = 'checkbox';
-            input.checked = checked.indexOf(key) !== -1;
-            input.addEventListener('change', function () {
-              var list = cartRead();
-              if (input.checked) { if (list.indexOf(key) === -1) list.push(key); }
-              else { list = list.filter(function (k) { return k !== key; }); }
-              cartWrite(list);
-              tr.classList.toggle('done', input.checked);
-              updateCartCount();
-            });
-            label.appendChild(input);
-            td.insertBefore(label, td.firstChild);
-            tr.classList.toggle('done', input.checked);
-          });
-        });
-        updateCartCount();
-      }
-      function updateCartCount() {
-        var vis = document.body.dataset.lang === 'en' ? 'en' : 'fr';
-        var boxes = document.querySelectorAll('[id^="' + vis + '-s"] input[type="checkbox"]');
-        var done = 0;
-        boxes.forEach(function (b) { if (b.checked) done++; });
-        var el = document.getElementById('cart-count');
-        if (el) {
-          el.textContent = '🛒 ' + done + '/' + boxes.length;
-          el.classList.toggle('full', boxes.length > 0 && done === boxes.length);
-        }
-      }
-      function resetCart() {
-        cartWrite([]);
-        document.querySelectorAll('label.check input').forEach(function (b) {
-          b.checked = false;
-          var tr = b.closest('tr');
-          if (tr) tr.classList.remove('done');
-        });
-        updateCartCount();
-      }
-
-      /* ---------- Compteurs animés (KPI) ---------- */
-      /* Le nombre garde le format d'origine (virgule FR, décimales,
-         espaces de milliers) pendant toute la montée. */
-      function formatLike(numStr, v) {
-        var grouped = /^-?\d{1,3}(,\d{3})+$/.test(numStr); /* 2,400 = milliers EN */
-        var dec = 0;
-        var dm = numStr.match(/[.,](\d+)/);
-        if (dm && !grouped) dec = dm[1].length;
-        var parts = v.toFixed(dec).split('.');
-        if (grouped) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        else if (/\d\u00a0\d|\d \d/.test(numStr)) parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
-        return parts[0] + (parts[1] ? (numStr.indexOf(',') !== -1 && !grouped ? ',' : '.') + parts[1] : '');
-      }
-      function animateKpis() {
-        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        document.querySelectorAll('.kpi .value').forEach(function (el) {
-          if (el.closest('.hidden')) return;
-          var raw = el.textContent;
-          var m = raw.match(/-?[\d.,\u00a0 ]+/);
-          if (!m) return;
-          var numStr = m[0].replace(/[\u00a0 ]+$/, '');
-          var grouped = /^-?\d{1,3}(,\d{3})+$/.test(numStr);
-          var target = parseFloat(grouped ? numStr.replace(/,/g, '') : numStr.replace(/[\u00a0 ]/g, '').replace(',', '.'));
-          if (isNaN(target)) return;
-          var prefix = raw.slice(0, m.index);
-          var suffix = raw.slice(m.index + numStr.length);
-          if (reduce) return; /* mouvement réduit : valeur finale affichée */
-          var t0 = null, dur = 1100;
-          function step(ts) {
-            if (t0 === null) t0 = ts;
-            var p = Math.min(1, (ts - t0) / dur);
-            var e = 1 - Math.pow(1 - p, 3); /* easeOutCubic */
-            el.textContent = prefix + formatLike(numStr, target * e) + suffix;
-            if (p < 1) requestAnimationFrame(step);
-          }
-          requestAnimationFrame(step);
-        });
-      }
-
-      /* ---------- Graphiques animés à l'apparition ---------- */
-      /* Barres : largeur 0 → cible. Donut : chaque segment se dessine
-         (stroke-dasharray 0 → longueur) avec un décalage en cascade. */
-      function initViz() {
-        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (reduce || !('IntersectionObserver' in window)) return;
-        document.querySelectorAll('.viz').forEach(function (card) {
-          var bars = card.querySelectorAll('.bar-fill');
-          var circles = card.querySelectorAll('circle[stroke-dasharray]');
-          bars.forEach(function (b) {
-            b.dataset.target = b.style.width;
-            b.style.width = '0%';
-            b.style.transition = 'width 0.9s cubic-bezier(0.22, 1, 0.36, 1)';
-          });
-          circles.forEach(function (c) {
-            c.dataset.dash = c.getAttribute('stroke-dasharray');
-            c.style.strokeDasharray = '0 376.99';
-            c.style.opacity = '0';
-            c.style.transition = 'stroke-dasharray 1s ease, opacity 0.35s ease';
-          });
-          var fired = false;
-          var obs = new IntersectionObserver(function (entries) {
-            entries.forEach(function (en) {
-              if (!en.isIntersecting || fired) return;
-              fired = true;
-              bars.forEach(function (b, i) {
-                b.style.transitionDelay = (i * 70) + 'ms';
-                b.style.width = b.dataset.target;
-              });
-              circles.forEach(function (c, i) {
-                c.style.transitionDelay = (120 + i * 140) + 'ms';
-                c.style.strokeDasharray = c.dataset.dash;
-                c.style.opacity = '1';
-              });
-              obs.disconnect();
-            });
-          }, { threshold: 0.2 });
-          obs.observe(card);
-        });
-      }
-
-      /* ---------- Spotlight au curseur ---------- */
+      /* ---------- Spotlight curseur ---------- */
       document.addEventListener('pointermove', function (e) {
-        if (!e.target || !e.target.closest) return;
-        var card = e.target.closest('.card, .kpi');
-        if (!card) return;
-        var r = card.getBoundingClientRect();
-        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        var v = e.target.closest ? e.target.closest('.card, .vitrine, .kpi') : null;
+        if (!v) return;
+        var r = v.getBoundingClientRect();
+        v.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        v.style.setProperty('--my', (e.clientY - r.top) + 'px');
       });
 
-      /* ---------- Impression : graphiques finalisés ---------- */
-      window.addEventListener('beforeprint', function () {
-        document.querySelectorAll('.bar-fill').forEach(function (b) {
-          if (b.dataset.target) b.style.width = b.dataset.target;
-        });
-        document.querySelectorAll('.viz circle[stroke-dasharray]').forEach(function (c) {
-          if (c.dataset.dash) c.style.strokeDasharray = c.dataset.dash;
-        });
-      });
+      /* ---------- Filament de progression ---------- */
+      window.addEventListener('scroll', function () {
+        var h = document.documentElement;
+        var p = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+        document.getElementById('progress').style.width = p + '%';
+      }, { passive: true });
 
-      /* ---------- Filament de progression : repli JS ---------- */
-      if (!window.CSS || !CSS.supports || !CSS.supports('animation-timeline: scroll()')) {
-        var prog = document.getElementById('progress');
-        var ticking = false;
-        window.addEventListener('scroll', function () {
-          if (ticking) return;
-          ticking = true;
-          requestAnimationFrame(function () {
-            var h = document.documentElement;
-            var max = h.scrollHeight - h.clientHeight;
-            prog.style.transform = 'scaleX(' + (max > 0 ? h.scrollTop / max : 0) + ')';
-            ticking = false;
-          });
-        }, { passive: true });
+      /* ---------- Historique (partagé avec devis.html via localStorage) ---------- */
+      var HISTORY_KEY = 'courses-history';
+      function historyRead() {
+        try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch (e) { return []; }
+      }
+      function fmtDate(iso, lang) {
+        try {
+          var d = new Date(iso);
+          return d.toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        } catch (e) { return iso; }
+      }
+      function renderHistory() {
+        var list = historyRead();
+        var lang = document.body.dataset.lang === 'en' ? 'en' : 'fr';
+        var body = document.getElementById('hist-body-' + lang);
+        var count = document.getElementById('hist-count-' + lang);
+        if (count) count.textContent = list.length;
+        if (!body) return;
+        if (list.length === 0) {
+          body.innerHTML = '<tr><td colspan="4" class="empty-note">' + (lang === 'en' ? 'No run archived yet — finish a shopping run in the quote page (✅ button).' : 'Aucune course archivée pour l\'instant — termine une course dans le devis (bouton ✅).') + '</td></tr>';
+          return;
+        }
+        body.innerHTML = list.map(function (h) {
+          return '<tr><td>' + fmtDate(h.date, lang) + '</td><td>' + (h.devis || '—') + '</td><td class="num">' + h.checked + '</td><td class="num">' + h.total.toFixed(2).replace('.', ',') + ' €</td></tr>';
+        }).join('');
+      }
+      function exportCsv() {
+        var list = historyRead();
+        if (list.length === 0) { alert(document.body.dataset.lang === 'en' ? 'Nothing to export.' : 'Rien à exporter.'); return; }
+        var rows = [['date', 'devis', 'articles', 'total_eur']].concat(list.map(function (h) { return [h.date, h.devis || '', h.checked, h.total]; }));
+        var csv = rows.map(function (r) { return r.join(';'); }).join('\n');
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+        a.download = 'historique-courses.csv';
+        a.click();
+      }
+      function clearHistory() {
+        var msg = document.body.dataset.lang === 'en' ? 'Delete the whole shopping history?' : 'Supprimer tout l\'historique des courses ?';
+        if (confirm(msg)) { try { localStorage.removeItem(HISTORY_KEY); } catch (e) {} renderHistory(); }
       }
 
-      /* ---------- Init ---------- */
+      /* Init */
+      try {
+        var saved = localStorage.getItem('courses-lang');
+        if (saved === 'en') switchLang('en'); else switchLang('fr');
+      } catch (e) { switchLang('fr'); }
       setTheme(document.body.classList.contains('day') ? 'day' : 'night');
-      var savedLang = null;
-      try { savedLang = localStorage.getItem('courses-lang'); } catch (e) {}
-      if (savedLang === 'en') switchLang('en');
-      initCart();
-      initViz();
-      animateKpis();
-      updateToc();
+      renderHistory();
     </script>
   </body>
 </html>

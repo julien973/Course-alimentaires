@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liste globale famille — FR/EN</title>
+    <style>
+      @property --surface-alpha { syntax: "<number>"; inherits: true; initial-value: 0.9; }
+      :root { font-family: Inter, "Segoe UI", system-ui, sans-serif; }
+      * { box-sizing: border-box; }
+      body.night, body.day {
+        --c-ink: #0f172a; --c-body: #334155; --c-muted: #64748b;
+        --line: #eef2f7; --line-strong: #dfe6ef; --track-bg: #eff3f8;
+      }
+      body.night {
+        --bg-base: #0b1220;
+        --bg-image:
+          radial-gradient(ellipse 80% 60% at 15% 8%, rgba(109, 40, 217, 0.42), transparent 62%),
+          radial-gradient(ellipse 70% 55% at 88% 18%, rgba(37, 99, 235, 0.35), transparent 62%),
+          radial-gradient(ellipse 85% 70% at 82% 92%, rgba(13, 148, 136, 0.38), transparent 62%),
+          linear-gradient(160deg, #0b1220 0%, #141d33 48%, #0c1b1c 100%);
+        --ink: #f1f5f9; --muted: #94a3b8;
+        --surface: rgba(255, 255, 255, 0.9); --surface-kpi: rgba(255, 255, 255, 0.82);
+        --card-border: rgba(255, 255, 255, 0.65); --border-strong: rgba(255, 255, 255, 0.95);
+        --btn-bg: rgba(255, 255, 255, 0.14); --btn-hover: rgba(255, 255, 255, 0.26);
+        --btn-ink: #f1f5f9; --btn-border: rgba(255, 255, 255, 0.45);
+        --row-even: rgba(15, 23, 42, 0.035); --row-hover: rgba(37, 99, 235, 0.09);
+        --shadow-md: 0 8px 32px rgba(2, 6, 23, 0.35);
+        --halo: 0 0 0 1px rgba(255, 255, 255, 0.28), 0 14px 44px rgba(2, 6, 23, 0.5), 0 0 26px rgba(124, 58, 237, 0.28);
+        --topbar-bg: rgba(13, 20, 36, 0.62); --topbar-border: rgba(255, 255, 255, 0.14);
+        --progress-grad: linear-gradient(90deg, #f06192, #fbbf24, #4ade80, #38bdf8, #a78bfa);
+        --progress-glow: rgba(240, 97, 146, 0.55);
+        --spot: rgba(255, 255, 255, 0.20);
+      }
+      body.day {
+        --bg-base: #eef1f6;
+        --bg-image:
+          radial-gradient(ellipse 80% 60% at 15% 8%, rgba(109, 40, 217, 0.10), transparent 62%),
+          radial-gradient(ellipse 70% 55% at 88% 18%, rgba(37, 99, 235, 0.10), transparent 62%),
+          radial-gradient(ellipse 85% 70% at 82% 92%, rgba(13, 148, 136, 0.12), transparent 62%),
+          linear-gradient(160deg, #f3f6fb 0%, #e9eef6 55%, #e7f0ed 100%);
+        --ink: #0f172a; --muted: #64748b;
+        --surface: rgba(255, 255, 255, var(--surface-alpha));
+        --surface-kpi: rgba(255, 255, 255, calc(var(--surface-alpha) - 0.06));
+        --card-border: rgba(255, 255, 255, 0.85); --border-strong: rgba(15, 23, 42, 0.4);
+        --btn-bg: rgba(255, 255, 255, 0.6); --btn-hover: rgba(255, 255, 255, 0.95);
+        --btn-ink: #0f172a; --btn-border: rgba(15, 23, 42, 0.28);
+        --row-even: rgba(15, 23, 42, 0.03); --row-hover: rgba(37, 99, 235, 0.08);
+        --shadow-md: 0 8px 32px rgba(2, 6, 23, 0.14);
+        --halo: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 14px 40px rgba(2, 6, 23, 0.18), 0 0 26px rgba(37, 99, 235, 0.2);
+        --topbar-bg: rgba(255, 255, 255, 0.62); --topbar-border: rgba(15, 23, 42, 0.12);
+        --progress-grad: linear-gradient(90deg, #fbbf24, #d97706, #b3453e);
+        --progress-glow: rgba(217, 119, 6, 0.55);
+        --spot: rgba(37, 99, 235, 0.10);
+      }
+      body {
+        margin: 0; padding: 0 0 48px; min-height: 100vh;
+        color: var(--ink); background-color: var(--bg-base);
+        background-image: var(--bg-image); background-attachment: fixed;
+        transition: background-color 0.45s ease, color 0.45s ease;
+      }
+      .page { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+      .hidden { display: none; }
+      .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+      .orbs i { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.45; }
+      .orbs .o1 { width: 360px; height: 360px; background: #7c3aed; top: -80px; left: -100px; animation: drift1 26s ease-in-out infinite alternate; }
+      .orbs .o2 { width: 320px; height: 320px; background: #ec4899; top: 34%; right: -110px; animation: drift2 32s ease-in-out infinite alternate; }
+      .orbs .o3 { width: 300px; height: 300px; background: #0ea5e9; bottom: -90px; left: 32%; animation: drift3 38s ease-in-out infinite alternate; }
+      @keyframes drift1 { to { transform: translate(70px, 50px) scale(1.12); } }
+      @keyframes drift2 { to { transform: translate(-60px, -70px) scale(1.08); } }
+      @keyframes drift3 { to { transform: translate(50px, -60px) scale(1.15); } }
+      body.day .orbs { display: none; }
+      .topbar { position: sticky; top: 0; z-index: 50; width: 100%; background: var(--topbar-bg); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); border-bottom: 1px solid var(--topbar-border); }
+      .topbar-inner { max-width: 900px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .tb-brand { font-weight: 700; font-size: 14px; color: var(--ink); }
+      .tb-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .lang-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--btn-border); background: var(--btn-bg); color: var(--btn-ink); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all 0.18s ease; font-family: inherit; }
+      .lang-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
+      .lang-btn.active { background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; border-color: transparent; }
+      .flag { width: 17px; height: 12px; border-radius: 2px; display: inline-block; }
+      #progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0%; background: var(--progress-grad); border-radius: 999px; transition: width 0.18s linear; box-shadow: var(--progress-glow); }
+
+      .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
+      .kpi { position: relative; border: 1px solid var(--card-border); border-radius: 14px; padding: 16px 18px; background: var(--surface-kpi); box-shadow: var(--shadow-md); overflow: hidden; }
+      .kpi::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, #16a34a, #0d9488, #2563eb); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.55; pointer-events: none; }
+      .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-muted); margin-bottom: 6px; }
+      .kpi .value { font-size: 26px; font-weight: 700; color: var(--c-ink); }
+      .kpi .sub { font-size: 12px; margin-top: 4px; font-weight: 600; color: var(--c-muted); }
+
+      .card { position: relative; border: 1px solid var(--card-border); border-radius: 16px; padding: 24px 28px; margin-bottom: 20px; background: var(--surface); color: var(--c-body); box-shadow: var(--shadow-md); overflow: hidden; }
+      .card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, #16a34a, #0d9488, #2563eb); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.55; pointer-events: none; }
+      .card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 65%); opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
+      .card:hover::after { opacity: 1; }
+      .card h1 { margin: 0 0 6px; font-size: 24px; color: var(--c-ink); }
+      .card h2 { margin: 0 0 14px; font-size: 17px; color: #1d4ed8; }
+      .card p { margin: 0 0 12px; font-size: 14px; line-height: 1.65; }
+
+      table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.9rem; background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--line-strong); }
+      th { background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.10)), #f8fafc; color: #475569; text-align: left; padding: 0.65rem 0.8rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+      td { padding: 0.6rem 0.8rem; border-top: 1px solid var(--line); vertical-align: top; overflow-wrap: break-word; }
+      tbody tr:nth-child(even) { background: var(--row-even); }
+      td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+      .sous-total { font-size: 13px; font-weight: 700; color: #1d4ed8; margin: 0.4rem 0 0; text-align: right; }
+
+      .src { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+      .src.julien { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+      .src.soeur { background: rgba(217, 119, 6, 0.14); color: #b45309; }
+      .src.commun { background: rgba(22, 163, 74, 0.14); color: #15803d; }
+
+      .callout { border-left: 4px solid #d97706; background: rgba(217, 119, 6, 0.08); border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 13.5px; line-height: 1.6; color: var(--c-body); }
+      .opt-item { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.6; }
+      .opt-item:first-of-type { border-top: none; }
+      .opt-ico { font-size: 18px; }
+
+      .footer { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 8px; }
+      @media print { .topbar, .orbs { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } }
+      @media (max-width: 720px) { .card { padding: 18px 16px; } table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } .kpi .value { font-size: 21px; } }
+      @media screen and (min-width: 721px), print { td { overflow-wrap: anywhere; } }
+    </style>
+  </head>
+  <body class="night">
+    <script>
+      try { if (localStorage.getItem('courses-theme') === 'day') document.body.className = 'day'; } catch (e) {}
+    </script>
+
+    <div class="orbs" aria-hidden="true"><i class="o1"></i><i class="o2"></i><i class="o3"></i></div>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <span class="tb-brand">👨‍👩‍👧‍👦 Liste famille</span>
+        <div class="tb-actions">
+          <button class="lang-btn" onclick="location.href='index.html'" title="Accueil / Home">🏠</button>
+          <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
+          <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
+          <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme">☀️</button>
+          <button class="lang-btn pdf" onclick="window.print()">📄 PDF</button>
+        </div>
+      </div>
+      <i id="progress" aria-hidden="true"></i>
+    </header>
+
+    <main class="page">
+      <div id="lang-fr">
+        <div class="card" style="margin-top: 20px">
+          <h1>👨‍👩‍👧‍👦 Liste globale famille</h1>
+          <p>Fusion automatique du devis de Julien (sèche, high-protein) et du devis de ta sœur : articles communs détectés et cumulés, budget consolidé, optimisations prix et protéines.</p>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div class="label">Total fusionné</div><div class="value" id="kpi-total-fr">—</div><div class="sub" id="kpi-total-sub-fr">—</div></div>
+          <div class="kpi"><div class="label">Articles</div><div class="value" id="kpi-items-fr">—</div><div class="sub" id="kpi-items-sub-fr">—</div></div>
+          <div class="kpi"><div class="label">Économies fusion</div><div class="value" id="kpi-save-fr">—</div><div class="sub">Dédoublonnage des achats</div></div>
+          <div class="kpi"><div class="label">Articles communs</div><div class="value" id="kpi-commun-fr">—</div><div class="sub">Présents chez les deux</div></div>
+        </div>
+        <div id="fr-merge"></div>
+        <div class="card" id="fr-opt">
+          <h2>💡 Optimisations</h2>
+          <div id="fr-opt-body"></div>
+        </div>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v3.0.</p>
+      </div>
+
+      <div id="lang-en" class="hidden">
+        <div class="card" style="margin-top: 20px">
+          <h1>👨‍👩‍👧‍👦 Global family list</h1>
+          <p>Automatic merge of Julien's quote (cut, high-protein) and your sister's quote: common items detected and combined, consolidated budget, price and protein optimizations.</p>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div class="label">Merged total</div><div class="value" id="kpi-total-en">—</div><div class="sub" id="kpi-total-sub-en">—</div></div>
+          <div class="kpi"><div class="label">Items</div><div class="value" id="kpi-items-en">—</div><div class="sub" id="kpi-items-sub-en">—</div></div>
+          <div class="kpi"><div class="label">Merge savings</div><div class="value" id="kpi-save-en">—</div><div class="sub">Deduplicated purchases</div></div>
+          <div class="kpi"><div class="label">Common items</div><div class="value" id="kpi-commun-en">—</div><div class="sub">Present in both lists</div></div>
+        </div>
+        <div id="en-merge"></div>
+        <div class="card" id="en-opt">
+          <h2>💡 Optimizations</h2>
+          <div id="en-opt-body"></div>
+        </div>
+        <p class="footer">Merge recomputed automatically from both quotes — v3.0.</p>
+      </div>
+    </main>
+
+    <script>
+      /* ================= DONNÉES =================
+         JULIEN_LIST : le devis perso (source : page devis.html).
+         FAMILY_LIST : le devis de ta sœur — VIDE POUR L'INSTANT.
+         Dès que tu envoies son CSV, les lignes sont ajoutées ici au
+         format { fr, en, qty, price, cat } et la fusion se fait seule. */
+      var JULIEN_LIST = [
+        { fr: "Pain de mie complet 550 g", en: "Wholemeal sandwich bread 550 g", qty: "1 paquet", price: 1.50, cat: 1 },
+        { fr: "Lait demi-écrémé", en: "Semi-skimmed milk", qty: "4 × 1 L", price: 3.40, cat: 1 },
+        { fr: "Jambon blanc découenné", en: "Denudded white ham", qty: "180 g", price: 2.50, cat: 1 },
+        { fr: "Filets de poulet surgelés", en: "Frozen chicken fillets", qty: "1 kg", price: 6.00, cat: 2 },
+        { fr: "Thon au naturel", en: "Tuna in water", qty: "6 × 112 g", price: 4.50, cat: 2 },
+        { fr: "Œufs", en: "Eggs", qty: "12", price: 3.00, cat: 2 },
+        { fr: "Fromage blanc nature 0 %", en: "Fat-free fromage blanc", qty: "2 × 1 kg", price: 3.60, cat: 3 },
+        { fr: "Poivrons", en: "Peppers", qty: "~800 g", price: 3.00, cat: 4 },
+        { fr: "Aubergines", en: "Aubergines", qty: "3 (~900 g)", price: 2.70, cat: 4 },
+        { fr: "Patates douces", en: "Sweet potatoes", qty: "1 kg", price: 2.00, cat: 4 },
+        { fr: "Carottes", en: "Carrots", qty: "1 kg", price: 1.20, cat: 4 },
+        { fr: "Crème fraîche légère 15 %", en: "Light crème fraîche 15%", qty: "50 cl", price: 1.50, cat: 4 },
+        { fr: "Champignons de Paris", en: "Button mushrooms", qty: "500 g", price: 2.00, cat: 4 },
+        { fr: "Haricots verts surgelés", en: "Frozen green beans", qty: "1 kg", price: 2.00, cat: 4 },
+        { fr: "Épinards surgelés", en: "Frozen spinach", qty: "1 kg", price: 2.50, cat: 4 },
+        { fr: "Haricots rouges secs", en: "Dried red kidney beans", qty: "1 kg", price: 2.50, cat: 5 },
+        { fr: "Lentilles vertes", en: "Green lentils", qty: "500 g", price: 1.50, cat: 5 },
+        { fr: "Riz long grain", en: "Long-grain rice", qty: "1 kg", price: 2.00, cat: 5 },
+        { fr: "Concentré de tomate", en: "Tomato paste", qty: "1 boîte", price: 0.80, cat: 5 },
+        { fr: "Lait de coco", en: "Coconut milk", qty: "3 × 400 ml", price: 4.80, cat: 5 },
+        { fr: "Oignons + ail + persil", en: "Onions + garlic + parsley", qty: "—", price: 2.00, cat: 5 }
+      ];
+      var FAMILY_LIST = [];
+
+      var CATS = {
+        1: { fr: "1 · Petit-déjeuner & nuit", en: "1 · Breakfast & night" },
+        2: { fr: "2 · Protéines maigres", en: "2 · Lean proteins" },
+        3: { fr: "3 · Laitiers 0 %", en: "3 · Fat-free dairy" },
+        4: { fr: "4 · Légumes & crème", en: "4 · Vegetables & cream" },
+        5: { fr: "5 · Légumineuses & base", en: "5 · Legumes & staples" },
+        9: { fr: "6 · Ajouts famille", en: "6 · Family additions" }
+      };
+
+      /* ================= MOTEUR DE FUSION =================
+         1. Normalisation des noms (minuscules, sans accents) pour
+            rapprocher « Riz long grain » et « riz long grain 1kg ».
+         2. Un article présent chez les deux = 👥 commun, une seule
+            ligne, prix cumulés (économie = le prix le plus faible des
+            deux est neutralisé, car un seul achat mutualisé).
+         3. Sinon, ligne conservée avec son badge d'origine. */
+      function norm(s) {
+        return s.toLowerCase()
+          .replace(/œ/g, "oe").replace(/æ/g, "ae")
+          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+      }
+      function keyOf(item) {
+        var n = norm(item.fr || item.en);
+        /* On ignore les tokens de quantité (1kg, 500g, 4x, paquet…)
+           et les petits mots (de, la, the…) pour que « Riz long
+           grain » et « riz long grain 1kg » soient reconnus comme
+           le même article. */
+        var stop = /^(kg|g|l|cl|ml|x|paquet|pack|boite|botte|piece|unit|de|du|la|le|les|l|d|au|aux|a|and|the|of|et)$/i;
+        var words = n.split(" ").filter(function (w) {
+          return w && !/^\d/.test(w) && !stop.test(w);
+        });
+        return words.sort().join(" ").replace(/(s)\b/g, "");
+      }
+      function mergeLists() {
+        var map = {}, order = [];
+        function add(item, src) {
+          var k = keyOf(item);
+          if (!map[k]) { map[k] = { item: item, sources: [src] }; order.push(k); }
+          else { map[k].sources.push(src); map[k].mergedPrice = (map[k].mergedPrice || map[k].item.price) + item.price; }
+        }
+        JULIEN_LIST.forEach(function (i) { add(i, "julien"); });
+        FAMILY_LIST.forEach(function (i) { add(i, "soeur"); });
+        return order.map(function (k) {
+          var m = map[k];
+          var commun = m.sources.indexOf("julien") >= 0 && m.sources.indexOf("soeur") >= 0;
+          return {
+            item: m.item,
+            src: commun ? "commun" : m.sources[0],
+            price: commun ? (m.mergedPrice || m.item.price) : m.item.price,
+            commun: commun
+          };
+        });
+      }
+
+      /* ================= RENDU ================= */
+      function fmtEur(v, lang) { return v.toFixed(2).replace(".", lang === "en" ? "." : ",") + " €"; }
+      var SRC_LABEL = {
+        fr: { julien: "🧑 Julien", soeur: "👩 Sœur", commun: "👥 Commun" },
+        en: { julien: "🧑 Julien", soeur: "👩 Sister", commun: "👥 Shared" }
+      };
+      function renderMerge() {
+        var merged = mergeLists();
+        var lang = document.body.dataset.lang === "en" ? "en" : "fr";
+        var host = document.getElementById(lang + "-merge");
+        var total = 0, commun = 0, items = 0;
+        var byCat = {};
+        merged.forEach(function (m) {
+          var cat = m.item.cat || 9;
+          if (!byCat[cat]) byCat[cat] = [];
+          byCat[cat].push(m);
+          total += m.price; items++;
+          if (m.commun) commun++;
+        });
+        var html = "";
+        Object.keys(byCat).sort().forEach(function (cat) {
+          var catTotal = 0;
+          var rows = byCat[cat].map(function (m) {
+            catTotal += m.price;
+            return "<tr><td>" + m.item[lang === "en" ? "en" : "fr"] + "</td><td>" + m.item.qty +
+              "</td><td class=\"num\">" + fmtEur(m.price, lang) + "</td><td><span class=\"src " + m.src + "\">" +
+              SRC_LABEL[lang][m.src] + "</span></td></tr>";
+          }).join("");
+          html += '<div class="card"><h2>' + CATS[cat][lang] + '</h2>' +
+            '<table><thead><tr><th>' + (lang === "en" ? "Item" : "Article") + '</th><th>' + (lang === "en" ? "Qty" : "Qté") +
+            '</th><th class="num">' + (lang === "en" ? "Total" : "Total") + '</th><th>' + (lang === "en" ? "Source" : "Source") + '</th></tr></thead>' +
+            '<tbody>' + rows + '</tbody></table><p class="sous-total">' + (lang === "en" ? "Subtotal: " : "Sous-total : ") + fmtEur(catTotal, lang) + '</p></div>';
+        });
+        if (FAMILY_LIST.length === 0) {
+          html = '<div class="callout">⏳ <b>' + (lang === "en" ? "Awaiting your sister's quote." : "En attente du devis de ta sœur.") + '</b> ' +
+            (lang === "en"
+              ? "The list below is your personal quote used as the merge base. As soon as the CSV of her list is added, the engine will detect common items (👥), combine quantities and prices, and compute the savings from deduplication."
+              : "La liste ci-dessous est ton devis perso, utilisé comme base de fusion. Dès que le CSV de sa liste sera ajouté, le moteur détectera les articles communs (👥), cumulera quantités et prix, et calculera les économies du dédoublonnage.") +
+            '</div>' + html;
+        }
+        host.innerHTML = html;
+
+        var savings = 0;
+        merged.forEach(function (m) { if (m.commun) savings += Math.min(m.item.price, m.price / 2); });
+        document.getElementById("kpi-total-" + lang).textContent = fmtEur(total, lang);
+        document.getElementById("kpi-total-sub-" + lang).textContent = FAMILY_LIST.length === 0
+          ? (lang === "en" ? "Base: personal quote" : "Base : devis perso")
+          : (lang === "en" ? "Julien + sister combined" : "Julien + sœur cumulés");
+        document.getElementById("kpi-items-" + lang).textContent = items;
+        document.getElementById("kpi-items-sub-" + lang).textContent =
+          (lang === "en" ? "from " : "dont ") + commun + (lang === "en" ? " shared" : " communs");
+        document.getElementById("kpi-save-" + lang).textContent = fmtEur(savings, lang);
+        document.getElementById("kpi-commun-" + lang).textContent = commun;
+
+        /* Optimisations : top rapport protéines/prix (indications fixes,
+           affinées quand la liste famille sera là) */
+        var optBody = document.getElementById(lang + "-opt-body");
+        var opts = lang === "en" ? [
+          ["🥚", "<b>Eggs — best protein/€ ratio.</b> About 6.5 g protein per unit for 3.00 € per dozen: unbeatable for the family budget."],
+          ["🫘", "<b>Dried legumes in bulk.</b> Red kidney beans and lentils cost ~2-3 € per kilo and cover everyone: buy bigger packs rather than several small ones."],
+          ["🏪", "<b>Split stores.</b> Proteins and staples at Lidl, specific items (sweet potatoes, light cream) at Carrefour/Leclerc — the merged list makes one single trip per store possible."]
+        ] : [
+          ["🥚", "<b>Œufs — meilleur rapport protéines/prix.</b> Environ 6,5 g de protéines par unité pour 3,00 € la douzaine : imbattable pour le budget famille."],
+          ["🫘", "<b>Légumineuses secs en vrac.</b> Haricots rouges et lentilles à ~2-3 € le kilo conviennent à tous : privilégier les gros formats plutôt que plusieurs petits."],
+          ["🏪", "<b>Répartition des magasins.</b> Protéines et bases à Lidl, produits spécifiques (patates douces, crème légère) à Carrefour/Leclerc — la liste fusionnée permet un seul trajet par magasin."]
+        ];
+        optBody.innerHTML = opts.map(function (o) {
+          return '<div class="opt-item"><span class="opt-ico">' + o[0] + '</span><div>' + o[1] + '</div></div>';
+        }).join("");
+      }
+
+      /* ---------- Langue / thème / spotlight / progression ---------- */
+      function switchLang(lang) {
+        document.getElementById("btn-fr").classList.toggle("active", lang === "fr");
+        document.getElementById("btn-en").classList.toggle("active", lang === "en");
+        document.getElementById("lang-fr").classList.toggle("hidden", lang === "en");
+        document.getElementById("lang-en").classList.toggle("hidden", lang === "fr");
+        document.body.dataset.lang = lang;
+        try { localStorage.setItem("courses-lang", lang); } catch (e) {}
+        renderMerge();
+      }
+      function setTheme(t) {
+        document.body.classList.toggle("night", t === "night");
+        document.body.classList.toggle("day", t === "day");
+        document.getElementById("btn-theme").textContent = t === "day" ? "🌙" : "☀️";
+        try { localStorage.setItem("courses-theme", t); } catch (e) {}
+      }
+      function toggleTheme() { setTheme(document.body.classList.contains("day") ? "night" : "day"); }
+      document.addEventListener("pointermove", function (e) {
+        var v = e.target.closest ? e.target.closest(".card, .kpi") : null;
+        if (!v) return;
+        var r = v.getBoundingClientRect();
+        v.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        v.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+      window.addEventListener("scroll", function () {
+        var h = document.documentElement;
+        document.getElementById("progress").style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + "%";
+      }, { passive: true });
+
+      try {
+        var saved = localStorage.getItem("courses-lang");
+        switchLang(saved === "en" ? "en" : "fr");
+      } catch (e) { switchLang("fr"); }
+      setTheme(document.body.classList.contains("day") ? "day" : "night");
+    </script>
+  </body>
+</html>
