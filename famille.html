@@ -113,6 +113,17 @@
       .opt-ico { font-size: 18px; }
 
       .footer { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 8px; }
+      /* ---------- Barre de pied (miroir de l'entête, collée en bas) ---------- */
+      .botbar {
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+        background: var(--topbar-bg); backdrop-filter: blur(14px) saturate(1.4);
+        -webkit-backdrop-filter: blur(14px) saturate(1.4);
+        border-top: 1px solid var(--topbar-border);
+      }
+      .botbar-inner { max-width: 900px; margin: 0 auto; padding: 8px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .botbar .bb-brand { font-weight: 700; font-size: 12.5px; color: var(--ink); }
+      .botbar .bb-ver { font-size: 12px; color: var(--muted); font-weight: 600; }
+      body { padding-bottom: 72px; }
       @media print { .topbar, .orbs { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } }
       @media (max-width: 720px) { .card { padding: 18px 16px; } table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } .kpi .value { font-size: 21px; } }
       @media screen and (min-width: 721px), print { td { overflow-wrap: anywhere; } }
@@ -177,6 +188,13 @@
         <p class="footer">Merge recomputed automatically from both quotes — v3.0. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
+
+    <footer class="botbar">
+      <div class="botbar-inner">
+        <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
+        <span class="bb-ver">v3.0 · 2026</span>
+      </div>
+    </footer>
 
     <script>
       /* ================= DONNÉES =================
