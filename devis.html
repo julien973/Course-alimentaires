@@ -541,6 +541,7 @@
           <div class="kpi"><div class="label">Protéines / jour</div><div class="value">~160 g</div><div class="sub sub-ok">✅ Cible 156 g atteinte</div></div>
           <div class="kpi"><div class="label">Calories / jour</div><div class="value">~2 400</div><div class="sub sub-warn">⚠️ Marge serrée ≤ 2 500</div></div>
           <div class="kpi"><div class="label">Volume / assiette</div><div class="value">~900 g</div><div class="sub sub-info">Faible densité calorique</div></div>
+          <div class="kpi"><div class="label">Suivi des courses</div><div class="value" id="kpi-track-fr">0 / 21</div><div class="sub sub-info" id="kpi-track-sub-fr">0,00 € pris</div></div>
         </div>
 
         <div class="card viz" id="fr-budget">
@@ -734,6 +735,7 @@
           <div class="kpi"><div class="label">Protein / day</div><div class="value">~160 g</div><div class="sub sub-ok">✅ Target 156 g met</div></div>
           <div class="kpi"><div class="label">Calories / day</div><div class="value">~2,400</div><div class="sub sub-warn">⚠️ Tight margin ≤ 2,500</div></div>
           <div class="kpi"><div class="label">Volume / plate</div><div class="value">~900 g</div><div class="sub sub-info">Low calorie density</div></div>
+          <div class="kpi"><div class="label">Shopping progress</div><div class="value" id="kpi-track-en">0 / 21</div><div class="sub sub-info" id="kpi-track-sub-en">€0.00 picked up</div></div>
         </div>
 
         <div class="card viz" id="en-budget">
@@ -1036,12 +1038,29 @@
       function updateCartCount() {
         var vis = document.body.dataset.lang === 'en' ? 'en' : 'fr';
         var boxes = document.querySelectorAll('[id^="' + vis + '-s"] input[type="checkbox"]');
-        var done = 0;
-        boxes.forEach(function (b) { if (b.checked) done++; });
+        var done = 0, sum = 0;
+        boxes.forEach(function (b) {
+          if (b.checked) {
+            done++;
+            /* Prix = 4e cellule de la ligne (colonne « Total ») */
+            var tds = b.closest('tr').querySelectorAll('td');
+            if (tds.length >= 4) {
+              var v = parseFloat(tds[3].textContent.replace(/[^\d,.]/g, '').replace(',', '.'));
+              if (!isNaN(v)) sum += v;
+            }
+          }
+        });
         var el = document.getElementById('cart-count');
         if (el) {
           el.textContent = '🛒 ' + done + '/' + boxes.length;
           el.classList.toggle('full', boxes.length > 0 && done === boxes.length);
+        }
+        /* Carte KPI « Suivi des courses » : décompte + montant réel */
+        var kpi = document.getElementById('kpi-track-' + vis);
+        if (kpi) {
+          kpi.textContent = done + ' / ' + boxes.length + (vis === 'en' ? ' picked up' : ' pris');
+          document.getElementById('kpi-track-sub-' + vis).textContent =
+            (vis === 'en' ? '€' + sum.toFixed(2) + ' picked up' : sum.toFixed(2).replace('.', ',') + ' € pris');
         }
       }
       function resetCart() {
