@@ -209,7 +209,7 @@
 
         <div class="card" id="fr-hist">
           <h2>🕘 Historique des courses</h2>
-          <p>Chaque course terminée (bouton ✅ dans le devis) est archivée ici : date, articles pris, total dépensé. Stocké dans ce navigateur.</p>
+          <p>Chaque course terminée (bouton ✅ dans le devis ou la liste famille) est archivée ici : date, articles pris, total dépensé. Stocké dans ce navigateur.</p>
           <table>
             <thead><tr><th>Date</th><th>Devis</th><th class="num">Articles</th><th class="num">Total</th></tr></thead>
             <tbody id="hist-body-fr"></tbody>
@@ -256,7 +256,7 @@
 
         <div class="card" id="en-hist">
           <h2>🕘 Shopping history</h2>
-          <p>Every finished run (✅ button in the quote) is archived here: date, items taken, total spent. Stored in this browser.</p>
+          <p>Every finished run (✅ button in the quote or the family list) is archived here: date, items taken, total spent. Stored in this browser.</p>
           <table>
             <thead><tr><th>Date</th><th>Quote</th><th class="num">Items</th><th class="num">Total</th></tr></thead>
             <tbody id="hist-body-en"></tbody>
@@ -336,7 +336,7 @@
         if (count) count.textContent = list.length;
         if (!body) return;
         if (list.length === 0) {
-          body.innerHTML = '<tr><td colspan="4" class="empty-note">' + (lang === 'en' ? 'No run archived yet — finish a shopping run in the quote page (✅ button).' : 'Aucune course archivée pour l\'instant — termine une course dans le devis (bouton ✅).') + '</td></tr>';
+          body.innerHTML = '<tr><td colspan="4" class="empty-note">' + (lang === 'en' ? 'No run archived yet — finish a shopping run with the ✅ button (quote or family list).' : 'Aucune course archivée pour l\'instant — termine une course avec le bouton ✅ (devis ou liste famille).') + '</td></tr>';
           return;
         }
         body.innerHTML = list.map(function (h) {

@@ -158,6 +158,8 @@
         <span class="tb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
         <div class="tb-actions">
           <button class="lang-btn" onclick="location.href='index.html'" title="Accueil / Home">🏠 <span class="btn-txt" data-fr="Accueil" data-en="Home">Accueil</span></button>
+          <button class="lang-btn" id="btn-reset" onclick="resetFamille()" title="Tout décocher / Uncheck all">↺ <span class="btn-txt" data-fr="Tout décocher" data-en="Uncheck all">Tout décocher</span></button>
+          <button class="lang-btn" id="btn-finish" onclick="finishFamille()" title="Terminer la course famille : archive dans l'historique / Finish: archive to history">✅ <span class="btn-txt" data-fr="Terminer" data-en="Finish">Terminer</span></button>
           <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
           <button class="lang-btn" id="btn-en" onclick="switchLang('en')"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/><path d="M30,0 V30 M0,15 H60" stroke="#ffffff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="3.5"/></svg>EN</button>
           <button class="lang-btn" id="btn-theme" onclick="toggleTheme()" title="Changer de thème / Switch theme"><span id="btn-theme-ico">☀️</span> <span class="btn-txt" data-fr="Thème" data-en="Theme">Thème</span></button>
@@ -350,6 +352,59 @@
           b.addEventListener("change", refresh);
         });
         refresh();
+      }
+      /* ===== Terminer la course famille : archive cochés + total
+         dans le même historique que le devis (courses-history),
+         étiquetés « Famille » pour les distinguer. ===== */
+      function famHistory() {
+        /* Même stockage que la page devis : clé courses-history */
+        try { return JSON.parse(localStorage.getItem("courses-history") || "[]"); }
+        catch (e) { return []; }
+      }
+      function resetFamille() {
+        try { localStorage.removeItem("famille-checks"); } catch (e) {}
+        document.querySelectorAll("#fr-merge .item-check, #en-merge .item-check").forEach(function (b) {
+          b.checked = false;
+          var tr = b.closest("tr");
+          if (tr) tr.classList.remove("done");
+        });
+        var evt = document.createEvent("HTMLEvents");
+        evt.initEvent("change", true, true);
+        var first = document.querySelector("#fr-merge .item-check, #en-merge .item-check");
+        if (first) first.dispatchEvent(evt);
+      }
+      function finishFamille() {
+        var vis = document.body.dataset.lang === "en" ? "en" : "fr";
+        var boxes = Array.prototype.slice.call(document.querySelectorAll("#" + vis + "-merge .item-check"));
+        var checked = boxes.filter(function (b) { return b.checked; });
+        if (checked.length === 0) {
+          alert(vis === "en"
+            ? "No item checked yet — tick items in the store first!"
+            : "Aucun article coché — coche les articles en magasin d'abord !");
+          return;
+        }
+        var total = 0;
+        checked.forEach(function (b) {
+          var td = b.closest("tr").querySelector("td.num");
+          if (td) {
+            var v = parseFloat(td.textContent.replace(",", ".").replace(/[^\d.]/g, ""));
+            if (!isNaN(v)) total += v;
+          }
+        });
+        var list = famHistory();
+        list.unshift({
+          date: new Date().toISOString(),
+          devis: vis === "en" ? "Family" : "Famille",
+          checked: checked.length,
+          total: Math.round(total * 100) / 100
+        });
+        try { localStorage.setItem("courses-history", JSON.stringify(list)); } catch (e) {}
+        var fb = document.getElementById("float-basket");
+        if (fb) {
+          var old = fb.querySelector(".fb-count").textContent;
+          fb.querySelector(".fb-count").textContent = "💾 " + checked.length + (vis === "en" ? " archived" : " archivés");
+          setTimeout(function () { fb.querySelector(".fb-count").textContent = old; resetFamille(); }, 1400);
+        } else { resetFamille(); }
       }
       function renderMerge() {
         var merged = mergeLists();
