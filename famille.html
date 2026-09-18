@@ -142,7 +142,7 @@
       <div id="lang-fr">
         <div class="card" style="margin-top: 20px">
           <h1>👨‍👩‍👧‍👦 Liste globale famille</h1>
-          <p>Fusion automatique du devis de Julien (sèche, high-protein) et du devis de ta sœur : articles communs détectés et cumulés, budget consolidé, optimisations prix et protéines.</p>
+          <p>Fusion automatique de deux devis : le devis perso de Julien (sèche, high-protein) et le devis famille à intégrer. Articles communs détectés et cumulés, budget consolidé, optimisations prix et protéines.</p>
         </div>
         <div class="kpis">
           <div class="kpi"><div class="label">Total fusionné</div><div class="value" id="kpi-total-fr">—</div><div class="sub" id="kpi-total-sub-fr">—</div></div>
@@ -161,7 +161,7 @@
       <div id="lang-en" class="hidden">
         <div class="card" style="margin-top: 20px">
           <h1>👨‍👩‍👧‍👦 Global family list</h1>
-          <p>Automatic merge of Julien's quote (cut, high-protein) and your sister's quote: common items detected and combined, consolidated budget, price and protein optimizations.</p>
+          <p>Automatic merge of two quotes: Julien's personal quote (cut, high-protein) and the family quote to be added. Common items detected and combined, consolidated budget, price and protein optimizations.</p>
         </div>
         <div class="kpis">
           <div class="kpi"><div class="label">Merged total</div><div class="value" id="kpi-total-en">—</div><div class="sub" id="kpi-total-sub-en">—</div></div>
@@ -181,7 +181,7 @@
     <script>
       /* ================= DONNÉES =================
          JULIEN_LIST : le devis perso (source : page devis.html).
-         FAMILY_LIST : le devis de ta sœur — VIDE POUR L'INSTANT.
+         FAMILY_LIST : le devis famille à intégrer — VIDE POUR L'INSTANT.
          Dès que tu envoies son CSV, les lignes sont ajoutées ici au
          format { fr, en, qty, price, cat } et la fusion se fait seule. */
       var JULIEN_LIST = [
@@ -267,8 +267,8 @@
       /* ================= RENDU ================= */
       function fmtEur(v, lang) { return v.toFixed(2).replace(".", lang === "en" ? "." : ",") + " €"; }
       var SRC_LABEL = {
-        fr: { julien: "🧑 Julien", soeur: "👩 Sœur", commun: "👥 Commun" },
-        en: { julien: "🧑 Julien", soeur: "👩 Sister", commun: "👥 Shared" }
+        fr: { julien: "🧑 Julien", soeur: "👩 Famille", commun: "👥 Commun" },
+        en: { julien: "🧑 Julien", soeur: "👩 Family", commun: "👥 Shared" }
       };
       function renderMerge() {
         var merged = mergeLists();
@@ -283,7 +283,7 @@
           total += m.price; items++;
           if (m.commun) commun++;
         });
-        var html = "";
+          var html = "";
         Object.keys(byCat).sort().forEach(function (cat) {
           var catTotal = 0;
           var rows = byCat[cat].map(function (m) {
@@ -298,10 +298,10 @@
             '<tbody>' + rows + '</tbody></table><p class="sous-total">' + (lang === "en" ? "Subtotal: " : "Sous-total : ") + fmtEur(catTotal, lang) + '</p></div>';
         });
         if (FAMILY_LIST.length === 0) {
-          html = '<div class="callout">⏳ <b>' + (lang === "en" ? "Awaiting your sister's quote." : "En attente du devis de ta sœur.") + '</b> ' +
+          html = '<div class="callout">⏳ <b>' + (lang === "en" ? "Awaiting the quote." : "En attente du devis.") + '</b> ' +
             (lang === "en"
-              ? "The list below is your personal quote used as the merge base. As soon as the CSV of her list is added, the engine will detect common items (👥), combine quantities and prices, and compute the savings from deduplication."
-              : "La liste ci-dessous est ton devis perso, utilisé comme base de fusion. Dès que le CSV de sa liste sera ajouté, le moteur détectera les articles communs (👥), cumulera quantités et prix, et calculera les économies du dédoublonnage.") +
+              ? "The list below is the personal quote used as the merge base. As soon as the CSV of the second quote is added, the engine will detect common items (👥), combine quantities and prices, and compute the savings from deduplication."
+              : "La liste ci-dessous est le devis perso, utilisé comme base de fusion. Dès que le CSV du second devis sera ajouté, le moteur détectera les articles communs (👥), cumulera quantités et prix, et calculera les économies du dédoublonnage.") +
             '</div>' + html;
         }
         host.innerHTML = html;
@@ -311,7 +311,7 @@
         document.getElementById("kpi-total-" + lang).textContent = fmtEur(total, lang);
         document.getElementById("kpi-total-sub-" + lang).textContent = FAMILY_LIST.length === 0
           ? (lang === "en" ? "Base: personal quote" : "Base : devis perso")
-          : (lang === "en" ? "Julien + sister combined" : "Julien + sœur cumulés");
+          : (lang === "en" ? "Both quotes combined" : "Devis fusionnés");
         document.getElementById("kpi-items-" + lang).textContent = items;
         document.getElementById("kpi-items-sub-" + lang).textContent =
           (lang === "en" ? "from " : "dont ") + commun + (lang === "en" ? " shared" : " communs");
