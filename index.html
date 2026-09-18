@@ -91,6 +91,12 @@
       .lang-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--btn-border); background: var(--btn-bg); color: var(--btn-ink); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all 0.18s ease; font-family: inherit; }
       .lang-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
       .lang-btn.active { background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; border-color: transparent; }
+      /* Boutons placés DANS une carte (export CSV, vider l'historique…) :
+         les .lang-btn sont conçus pour la barre sombre du haut (texte
+         clair) — dans une carte claire, texte clair sur fond clair =
+         illisible. On force ici une encre foncée sur fond teinté. */
+      .card .lang-btn, .card .lang-btn:hover { color: var(--c-ink); background: rgba(37, 99, 235, 0.08); border: 1px solid var(--line-strong); }
+      .card .lang-btn:hover { background: rgba(37, 99, 235, 0.16); }
       .flag { width: 17px; height: 12px; border-radius: 2px; display: inline-block; }
       #progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0%; background: var(--progress-grad); border-radius: 999px; transition: width 0.18s linear; box-shadow: var(--progress-glow); }
 
@@ -203,7 +209,7 @@
           </div>
         </div>
 
-        <p class="footer">Site statique GitHub Pages — historique stocké localement dans le navigateur — v3.0.</p>
+        <p class="footer">Courses Alimentaires · v3.0 · 2026</p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -250,7 +256,7 @@
           </div>
         </div>
 
-        <p class="footer">Static GitHub Pages site — history stored locally in the browser — v3.0.</p>
+        <p class="footer">Grocery Lists · v3.0 · 2026</p>
       </div>
     </main>
 
