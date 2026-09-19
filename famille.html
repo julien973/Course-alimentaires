@@ -126,6 +126,23 @@
       .float-basket .fb-count { font-size: 12.5px; font-weight: 600; color: var(--muted); }
       .float-basket .fb-amount { color: #2563eb; font-variant-numeric: tabular-nums; }
       body.night .float-basket .fb-amount { color: #7cb0ff; }
+      /* Panneau de partage : s'ouvre après ✅ Terminer, montre le lien */
+      .share-panel {
+        position: fixed; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center;
+        background: rgba(2, 6, 23, 0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 18px;
+      }
+      .share-box {
+        max-width: 460px; width: 100%; background: var(--surface); border: 1px solid var(--card-border);
+        border-radius: 16px; padding: 22px 24px; box-shadow: var(--shadow-md); color: var(--c-body);
+      }
+      .share-box h3 { margin: 0 0 8px; font-size: 17px; color: var(--c-ink); }
+      .share-box p { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: var(--c-muted); }
+      .share-box .share-link {
+        width: 100%; box-sizing: border-box; font-size: 12px; padding: 10px 12px; border-radius: 10px;
+        border: 1px solid var(--line-strong); background: var(--row-even); color: var(--c-body); margin-bottom: 14px;
+      }
+      .share-box .tb-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+      .share-box .lang-btn { color: var(--c-ink); background: rgba(37, 99, 235, 0.08); border: 1px solid var(--line-strong); }
       .opt-item { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.6; }
       .opt-item:first-of-type { border-top: none; }
       .opt-ico { font-size: 18px; }
@@ -469,19 +486,41 @@
         });
       }
       function copyLink(link, vis) {
-        var done = function (ok) {
-          var fb = document.getElementById("float-basket");
-          if (fb) {
-            var c = fb.querySelector(".fb-count");
-            var old = c.textContent;
-            c.textContent = ok ? (vis === "en" ? "🔗 link copied" : "🔗 lien copié") : (vis === "en" ? "copy the link below" : "copie le lien ci-dessous");
-            setTimeout(function () { c.textContent = old; }, 2200);
-          }
-          if (!ok) prompt(vis === "en" ? "Copy this link:" : "Copie ce lien :", link);
-        };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(link).then(function () { done(true); }, function () { done(false); });
-        } else done(false);
+        /* Panneau visible avec le lien + bouton Copier : le clic sur
+           « Copier » est un geste frais → le presse-papier marche
+           aussi sur iPhone/Safari (la copie auto après un calcul
+           est refusée silencieusement par Safari). */
+        var old = document.querySelector('.share-panel');
+        if (old) old.remove();
+        var o = document.createElement('div');
+        o.className = 'share-panel';
+        var en = vis === 'en';
+        o.innerHTML = '<div class="share-box" role="dialog" aria-modal="true">'
+          + '<h3>🔗 ' + (en ? 'Run archived — share the link' : 'Course archivée — partage le lien') + '</h3>'
+          + '<p>' + (en
+            ? 'Tap Copy, then paste the link to Julien (WhatsApp, SMS…). Opening the link imports the run into his history.'
+            : 'Appuie sur Copier, puis colle le lien à Julien (WhatsApp, SMS…). Quand il ouvre le lien, la course s\'importe dans son historique.') + '</p>'
+          + '<input class="share-link" readonly value="' + link.replace(/"/g, '&quot;') + '" onclick="this.select()">'
+          + '<div class="tb-actions">'
+          + '<button class="lang-btn sp-copy">📋 <span class="btn-txt">' + (en ? 'Copy' : 'Copier') + '</span></button>'
+          + '<button class="lang-btn sp-close">✖ <span class="btn-txt">' + (en ? 'Close' : 'Fermer') + '</span></button>'
+          + '</div></div>';
+        document.body.appendChild(o);
+        o.querySelector('.sp-close').addEventListener('click', function () { o.remove(); });
+        o.addEventListener('click', function (e) { if (e.target === o) o.remove(); });
+        o.querySelector('.sp-copy').addEventListener('click', function () {
+          var inp = o.querySelector('.share-link');
+          inp.select();
+          var okMsg = function () {
+            var b = o.querySelector('.sp-copy .btn-txt');
+            b.textContent = en ? '✅ Copied' : '✅ Copié';
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(link).then(okMsg, function () {
+              document.execCommand('copy'); okMsg();
+            });
+          } else { document.execCommand('copy'); okMsg(); }
+        });
       }
       function renderMerge() {
         var merged = mergeLists();
