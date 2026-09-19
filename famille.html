@@ -204,7 +204,7 @@
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
         </div>
-        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.4. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.7. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <div id="lang-en" class="hidden">
@@ -223,14 +223,14 @@
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
         </div>
-        <p class="footer">Merge recomputed automatically from both quotes — v4.4. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Merge recomputed automatically from both quotes — v4.7. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
-        <span class="bb-ver">v4.4 · 2026</span>
+        <span class="bb-ver">v4.7 · 2026</span>
       </div>
     </footer>
 
@@ -501,11 +501,23 @@
           + '<input class="share-link" readonly value="' + link.replace(/"/g, '&quot;') + '" onclick="this.select()">'
           + '<div class="tb-actions">'
           + '<button class="lang-btn sp-copy">📋 <span class="btn-txt">' + (en ? 'Copy' : 'Copier') + '</span></button>'
+          + '<button class="lang-btn sp-send">📤 <span class="btn-txt">' + (en ? 'Send…' : 'Envoyer…') + '</span></button>'
           + '<button class="lang-btn sp-close">✖ <span class="btn-txt">' + (en ? 'Close' : 'Fermer') + '</span></button>'
           + '</div></div>';
         document.body.appendChild(o);
         o.querySelector('.sp-close').addEventListener('click', function () { o.remove(); });
         o.addEventListener('click', function (e) { if (e.target === o) o.remove(); });
+        /* Feuille de partage native (WhatsApp, Messages…) : geste
+           frais → autorisée sur iPhone. Repli silencieux : Copier. */
+        o.querySelector('.sp-send').addEventListener('click', function () {
+          if (navigator.share) {
+            navigator.share({
+              title: en ? 'Family shopping run' : 'Course famille',
+              text: en ? 'Shopping run — open the link to see it:' : 'Course famille — ouvre le lien pour la voir :',
+              url: link
+            }).catch(function () {});
+          } else { o.querySelector('.sp-copy').click(); }
+        });
         o.querySelector('.sp-copy').addEventListener('click', function () {
           var inp = o.querySelector('.share-link');
           inp.select();
