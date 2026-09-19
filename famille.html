@@ -385,27 +385,32 @@
         }
         var total = 0;
         var items = [];
+        /* Lookup data-key → article (fr + en) via le moteur de fusion */
+        var keyItem = {};
+        mergeLists().forEach(function (m) { keyItem[keyOf(m.item)] = m.item; });
         checked.forEach(function (b) {
-          var tds = b.closest("tr").querySelectorAll("td");
+          var tr = b.closest("tr");
           var price = 0;
-          var tdNum = b.closest("tr").querySelector("td.num");
+          var tdNum = tr.querySelector("td.num");
           if (tdNum) {
             var v = parseFloat(tdNum.textContent.replace(",", ".").replace(/[^\d.]/g, ""));
             if (!isNaN(v)) { total += v; price = v; }
           }
-          /* Détail archivé pour la fiche de course (nutrition non
-             disponible sur la liste famille : colonne absente). */
+          var it = keyItem[tr.dataset.key] || {};
           items.push({
-            name: (tds[1] ? tds[1].textContent : "").trim(),
-            qty: (tds[2] ? tds[2].textContent : "").trim(),
+            fr: it.fr || "",
+            en: it.en || it.fr || "",
+            qty: it.qty || "",
             price: price,
-            nut: ""
+            nut_fr: "",
+            nut_en: ""
           });
         });
         var list = famHistory();
         list.unshift({
           date: new Date().toISOString(),
-          devis: vis === "en" ? "Family" : "Famille",
+          devis: "Famille",
+          devis_en: "Family",
           checked: checked.length,
           total: Math.round(total * 100) / 100,
           items: items

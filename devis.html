@@ -1092,7 +1092,13 @@
         }
         var total = 0;
         var items = [];
-        document.querySelectorAll('label.check input:checked').forEach(function (b) {
+        var vis = document.body.dataset.lang === 'en' ? 'en' : 'fr';
+        var other = vis === 'en' ? 'fr' : 'en';
+        var visRows = document.querySelectorAll('[id^="' + vis + '-s"] tbody tr');
+        var otherRows = document.querySelectorAll('[id^="' + other + '-s"] tbody tr');
+        /* On ne parcourt que le tableau de la langue affichée (l'autre
+           est un miroir caché — le compter doublerait le total). */
+        document.querySelectorAll('[id^="' + vis + '-s"] label.check input:checked').forEach(function (b) {
           var tr = b.closest('tr');
           if (!tr) return;
           var tds = tr.querySelectorAll('td');
@@ -1100,15 +1106,20 @@
           var price = 0;
           if (nums.length > 0) {
             var v = parseFloat(nums[nums.length - 1].textContent.replace(',', '.').replace(/[^\d.]/g, ''));
-            if (!isNaN(v)) total += v;
-            price = isNaN(v) ? 0 : v;
+            if (!isNaN(v)) { total += v; price = v; }
           }
-          /* Détail archivé pour la fiche de course : nom, qté, prix, nutrition */
+          /* Ligne jumelle dans le tableau de l'autre langue :
+             même position → traduction contextuelle du produit. */
+          var idx = Array.prototype.indexOf.call(visRows, tr);
+          var otr = otherRows[idx];
+          var otds = otr ? otr.querySelectorAll('td') : null;
           items.push({
-            name: (tds[0] ? tds[0].textContent : '').trim(),
+            fr: (tds[0] ? tds[0].textContent : '').trim(),
+            en: otds && otds[0] ? otds[0].textContent.trim() : (tds[0] ? tds[0].textContent : '').trim(),
             qty: (tds[1] ? tds[1].textContent : '').trim(),
             price: price,
-            nut: tds.length > 4 ? tds[4].textContent.trim() : ''
+            nut_fr: tds.length > 4 ? tds[4].textContent.trim() : '',
+            nut_en: otds && otds.length > 4 ? otds[4].textContent.trim() : ''
           });
         });
         var list = historyRead();

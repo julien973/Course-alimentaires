@@ -165,8 +165,8 @@
         border-radius: 18px; padding: 26px 30px; color: var(--c-body);
         box-shadow: var(--shadow-md);
       }
-      .sheet h2 { margin: 0 0 4px; font-size: 21px; color: var(--ink); }
-      .sheet .sheet-meta { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 16px; }
+      .sheet h2 { margin: 0 0 4px; font-size: 21px; color: var(--c-ink); }
+      .sheet .sheet-meta { font-size: 13px; color: var(--c-muted); font-weight: 600; margin-bottom: 16px; }
       .sheet .sheet-badge {
         display: inline-block; font-size: 11.5px; font-weight: 700; padding: 3px 10px;
         border-radius: 999px; margin-left: 8px; vertical-align: middle;
@@ -177,18 +177,20 @@
       .sheet td { padding: 8px 10px; border-bottom: 1px solid var(--line); }
       .sheet .num { text-align: right; font-variant-numeric: tabular-nums; }
       .sheet .picked { color: #16a34a; font-weight: 800; text-align: center; }
-      .sheet .sheet-total { text-align: right; font-size: 22px; font-weight: 800; color: var(--ink); margin: 14px 0 4px; }
+      .sheet .sheet-total { text-align: right; font-size: 22px; font-weight: 800; color: var(--c-ink); margin: 14px 0 4px; }
       .sheet .sheet-nut { font-size: 12px; color: var(--c-muted); }
-      .sheet .empty-detail { font-size: 13px; color: var(--muted); font-style: italic; padding: 14px 4px; }
+      .sheet .empty-detail { font-size: 13px; color: var(--c-muted); font-style: italic; padding: 14px 4px; }
+      /* Boutons lisibles sur la carte blanche, quel que soit le thème */
+      .sheet .lang-btn, .sheet .lang-btn:hover { color: var(--c-ink); background: rgba(37, 99, 235, 0.08); border: 1px solid var(--line-strong); }
       /* Barres nutrition figées (miroir du devis) */
       .nut-chart { margin-top: 22px; }
-      .nut-chart h3 { font-size: 14px; color: var(--ink); margin: 0 0 10px; }
+      .nut-chart h3 { font-size: 14px; color: var(--c-ink); margin: 0 0 10px; }
       .nut-row { display: flex; align-items: center; gap: 10px; margin: 5px 0; font-size: 12.5px; }
       .nut-row .nut-name { flex: 0 0 38%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .nut-row .nut-track { flex: 1; height: 11px; background: var(--track-bg); border-radius: 6px; overflow: hidden; }
       .nut-row .nut-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #2563eb, #7c3aed); }
       .nut-row.nut-prot .nut-fill { background: linear-gradient(90deg, #059669, #10b981); }
-      .nut-row .nut-val { flex: 0 0 90px; text-align: right; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+      .nut-row .nut-val { flex: 0 0 90px; text-align: right; color: var(--c-muted); font-weight: 600; font-variant-numeric: tabular-nums; }
       @media print { .topbar, .orbs, .botbar, .sheet-actions { display: none; } body { background: #fff; padding-bottom: 0; } .card, .kpi, .vitrine { box-shadow: none; } .card::before, .kpi::before, .vitrine::before { display: none; }
         body.print-sheet > *:not(.sheet-overlay) { display: none; }
         .sheet-overlay { position: static; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; display: block; }
@@ -392,6 +394,16 @@
       /* Après une impression de fiche, on rend le site à l'écran normal */
       window.addEventListener('afterprint', function () { document.body.classList.remove('print-sheet'); });
       function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+      /* Traduction contextuelle des produits : chaque article archivé
+         porte ses deux noms (fr + en). On choisit selon la langue. */
+      function itemName(it, lang) {
+        if (lang === 'en') return (it.en || it.fr || it.name || '');
+        return (it.fr || it.en || it.name || '');
+      }
+      function itemNut(it, lang) {
+        if (lang === 'en') return (it.nut_en || it.nut_fr || it.nut || '');
+        return (it.nut_fr || it.nut_en || it.nut || '');
+      }
       function nutParse(nut) {
         /* Extrait kcal et protéines de « 253 kcal / 9,4 g prot. » */
         var k = /([\d]+(?:[.,]\d+)?)\s*kcal/.exec(nut || '');
@@ -410,16 +422,16 @@
       }
       function sheetCsv(run, lang) {
         var rows = [['article', 'qty', 'price_eur', 'nutrition']].concat(
-          (run.items || []).map(function (it) { return [it.name, it.qty, it.price, it.nut || '']; })
+          (run.items || []).map(function (it) { return [itemName(it, lang), it.qty, it.price, itemNut(it, lang)]; })
         );
         rows.push(['', '', 'total', run.total]);
         downloadFile('course-' + run.date.slice(0, 10) + '.csv', rows.map(function (r) { return r.join(';'); }).join('\n'), 'text/csv');
       }
       function sheetTxt(run, lang) {
         var t = (lang === 'en' ? 'SHOPPING RUN — ' : 'COURSE — ') + fmtDate(run.date, lang) + '\n';
-        t += (run.devis || '') + '\n' + '------------------------\n';
+        t += (lang === 'en' ? (run.devis_en || run.devis || '') : (run.devis || '')) + '\n' + '------------------------\n';
         (run.items || []).forEach(function (it) {
-          t += '✓ ' + it.name + ' — ' + it.qty + ' — ' + fmtEuro(it.price, lang) + (it.nut ? '\n    ' + it.nut : '') + '\n';
+          t += '✓ ' + itemName(it, lang) + ' — ' + it.qty + ' — ' + fmtEuro(it.price, lang) + (itemNut(it, lang) ? '\n    ' + itemNut(it, lang) : '') + '\n';
         });
         t += '------------------------\n' + (lang === 'en' ? 'TOTAL: ' : 'TOTAL : ') + fmtEuro(run.total, lang) + '\n';
         downloadFile('course-' + run.date.slice(0, 10) + '.txt', t, 'text/plain');
@@ -432,14 +444,14 @@
         var rows = '', nutHtml = '';
         if (run.items && run.items.length) {
           rows = run.items.map(function (it) {
-            return '<tr><td class="picked">✓</td><td>' + esc(it.name) + '</td><td>' + esc(it.qty) + '</td><td class="num">' + fmtEuro(it.price, lang) + '</td><td class="sheet-nut">' + esc(it.nut || '—') + '</td></tr>';
+            return '<tr><td class="picked">✓</td><td>' + esc(itemName(it, lang)) + '</td><td>' + esc(it.qty) + '</td><td class="num">' + fmtEuro(it.price, lang) + '</td><td class="sheet-nut">' + esc(itemNut(it, lang) || '—') + '</td></tr>';
           }).join('');
           /* Graphiques nutrition figés (si données dispo) */
           var kcal = [], prot = [];
           run.items.forEach(function (it) {
-            var n = nutParse(it.nut);
-            if (n.kcal !== null) kcal.push({ name: it.name, v: n.kcal });
-            if (n.prot !== null) prot.push({ name: it.name, v: n.prot });
+            var n = nutParse(itemNut(it, lang));
+            if (n.kcal !== null) kcal.push({ name: itemName(it, lang), v: n.kcal });
+            if (n.prot !== null) prot.push({ name: itemName(it, lang), v: n.prot });
           });
           var mkChart = function (arr, unit, max, cls, title) {
             if (!arr.length) return '';
@@ -465,7 +477,7 @@
           + '<button class="lang-btn" onclick="sheetTxt(historyRead()[' + idx + '], document.body.dataset.lang)">📝 <span class="btn-txt">' + (en ? 'Text' : 'Texte') + '</span></button>'
           + '<button class="lang-btn" onclick="document.body.classList.add(\'print-sheet\');window.print()">📄 <span class="btn-txt">PDF</span></button>'
           + '</div></div>'
-          + '<h2>🧾 ' + (en ? 'Shopping run sheet' : 'Fiche de course') + '<span class="sheet-badge">' + esc(run.devis || '—') + '</span></h2>'
+          + '<h2>🧾 ' + (en ? 'Shopping run sheet' : 'Fiche de course') + '<span class="sheet-badge">' + esc(lang === 'en' ? (run.devis_en || run.devis || '—') : (run.devis || '—')) + '</span></h2>'
           + '<p class="sheet-meta">📅 ' + fmtDate(run.date, lang) + ' · ' + run.checked + (en ? ' items picked up' : ' articles pris') + '</p>'
           + '<table><thead><tr><th>✓</th><th>' + (en ? 'Item' : 'Article') + '</th><th>' + (en ? 'Qty' : 'Qté') + '</th><th class="num">' + (en ? 'Price' : 'Prix') + '</th><th>' + (en ? 'Nutrition (100 g)' : 'Nutrition (100 g)') + '</th></tr></thead><tbody>' + rows + '</tbody></table>'
           + '<p class="sheet-total">' + (en ? 'Total: ' : 'Total : ') + fmtEuro(run.total, lang) + '</p>'
