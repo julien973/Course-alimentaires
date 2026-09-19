@@ -1082,6 +1082,37 @@
       function historyRead() {
         try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch (e) { return []; }
       }
+      /* ===== Course encodée dans un lien (partage sans serveur) ===== */
+      function encodeRun(run) {
+        var json = JSON.stringify(run);
+        return new Promise(function (resolve) {
+          var fallback = function () { resolve(btoa(unescape(encodeURIComponent(json)))); };
+          if (window.TextEncoder && window.CompressionStream) {
+            try {
+              new Response(new Blob([json]).stream().pipeThrough(new CompressionStream("deflate-raw")))
+                .arrayBuffer().then(function (buf) {
+                  var bin = new Uint8Array(buf), s = "";
+                  for (var i = 0; i < bin.length; i++) s += String.fromCharCode(bin[i]);
+                  resolve(btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""));
+                }).catch(fallback);
+            } catch (e) { fallback(); }
+          } else fallback();
+        });
+      }
+      function copyLinkDevis(link) {
+        var done = function (ok) {
+          var cc = document.getElementById('cart-count');
+          if (cc) {
+            var old = cc.textContent;
+            cc.textContent = ok ? '🔗 lien copié' : 'copie le lien ci-dessous';
+            setTimeout(function () { cc.textContent = old; }, 2200);
+          }
+          if (!ok) prompt('Copie ce lien :', link);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(link).then(function () { done(true); }, function () { done(false); });
+        } else done(false);
+      }
       function finishShopping() {
         var checked = cartRead();
         if (checked.length === 0) {
@@ -1123,14 +1154,21 @@
           });
         });
         var list = historyRead();
-        list.unshift({
+        var run = {
           date: new Date().toISOString(),
           devis: '2026-0916',
+          devis_en: 'Personal',
           checked: checked.length,
           total: Math.round(total * 100) / 100,
           items: items
-        });
+        };
+        list.unshift(run);
         try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch (e) {}
+        /* Pont de partage : course encodée dans un lien → presse-papier */
+        encodeRun(run).then(function (code) {
+          var link = location.origin + location.pathname.replace(/devis\.html/, "index.html") + "#import=" + code;
+          copyLinkDevis(link);
+        });
         var cc = document.getElementById('cart-count');
         if (cc) {
           var old = cc.textContent;

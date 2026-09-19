@@ -417,31 +417,53 @@
         };
         list.unshift(run);
         try { localStorage.setItem("courses-history", JSON.stringify(list)); } catch (e) {}
-        /* Pont de partage (sans serveur) : après l'archive, la feuille
-           de partage du téléphone s'ouvre avec la course en fichier —
-           un seul geste pour l'envoyer par WhatsApp. Repli : téléchargement. */
-        try {
-          var blob = new Blob([JSON.stringify(run)], { type: "application/json" });
-          var fname = "course-famille-" + run.date.slice(0, 10) + ".json";
-          var file = new File([blob], fname, { type: "application/json" });
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({
-              files: [file],
-              title: vis === "en" ? "Family shopping run" : "Course famille"
-            }).catch(function () {});
-          } else {
-            var a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = fname;
-            a.click();
-          }
-        } catch (e) {}
+        /* Pont de partage (sans serveur) : la course est encodée dans
+           un lien, copié dans le presse-papier. Qui reçoit le lien et
+           l'ouvre voit la course importée automatiquement. */
+        encodeRun(run).then(function (code) {
+          var link = location.origin + location.pathname.replace(/famille\.html/, "index.html") + "#import=" + code;
+          copyLink(link, vis);
+        });
         var fb = document.getElementById("float-basket");
         if (fb) {
           var old = fb.querySelector(".fb-count").textContent;
           fb.querySelector(".fb-count").textContent = "💾 " + checked.length + (vis === "en" ? " archived" : " archivés");
           setTimeout(function () { fb.querySelector(".fb-count").textContent = old; resetFamille(); }, 1400);
         } else { resetFamille(); }
+      }
+      /* ===== Course encodée dans un lien (partage sans serveur) =====
+         JSON → deflate → base64url. Court même avec 21 articles.
+         Réversible par decodeRun() sur la page d'accueil. */
+      function encodeRun(run) {
+        var json = JSON.stringify(run);
+        return new Promise(function (resolve) {
+          var fallback = function () { resolve(btoa(unescape(encodeURIComponent(json)))); };
+          if (window.TextEncoder && window.CompressionStream) {
+            try {
+              new Response(new Blob([json]).stream().pipeThrough(new CompressionStream("deflate-raw")))
+                .arrayBuffer().then(function (buf) {
+                  var bin = new Uint8Array(buf), s = "";
+                  for (var i = 0; i < bin.length; i++) s += String.fromCharCode(bin[i]);
+                  resolve(btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""));
+                }).catch(fallback);
+            } catch (e) { fallback(); }
+          } else fallback();
+        });
+      }
+      function copyLink(link, vis) {
+        var done = function (ok) {
+          var fb = document.getElementById("float-basket");
+          if (fb) {
+            var c = fb.querySelector(".fb-count");
+            var old = c.textContent;
+            c.textContent = ok ? (vis === "en" ? "🔗 link copied" : "🔗 lien copié") : (vis === "en" ? "copy the link below" : "copie le lien ci-dessous");
+            setTimeout(function () { c.textContent = old; }, 2200);
+          }
+          if (!ok) prompt(vis === "en" ? "Copy this link:" : "Copie ce lien :", link);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(link).then(function () { done(true); }, function () { done(false); });
+        } else done(false);
       }
       function renderMerge() {
         var merged = mergeLists();

@@ -488,6 +488,54 @@
         o.addEventListener('click', function (e) { if (e.target === o) closeSheet(); });
         document.body.appendChild(o);
       }
+      /* ===== Import automatique depuis un lien partagé =====
+         Un lien reçu (WhatsApp etc.) se termine par #import=<code>.
+         À l'ouverture : décodage, contrôle, dédoublonnage, import,
+         puis nettoyage de l'URL (le lien ne « recharge » pas la
+         course à chaque rafraîchissement). */
+      function decodeRun(code) {
+        var b64 = code.replace(/-/g, "+").replace(/_/g, "/");
+        while (b64.length % 4) b64 += "=";
+        var bin = atob(b64), arr = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        return new Promise(function (resolve, reject) {
+          var fallback = function () {
+            try { resolve(JSON.parse(decodeURIComponent(escape(atob(b64))))); }
+            catch (e) { reject(e); }
+          };
+          if (window.DecompressionStream) {
+            try {
+              new Response(new Blob([arr]).stream().pipeThrough(new DecompressionStream("deflate-raw")))
+                .text().then(function (t) { resolve(JSON.parse(t)); }).catch(fallback);
+            } catch (e) { fallback(); }
+          } else fallback();
+        });
+      }
+      function maybeImportFromUrl() {
+        var m = /^#import=([\w\-+=]+)/.exec(location.hash);
+        if (!m) return;
+        decodeRun(m[1]).then(function (run) {
+          if (!run || !run.date || !Array.isArray(run.items)) throw new Error('format');
+          var lang = document.body.dataset.lang === 'en' ? 'en' : 'fr';
+          var list = historyRead();
+          var dup = list.some(function (h) {
+            return h.date === run.date && h.total === run.total && (h.devis || '') === (run.devis || '');
+          });
+          if (!dup) {
+            list.push(run);
+            list.sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+            try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch (e) {}
+            renderHistory();
+          }
+          history.replaceState(null, '', location.pathname);
+          alert(lang === 'en'
+            ? (dup ? 'This run is already in your history.' : 'Run imported ✅')
+            : (dup ? 'Cette course est déjà dans ton historique.' : 'Course importée ✅'));
+        }).catch(function () {
+          history.replaceState(null, '', location.pathname);
+          alert(document.body.dataset.lang === 'en' ? 'Invalid shared link.' : 'Lien partagé invalide.');
+        });
+      }
       function exportCsv() {
         var list = historyRead();
         if (list.length === 0) { alert(document.body.dataset.lang === 'en' ? 'Nothing to export.' : 'Rien à exporter.'); return; }
@@ -555,6 +603,7 @@
       } catch (e) { switchLang('fr'); }
       setTheme(document.body.classList.contains('day') ? 'day' : 'night');
       renderHistory();
+      maybeImportFromUrl();
     </script>
   </body>
 </html>
