@@ -365,10 +365,15 @@
           }
         }
         var saved = loadChecks();
+        var saved = loadChecks();
         boxes.forEach(function (b) {
           b.checked = !!saved[b.closest("tr").dataset.key];
           b.addEventListener("change", refresh);
         });
+        /* Recalcul accessible directement (reset/tout-cocher) : pas
+           de simulation d'événement, source de bugs silencieux. */
+        window.__famRefresh = refresh;
+        window.__famCount = itemCount;
         refresh();
       }
       /* ===== Terminer la course famille : archive cochés + total
@@ -388,13 +393,7 @@
           if (tr) { tr.classList.add("done"); state[tr.dataset.key] = true; }
         });
         try { localStorage.setItem("famille-checks", JSON.stringify(state)); } catch (e) {}
-        /* Recalcul du panier via le listener change de la première case */
-        var first = document.querySelector("#" + vis + "-merge .item-check");
-        if (first) {
-          var evt = document.createEvent("HTMLEvents");
-          evt.initEvent("change", true, true);
-          first.dispatchEvent(evt);
-        }
+        if (window.__famRefresh) window.__famRefresh();
       }
       function resetFamille() {
         try { localStorage.removeItem("famille-checks"); } catch (e) {}
@@ -403,10 +402,7 @@
           var tr = b.closest("tr");
           if (tr) tr.classList.remove("done");
         });
-        var evt = document.createEvent("HTMLEvents");
-        evt.initEvent("change", true, true);
-        var first = document.querySelector("#fr-merge .item-check, #en-merge .item-check");
-        if (first) first.dispatchEvent(evt);
+        if (window.__famRefresh) window.__famRefresh();
       }
       function finishFamille() {
         var vis = document.body.dataset.lang === "en" ? "en" : "fr";
@@ -459,12 +455,14 @@
           var link = location.origin + location.pathname.replace(/famille\.html/, "index.html") + "#import=" + code;
           copyLink(link, vis);
         });
+        /* Décoche d'abord (compteur repasse à 0), montre le message
+           d'archive, puis le compteur réel se réaffiche tout seul. */
+        resetFamille();
         var fb = document.getElementById("float-basket");
         if (fb) {
-          var old = fb.querySelector(".fb-count").textContent;
           fb.querySelector(".fb-count").textContent = "💾 " + checked.length + (vis === "en" ? " archived" : " archivés");
-          setTimeout(function () { fb.querySelector(".fb-count").textContent = old; resetFamille(); }, 1400);
-        } else { resetFamille(); }
+          setTimeout(function () { if (window.__famRefresh) window.__famRefresh(); }, 1600);
+        }
       }
       /* ===== Course encodée dans un lien (partage sans serveur) =====
          JSON → deflate → base64url. Court même avec 21 articles.
