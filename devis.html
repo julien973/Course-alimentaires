@@ -497,6 +497,7 @@
         <div class="tb-actions">
         <span class="cart-count" id="cart-count">🛒 0/21</span>
         <button class="lang-btn" onclick="location.href='index.html'" title="Accueil / Home">🏠 <span class="btn-txt" data-fr="Accueil" data-en="Home">Accueil</span></button>
+        <button class="lang-btn" onclick="checkAllCart()" title="Tout cocher / Check all">☑️ <span class="btn-txt" data-fr="Tout cocher" data-en="Check all">Tout cocher</span></button>
         <button class="lang-btn" id="btn-reset" onclick="resetCart()" title="Tout décocher / Uncheck all">↺ <span class="btn-txt" data-fr="Tout décocher" data-en="Uncheck all">Tout décocher</span></button>
         <button class="lang-btn" id="btn-finish" onclick="finishShopping()" title="Terminer la course : archive le panier dans l'historique / Finish: archive cart to history">✅ <span class="btn-txt" data-fr="Terminer" data-en="Finish">Terminer</span></button>
         <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
@@ -700,7 +701,7 @@
           </ul>
         </div>
 
-        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v3.0. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Devis généré le 16/09/2026 — macros vérifiés sur Open Food Facts pour les produits marqués « vérifié OFF » — v4.4. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -894,14 +895,14 @@
           </ul>
         </div>
 
-        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v3.0. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Quote generated on 16/09/2026 — nutrition facts verified on Open Food Facts for items marked "verified OFF" — v4.4. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="🧾 Course alimentaire" data-en="🧾 Grocery Quote">🧾 Course alimentaire</span>
-        <span class="bb-ver">v3.0 · 2026</span>
+        <span class="bb-ver">v4.4 · 2026</span>
       </div>
     </footer>
 
@@ -1070,6 +1071,21 @@
           var tr = b.closest('tr');
           if (tr) tr.classList.remove('done');
         });
+        updateCartCount();
+      }
+      function checkAllCart() {
+        /* Ne touche que la langue affichée (l'autre tableau est un
+           miroir caché : le cocher doublerait l'archive). */
+        var vis = document.body.dataset.lang === 'en' ? 'en' : 'fr';
+        var keys = [];
+        document.querySelectorAll('[id^="' + vis + '-s"] label.check input').forEach(function (b) {
+          b.checked = true;
+          var tr = b.closest('tr');
+          if (tr) tr.classList.add('done');
+          var k = rowKey(tr);
+          if (keys.indexOf(k) === -1) keys.push(k);
+        });
+        cartWrite(keys);
         updateCartCount();
       }
 

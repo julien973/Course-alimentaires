@@ -158,6 +158,7 @@
         <span class="tb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
         <div class="tb-actions">
           <button class="lang-btn" onclick="location.href='index.html'" title="Accueil / Home">🏠 <span class="btn-txt" data-fr="Accueil" data-en="Home">Accueil</span></button>
+          <button class="lang-btn" onclick="checkAllFamille()" title="Tout cocher / Check all">☑️ <span class="btn-txt" data-fr="Tout cocher" data-en="Check all">Tout cocher</span></button>
           <button class="lang-btn" id="btn-reset" onclick="resetFamille()" title="Tout décocher / Uncheck all">↺ <span class="btn-txt" data-fr="Tout décocher" data-en="Uncheck all">Tout décocher</span></button>
           <button class="lang-btn" id="btn-finish" onclick="finishFamille()" title="Terminer la course famille : archive dans l'historique / Finish: archive to history">✅ <span class="btn-txt" data-fr="Terminer" data-en="Finish">Terminer</span></button>
           <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#ffffff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>FR</button>
@@ -186,7 +187,7 @@
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
         </div>
-        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v3.0. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.4. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <div id="lang-en" class="hidden">
@@ -205,14 +206,14 @@
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
         </div>
-        <p class="footer">Merge recomputed automatically from both quotes — v3.0. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Merge recomputed automatically from both quotes — v4.4. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
-        <span class="bb-ver">v3.0 · 2026</span>
+        <span class="bb-ver">v4.4 · 2026</span>
       </div>
     </footer>
 
@@ -360,6 +361,23 @@
         /* Même stockage que la page devis : clé courses-history */
         try { return JSON.parse(localStorage.getItem("courses-history") || "[]"); }
         catch (e) { return []; }
+      }
+      function checkAllFamille() {
+        var vis = document.body.dataset.lang === "en" ? "en" : "fr";
+        var state = {};
+        document.querySelectorAll("#" + vis + "-merge .item-check").forEach(function (b) {
+          b.checked = true;
+          var tr = b.closest("tr");
+          if (tr) { tr.classList.add("done"); state[tr.dataset.key] = true; }
+        });
+        try { localStorage.setItem("famille-checks", JSON.stringify(state)); } catch (e) {}
+        /* Recalcul du panier via le listener change de la première case */
+        var first = document.querySelector("#" + vis + "-merge .item-check");
+        if (first) {
+          var evt = document.createEvent("HTMLEvents");
+          evt.initEvent("change", true, true);
+          first.dispatchEvent(evt);
+        }
       }
       function resetFamille() {
         try { localStorage.removeItem("famille-checks"); } catch (e) {}
