@@ -54,9 +54,14 @@
         --spot: rgba(37, 99, 235, 0.10);
       }
       body {
-        margin: 0; padding: 0 0 48px; min-height: 100vh;
+        margin: 0; padding: 0 0 48px; min-height: 100vh; min-height: 100svh; overscroll-behavior-y: none;
         color: var(--ink); background-color: var(--bg-base);
-        background-image: var(--bg-image); background-attachment: fixed;
+        background-image: var(--bg-image);
+      }
+      /* Arrière-plan figé : uniquement sur ordinateur — le « fixed »
+         casse le défilement sur iPhone Safari (scroll sans fin). */
+      @media (hover: hover) and (pointer: fine) {
+        body { background-attachment: fixed; }
         transition: background-color 0.45s ease, color 0.45s ease;
       }
       .page { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
