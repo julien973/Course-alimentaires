@@ -117,6 +117,14 @@
       .item-check { width: 18px; height: 18px; accent-color: #2563eb; cursor: pointer; }
       .fam-row.done td { opacity: 0.55; }
       .fam-row.done td.name { text-decoration: line-through; }
+      /* Récapitulatif grand total (miroir du devis perso) */
+      .total-row { background: linear-gradient(135deg, #dc2626, #b91c1c); color: #ffffff; border-radius: 10px; padding: 12px 18px; display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; margin-top: 12px; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); animation: totalPulse 2.8s ease-in-out infinite; }
+      @keyframes totalPulse {
+        0%, 100% { box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); }
+        50% { box-shadow: 0 4px 26px rgba(220, 38, 38, 0.62); }
+      }
+      .recap-card { margin-top: 22px; }
+      .recap-hint { font-size: 12.5px; color: var(--c-muted); margin: 8px 2px 0; }
       /* Pastille panier flottante : suit le défilement, miroir du KPI en haut */
       .float-basket {
         position: fixed; bottom: 88px; right: 18px; z-index: 60;
@@ -164,7 +172,7 @@
       .botbar .bb-brand { font-weight: 700; font-size: 14px; color: var(--ink); }
       .botbar .bb-ver { font-size: 13px; color: var(--muted); font-weight: 600; }
       body { padding-bottom: 88px; }
-      @media print { .topbar, .orbs, .float-basket { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } }
+      @media print { .topbar, .orbs, .float-basket { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; } }
       @media (max-width: 720px) { .card { padding: 18px 16px; } table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } .kpi .value { font-size: 21px; } }
       @media screen and (min-width: 721px), print { td { overflow-wrap: anywhere; } }
     </style>
@@ -205,6 +213,10 @@
           <div class="kpi"><div class="label">Articles communs</div><div class="value" id="kpi-commun-fr">—</div><div class="sub">Présents chez les deux</div></div>
         </div>
         <div id="fr-merge"></div>
+        <div class="card recap-card">
+          <div class="total-row"><span data-fr="TOTAL GÉNÉRAL" data-en="GRAND TOTAL">TOTAL GÉNÉRAL</span><span id="recap-total-fr">0,00 €</span></div>
+          <p class="recap-hint" id="recap-hint-fr">Coche les articles pris en magasin — le total se remplit au fur et à mesure.</p>
+        </div>
         <div class="card" id="fr-opt">
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
@@ -224,6 +236,10 @@
           <div class="kpi"><div class="label">Common items</div><div class="value" id="kpi-commun-en">—</div><div class="sub">Present in both lists</div></div>
         </div>
         <div id="en-merge"></div>
+        <div class="card recap-card">
+          <div class="total-row"><span data-fr="TOTAL GÉNÉRAL" data-en="GRAND TOTAL">GRAND TOTAL</span><span id="recap-total-en">€0.00</span></div>
+          <p class="recap-hint" id="recap-hint-en">Tick items picked up in store — the total fills up as you go.</p>
+        </div>
         <div class="card" id="en-opt">
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
@@ -367,6 +383,27 @@
               n + " / " + itemCount + (lang === "en" ? " picked up" : " cochés");
             fb.style.transform = n > 0 ? "scale(1.04)" : "scale(1)";
             setTimeout(function () { fb.style.transform = "scale(1)"; }, 180);
+          }
+          /* Récapitulatif grand total (bandeau rouge, miroir du devis) */
+          var rt = document.getElementById("recap-total-" + lang);
+          if (rt) {
+            rt.textContent = fmtEur(sum, lang);
+            var hint = document.getElementById("recap-hint-" + lang);
+            if (hint) {
+              if (n === 0) {
+                hint.textContent = lang === "en"
+                  ? "Tick items picked up in store — the total fills up as you go."
+                  : "Coche les articles pris en magasin — le total se remplit au fur et à mesure.";
+              } else if (n === itemCount) {
+                hint.textContent = lang === "en"
+                  ? "🎉 Full basket picked up — ready to finish!"
+                  : "🎉 Panier complet — prêt à terminer !";
+              } else {
+                hint.textContent = n + " / " + itemCount + (lang === "en"
+                  ? " items picked up so far."
+                  : " articles pris pour l'instant.");
+              }
+            }
           }
         }
         var saved = loadChecks();
