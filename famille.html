@@ -407,15 +407,35 @@
           });
         });
         var list = famHistory();
-        list.unshift({
+        var run = {
           date: new Date().toISOString(),
           devis: "Famille",
           devis_en: "Family",
           checked: checked.length,
           total: Math.round(total * 100) / 100,
           items: items
-        });
+        };
+        list.unshift(run);
         try { localStorage.setItem("courses-history", JSON.stringify(list)); } catch (e) {}
+        /* Pont de partage (sans serveur) : après l'archive, la feuille
+           de partage du téléphone s'ouvre avec la course en fichier —
+           un seul geste pour l'envoyer par WhatsApp. Repli : téléchargement. */
+        try {
+          var blob = new Blob([JSON.stringify(run)], { type: "application/json" });
+          var fname = "course-famille-" + run.date.slice(0, 10) + ".json";
+          var file = new File([blob], fname, { type: "application/json" });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+              files: [file],
+              title: vis === "en" ? "Family shopping run" : "Course famille"
+            }).catch(function () {});
+          } else {
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = fname;
+            a.click();
+          }
+        } catch (e) {}
         var fb = document.getElementById("float-basket");
         if (fb) {
           var old = fb.querySelector(".fb-count").textContent;

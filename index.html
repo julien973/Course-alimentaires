@@ -251,13 +251,14 @@
 
         <div class="card" id="fr-hist">
           <h2>🕘 Historique des courses</h2>
-          <p>Chaque course terminée (bouton ✅ dans le devis ou la liste famille) est archivée ici : date, articles pris, total dépensé. Stocké dans ce navigateur.</p>
+          <p>Chaque course terminée (bouton ✅ dans le devis ou la liste famille) est archivée ici : date, articles pris, total dépensé. Stocké dans ce navigateur. 📥 Importer : ajoute une course reçue d'un autre téléphone (fichier partagé).</p>
           <table>
             <thead><tr><th>Date</th><th>Devis</th><th class="num">Articles</th><th class="num">Total</th><th></th></tr></thead>
             <tbody id="hist-body-fr"></tbody>
           </table>
           <div class="tb-actions">
             <button class="lang-btn" onclick="exportCsv()">⬇️ Exporter CSV</button>
+            <button class="lang-btn" onclick="importRun()">📥 <span class="btn-txt" data-fr="Importer" data-en="Import">Importer</span></button>
             <button class="lang-btn" onclick="clearHistory()">🗑️ Vider</button>
           </div>
         </div>
@@ -298,13 +299,14 @@
 
         <div class="card" id="en-hist">
           <h2>🕘 Shopping history</h2>
-          <p>Every finished run (✅ button in the quote or the family list) is archived here: date, items taken, total spent. Stored in this browser.</p>
+          <p>Every finished run (✅ button in the quote or the family list) is archived here: date, items taken, total spent. Stored in this browser. 📥 Import: adds a run shared from another phone (shared file).</p>
           <table>
             <thead><tr><th>Date</th><th>Quote</th><th class="num">Items</th><th class="num">Total</th><th></th></tr></thead>
             <tbody id="hist-body-en"></tbody>
           </table>
           <div class="tb-actions">
             <button class="lang-btn" onclick="exportCsv()">⬇️ Export CSV</button>
+            <button class="lang-btn" onclick="importRun()">📥 <span class="btn-txt" data-fr="Importer" data-en="Import">Import</span></button>
             <button class="lang-btn" onclick="clearHistory()">🗑️ Clear</button>
           </div>
         </div>
@@ -495,6 +497,51 @@
         a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
         a.download = 'historique-courses.csv';
         a.click();
+      }
+      /* ===== Import d'une course reçue d'un autre téléphone =====
+         Lit le fichier .json partagé (WhatsApp etc.), vérifie le
+         format, évite les doublons (même date + total + devis) et
+         l'ajoute à l'historique local. */
+      function importRun() {
+        var inp = document.getElementById('import-file');
+        if (!inp) {
+          inp = document.createElement('input');
+          inp.type = 'file';
+          inp.id = 'import-file';
+          inp.accept = 'application/json,.json';
+          inp.style.display = 'none';
+          inp.addEventListener('change', function () {
+            var f = inp.files && inp.files[0];
+            if (!f) return;
+            var r = new FileReader();
+            r.onload = function () {
+              var en = document.body.dataset.lang === 'en';
+              try {
+                var run = JSON.parse(r.result);
+                if (!run || !run.date || !Array.isArray(run.items)) throw new Error('format');
+                var list = historyRead();
+                var dup = list.some(function (h) {
+                  return h.date === run.date && h.total === run.total && (h.devis || '') === (run.devis || '');
+                });
+                if (!dup) {
+                  list.push(run);
+                  list.sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+                  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch (e) {}
+                }
+                renderHistory();
+                alert(en
+                  ? (dup ? 'Already in the history.' : 'Run imported ✅')
+                  : (dup ? 'Déjà présente dans l\'historique.' : 'Course importée ✅'));
+              } catch (e) {
+                alert(en ? 'Invalid file — expected a shared run (.json).' : 'Fichier invalide — attendu : une course partagée (.json).');
+              }
+              inp.value = '';
+            };
+            r.readAsText(f);
+          });
+          document.body.appendChild(inp);
+        }
+        inp.click();
       }
       function clearHistory() {
         var msg = document.body.dataset.lang === 'en' ? 'Delete the whole shopping history?' : 'Supprimer tout l\'historique des courses ?';
