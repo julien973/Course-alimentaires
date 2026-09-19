@@ -214,14 +214,19 @@
         </div>
         <div id="fr-merge"></div>
         <div class="card recap-card">
-          <div class="total-row"><span data-fr="TOTAL GÉNÉRAL" data-en="GRAND TOTAL">TOTAL GÉNÉRAL</span><span id="recap-total-fr">0,00 €</span></div>
-          <p class="recap-hint" id="recap-hint-fr">Coche les articles pris en magasin — le total se remplit au fur et à mesure.</p>
+          <h2>Récapitulatif des sous-totaux</h2>
+          <table>
+            <thead><tr><th>Catégorie</th><th class="num">Pris / Total</th><th class="num">Sous-total</th></tr></thead>
+            <tbody id="recap-body-fr"></tbody>
+          </table>
+          <div class="total-row"><span>TOTAL GÉNÉRAL</span><span id="recap-total-fr">0,00 €</span></div>
+          <p class="recap-hint" id="recap-hint-fr">Coche les articles pris en magasin — chaque sous-total se remplit au fur et à mesure.</p>
         </div>
         <div class="card" id="fr-opt">
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
         </div>
-        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.7. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.10. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <div id="lang-en" class="hidden">
@@ -237,21 +242,26 @@
         </div>
         <div id="en-merge"></div>
         <div class="card recap-card">
-          <div class="total-row"><span data-fr="TOTAL GÉNÉRAL" data-en="GRAND TOTAL">GRAND TOTAL</span><span id="recap-total-en">€0.00</span></div>
-          <p class="recap-hint" id="recap-hint-en">Tick items picked up in store — the total fills up as you go.</p>
+          <h2>Subtotals recap</h2>
+          <table>
+            <thead><tr><th>Category</th><th class="num">Picked / Total</th><th class="num">Subtotal</th></tr></thead>
+            <tbody id="recap-body-en"></tbody>
+          </table>
+          <div class="total-row"><span>GRAND TOTAL</span><span id="recap-total-en">€0.00</span></div>
+          <p class="recap-hint" id="recap-hint-en">Tick items picked up in store — each subtotal fills up as you go.</p>
         </div>
         <div class="card" id="en-opt">
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
         </div>
-        <p class="footer">Merge recomputed automatically from both quotes — v4.7. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Merge recomputed automatically from both quotes — v4.10. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
-        <span class="bb-ver">v4.7 · 2026</span>
+        <span class="bb-ver">v4.10 · 2026</span>
       </div>
     </footer>
 
@@ -384,7 +394,26 @@
             fb.style.transform = n > 0 ? "scale(1.04)" : "scale(1)";
             setTimeout(function () { fb.style.transform = "scale(1)"; }, 180);
           }
-          /* Récapitulatif grand total (bandeau rouge, miroir du devis) */
+          /* Récapitulatif des sous-totaux : par catégorie, calculé
+             depuis les cases cochées (marche pour 21 ou 300 articles
+             — une seule passe). */
+          var rb = document.getElementById("recap-body-" + lang);
+          if (rb) {
+            var byCat = {}, catOrder = [];
+            boxes.forEach(function (b) {
+              var card = b.closest(".card");
+              var h2 = card ? card.querySelector("h2") : null;
+              var catName = h2 ? h2.textContent : (lang === "en" ? "Other" : "Autre");
+              if (!byCat[catName]) { byCat[catName] = { taken: 0, all: 0, sum: 0 }; catOrder.push(catName); }
+              byCat[catName].all++;
+              if (b.checked) { byCat[catName].taken++; byCat[catName].sum += parseFloat(b.dataset.price) || 0; }
+            });
+            rb.innerHTML = catOrder.map(function (c) {
+              var x = byCat[c];
+              return '<tr><td>' + c + '</td><td class="num">' + x.taken + ' / ' + x.all +
+                '</td><td class="num">' + fmtEur(Math.round(x.sum * 100) / 100, lang) + '</td></tr>';
+            }).join("");
+          }
           var rt = document.getElementById("recap-total-" + lang);
           if (rt) {
             rt.textContent = fmtEur(sum, lang);
@@ -392,8 +421,8 @@
             if (hint) {
               if (n === 0) {
                 hint.textContent = lang === "en"
-                  ? "Tick items picked up in store — the total fills up as you go."
-                  : "Coche les articles pris en magasin — le total se remplit au fur et à mesure.";
+                  ? "Tick items picked up in store — each subtotal fills up as you go."
+                  : "Coche les articles pris en magasin — chaque sous-total se remplit au fur et à mesure.";
               } else if (n === itemCount) {
                 hint.textContent = lang === "en"
                   ? "🎉 Full basket picked up — ready to finish!"
