@@ -175,7 +175,7 @@
       @media print { .topbar, .orbs, .float-basket { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; } }
       @media (max-width: 720px) { .card { padding: 18px 16px; } table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } .kpi .value { font-size: 21px; } }
       @media screen and (min-width: 721px), print { td { overflow-wrap: anywhere; } }
-    /* ===== v4.12 : rubriques intelligentes ===== */
+    /* ===== v4.13 : rubriques intelligentes ===== */
       .fam-cat .fam-head { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; margin: 0; }
       .fam-cat .fam-title { flex: 1; }
       .fam-count { font-size: 12px; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 999px; background: var(--badge-bg); color: var(--ink); white-space: nowrap; }
@@ -186,6 +186,11 @@
       .fam-cat.open .fam-chev { transform: rotate(180deg); }
       .fam-cat.done .fam-count { background: #16a34a; color: #fff; }
       .fam-cat.done .fam-title { color: var(--muted); }
+      .fam-all { font: inherit; font-size: 12px; font-weight: 700; color: #1d4ed8;
+        background: none; border: 1px solid var(--line-strong); border-radius: 999px;
+        padding: 0.25rem 0.7rem; cursor: pointer; margin-top: 0.5rem; }
+      .fam-all:hover { background: var(--badge-bg); }
+      .fam-all:active { transform: scale(0.97); }
       </style>
   </head>
   <body class="night">
@@ -237,7 +242,7 @@
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
         </div>
-        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.12. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.13. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <div id="lang-en" class="hidden">
@@ -265,14 +270,14 @@
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
         </div>
-        <p class="footer">Merge recomputed automatically from both quotes — v4.12. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Merge recomputed automatically from both quotes — v4.13. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
-        <span class="bb-ver">v4.12 · 2026</span>
+        <span class="bb-ver">v4.13 · 2026</span>
       </div>
     </footer>
 
@@ -599,7 +604,7 @@
           updateRubriques(!silent);
         }
         var saved = loadChecks();
-        /* ===== v4.12 : rubriques intelligentes =====
+        /* ===== v4.13 : rubriques intelligentes =====
            Chaque carte catégorie est repliable ; un compteur montre
            la progression ; quand une rubrique est complète, elle se
            replie automatiquement et la suivante s'ouvre. */
@@ -636,6 +641,12 @@
         cards.forEach(function (card) {
           card.querySelector(".fam-head").addEventListener("click", function () {
             card.classList.toggle("open");
+          });
+          /* v4.13 : tout cocher d'un coup dans ce rayon */
+          var allBtn = card.querySelector(".fam-all");
+          if (allBtn) allBtn.addEventListener("click", function () {
+            card.querySelectorAll(".item-check").forEach(function (b) { b.checked = true; });
+            refresh(false);
           });
         });
         boxes.forEach(function (b) {
@@ -832,7 +843,7 @@
           html += '<div class="card fam-cat" data-cat="' + cat + '"><h2 class="fam-head"><span class="fam-title">' + CATS[cat][lang] + '</span><span class="fam-count"></span><span class="fam-chev">&#9662;</span></h2><div class="fam-body">' +
             '<table><thead><tr><th class="chk">✓</th><th>' + (lang === "en" ? "Item" : "Article") + '</th><th>' + (lang === "en" ? "Qty" : "Qté") +
             '</th><th class="num">' + (lang === "en" ? "Total" : "Total") + '</th><th>' + (lang === "en" ? "Source" : "Source") + '</th></tr></thead>' +
-            '<tbody>' + rows + '</tbody></table><p class="sous-total">' + (lang === "en" ? "Subtotal: " : "Sous-total : ") + fmtEur(catTotal, lang) + '</p></div></div>';
+            '<tbody>' + rows + '</tbody></table><button type="button" class="fam-all">' + (lang === "en" ? "✓ Tick all in this aisle" : "✓ Tout cocher ce rayon") + '</button><p class="sous-total">' + (lang === "en" ? "Subtotal: " : "Sous-total : ") + fmtEur(catTotal, lang) + '</p></div></div>';
         });
         if (FAMILY_LIST.length === 0) {
           html = '<div class="callout">⏳ <b>' + (lang === "en" ? "Awaiting the quote." : "En attente du devis.") + '</b> ' +
