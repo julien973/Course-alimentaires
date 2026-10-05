@@ -175,7 +175,18 @@
       @media print { .topbar, .orbs, .float-basket { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; } }
       @media (max-width: 720px) { .card { padding: 18px 16px; } table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } .kpi .value { font-size: 21px; } }
       @media screen and (min-width: 721px), print { td { overflow-wrap: anywhere; } }
-    </style>
+    /* ===== v4.12 : rubriques intelligentes ===== */
+      .fam-cat .fam-head { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; margin: 0; }
+      .fam-cat .fam-title { flex: 1; }
+      .fam-count { font-size: 12px; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 999px; background: var(--badge-bg); color: var(--ink); white-space: nowrap; }
+      .fam-chev { font-size: 12px; color: var(--muted); transition: transform 0.25s ease; }
+      .fam-cat .fam-body { display: none; }
+      .fam-cat.open .fam-body { display: block; }
+      .fam-chev, .fam-cat .fam-chev { display: inline-block; }
+      .fam-cat.open .fam-chev { transform: rotate(180deg); }
+      .fam-cat.done .fam-count { background: #16a34a; color: #fff; }
+      .fam-cat.done .fam-title { color: var(--muted); }
+      </style>
   </head>
   <body class="night">
     <script>
@@ -226,7 +237,7 @@
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
         </div>
-        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.11. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.12. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <div id="lang-en" class="hidden">
@@ -254,14 +265,14 @@
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
         </div>
-        <p class="footer">Merge recomputed automatically from both quotes — v4.11. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Merge recomputed automatically from both quotes — v4.12. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
-        <span class="bb-ver">v4.11 · 2026</span>
+        <span class="bb-ver">v4.12 · 2026</span>
       </div>
     </footer>
 
@@ -524,7 +535,7 @@
       }
       function wireChecks(lang, itemCount) {
         var boxes = document.querySelectorAll("#" + lang + "-merge .item-check");
-        function refresh() {
+        function refresh(silent) {
           var sum = 0, n = 0, state = {};
           boxes.forEach(function (b) {
             var row = b.closest("tr");
@@ -553,7 +564,7 @@
             var byCat = {}, catOrder = [];
             boxes.forEach(function (b) {
               var card = b.closest(".card");
-              var h2 = card ? card.querySelector("h2") : null;
+              var h2 = card ? card.querySelector(".fam-title") : null;
               var catName = h2 ? h2.textContent : (lang === "en" ? "Other" : "Autre");
               if (!byCat[catName]) { byCat[catName] = { taken: 0, all: 0, sum: 0 }; catOrder.push(catName); }
               byCat[catName].all++;
@@ -585,18 +596,59 @@
               }
             }
           }
+          updateRubriques(!silent);
         }
         var saved = loadChecks();
-        var saved = loadChecks();
+        /* ===== v4.12 : rubriques intelligentes =====
+           Chaque carte catégorie est repliable ; un compteur montre
+           la progression ; quand une rubrique est complète, elle se
+           replie automatiquement et la suivante s'ouvre. */
+        var host = document.getElementById(lang + "-merge");
+        var cards = Array.prototype.slice.call(host.querySelectorAll(".fam-cat"));
+        function updateRubriques(auto) {
+          cards.forEach(function (card) { card.dataset.done = "0"; });
+          boxes.forEach(function (b) {
+            var card = b.closest(".fam-cat");
+            if (card && b.checked) card.dataset.done = "1";
+          });
+          var nextToOpen = null;
+          cards.forEach(function (card) {
+            var cardBoxes = card.querySelectorAll(".item-check");
+            var totalC = cardBoxes.length, doneC = 0;
+            cardBoxes.forEach(function (b) { if (b.checked) doneC++; });
+            var badge = card.querySelector(".fam-count");
+            if (badge) badge.textContent = doneC + " / " + totalC;
+            var wasOpen = card.classList.contains("open");
+            var justDone = doneC === totalC && totalC > 0 && !card.dataset.donePrev;
+            card.dataset.donePrev = (doneC === totalC && totalC > 0) ? "1" : "0";
+            card.classList.toggle("done", doneC === totalC && totalC > 0);
+            if (auto && justDone && wasOpen) card.classList.remove("open");
+            if (!card.classList.contains("done") && !nextToOpen) nextToOpen = card;
+          });
+          if (auto && nextToOpen && !cards.some(function (c) { return c.classList.contains("open"); })) {
+            cards.forEach(function (c) { c.classList.remove("open"); });
+            nextToOpen.classList.add("open");
+            if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+              try { nextToOpen.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {}
+            }
+          }
+        }
+        cards.forEach(function (card) {
+          card.querySelector(".fam-head").addEventListener("click", function () {
+            card.classList.toggle("open");
+          });
+        });
         boxes.forEach(function (b) {
           b.checked = !!saved[b.closest("tr").dataset.key];
-          b.addEventListener("change", refresh);
+          b.addEventListener("change", function () { refresh(false); });
         });
         /* Recalcul accessible directement (reset/tout-cocher) : pas
            de simulation d'événement, source de bugs silencieux. */
         window.__famRefresh = refresh;
         window.__famCount = itemCount;
-        refresh();
+        refresh(true);
+        var firstOpen = cards.filter(function (c) { return !c.classList.contains("done"); })[0] || cards[0];
+        if (firstOpen) firstOpen.classList.add("open");
       }
       /* ===== Terminer la course famille : archive cochés + total
          dans le même historique que le devis (courses-history),
@@ -777,10 +829,10 @@
               "</td><td class=\"num\">" + fmtEur(m.price, lang) + "</td><td><span class=\"src " + m.src + "\">" +
               SRC_LABEL[lang][m.src] + "</span></td></tr>";
           }).join("");
-          html += '<div class="card"><h2>' + CATS[cat][lang] + '</h2>' +
+          html += '<div class="card fam-cat" data-cat="' + cat + '"><h2 class="fam-head"><span class="fam-title">' + CATS[cat][lang] + '</span><span class="fam-count"></span><span class="fam-chev">&#9662;</span></h2><div class="fam-body">' +
             '<table><thead><tr><th class="chk">✓</th><th>' + (lang === "en" ? "Item" : "Article") + '</th><th>' + (lang === "en" ? "Qty" : "Qté") +
             '</th><th class="num">' + (lang === "en" ? "Total" : "Total") + '</th><th>' + (lang === "en" ? "Source" : "Source") + '</th></tr></thead>' +
-            '<tbody>' + rows + '</tbody></table><p class="sous-total">' + (lang === "en" ? "Subtotal: " : "Sous-total : ") + fmtEur(catTotal, lang) + '</p></div>';
+            '<tbody>' + rows + '</tbody></table><p class="sous-total">' + (lang === "en" ? "Subtotal: " : "Sous-total : ") + fmtEur(catTotal, lang) + '</p></div></div>';
         });
         if (FAMILY_LIST.length === 0) {
           html = '<div class="callout">⏳ <b>' + (lang === "en" ? "Awaiting the quote." : "En attente du devis.") + '</b> ' +
