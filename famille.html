@@ -226,7 +226,7 @@
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
         </div>
-        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.10. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.11. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <div id="lang-en" class="hidden">
@@ -254,14 +254,14 @@
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
         </div>
-        <p class="footer">Merge recomputed automatically from both quotes — v4.10. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Merge recomputed automatically from both quotes — v4.11. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
-        <span class="bb-ver">v4.10 · 2026</span>
+        <span class="bb-ver">v4.11 · 2026</span>
       </div>
     </footer>
 
@@ -300,7 +300,157 @@
         { fr: "Lait de coco", en: "Coconut milk", qty: "3 × 400 ml", price: 4.80, cat: 5 },
         { fr: "Oignons + ail + persil", en: "Onions + garlic + parsley", qty: "—", price: 2.00, cat: 5 }
       ];
-      var FAMILY_LIST = [];
+      var FAMILY_LIST = [
+        { fr: "Eau aromatisée Cristaline - Fraise - 1.5L", en: "Flavoured water strawberry - 1.5L", qty: "2x", price: 1.19, cat: 9 },
+        { fr: "Jus multifruits Jafaden - Brique, ABC - 2L", en: "Multifruit juice - 2L", qty: "2x", price: 2.65, cat: 9 },
+        { fr: "Sirop Frucci - Pêche - 1.3L", en: "Peach syrup - 1.3L", qty: "—", price: 3.98, cat: 9 },
+        { fr: "Jambon Le Bon Paris Herta - À l'étouffée x6 - 255g", en: "Paris ham x6 - 255g", qty: "—", price: 2.86, cat: 9 },
+        { fr: "Knacki Original Herta - x20 - 700g", en: "Original knacki sausages x20", qty: "—", price: 3.18, cat: 9 },
+        { fr: "Lardons supérieurs Tradilège - Fumés maxi format 2x200g", en: "Smoked lardons 2x200g", qty: "6x", price: 3.18, cat: 9 },
+        { fr: "Salami Danois Saint-Azay - x16 - 160g", en: "Danish salami x16 - 160g", qty: "3x", price: 1.71, cat: 9 },
+        { fr: "Saucisses Knacki Herta - Poulet x10 - 350g", en: "Chicken knacki sausages x10", qty: "—", price: 1.45, cat: 9 },
+        { fr: "Adoucissant Hyperdou - Senteur de provence - 1.9L x 27", en: "Fabric softener - 1.9L", qty: "—", price: 2.40, cat: 10 },
+        { fr: "Désodorisant Bien Air - Agrume, anti-tabac - 300ml", en: "Air freshener anti-tabac - 300ml", qty: "—", price: 1.17, cat: 10 },
+        { fr: "Désodorisant Bien Air - Floral - 300ml", en: "Air freshener floral - 300ml", qty: "—", price: 1.09, cat: 10 },
+        { fr: "Désodorisant Bien Air - Senteur muguet - 300ml", en: "Air freshener lily - 300ml", qty: "—", price: 1.09, cat: 10 },
+        { fr: "Désodorisant Bien Air - Un printemps au Japon - 250ml", en: "Air freshener Japan spring - 250ml", qty: "—", price: 2.36, cat: 10 },
+        { fr: "Désodorisant aérosol Fèbreze - Pureté de coton - 185ml", en: "Aerosol air freshener - 185ml", qty: "—", price: 2.81, cat: 10 },
+        { fr: "Eau de javel Eco+ - Bidon - 5L", en: "Bleach - 5L", qty: "—", price: 1.07, cat: 10 },
+        { fr: "Eponges grattantes Eco + - x6", en: "Scrub sponges x6", qty: "—", price: 0.88, cat: 10 },
+        { fr: "Gel WC javel Eco+ - 750ml", en: "Bleach WC gel - 750ml", qty: "—", price: 0.55, cat: 10 },
+        { fr: "Gel nettoyant wc javel Syphon - Agrumes 750ml", en: "Bleach WC gel citrus - 750ml", qty: "—", price: 0.85, cat: 10 },
+        { fr: "Lessive liquide Xéor - Savon de Marseille - 2.2L", en: "Liquid detergent Marseille soap - 2.2L", qty: "—", price: 3.88, cat: 10 },
+        { fr: "Liquide vaisselle Visior - Amande Calendula - 750ml", en: "Dish soap almond - 750ml", qty: "2x", price: 1.33, cat: 10 },
+        { fr: "Liquide vaisselle Visior - Antibactérien - 500ml", en: "Dish soap antibacterial - 500ml", qty: "—", price: 0.72, cat: 10 },
+        { fr: "Liquide vaisselle Visior Ultra - Peaux sensibles 500ml", en: "Dish soap sensitive skin - 500ml", qty: "—", price: 0.67, cat: 10 },
+        { fr: "Sac poubelle Alfapac - Poignée 50L X10", en: "Bin bags 50L x10", qty: "—", price: 2.73, cat: 10 },
+        { fr: "Sacs poubelle Handy Bag - Poignées coulissantes - 50L x8", en: "Bin bags 50L x8", qty: "—", price: 2.35, cat: 10 },
+        { fr: "Betterave en Dés Notre Jardin - 265g", en: "Diced beetroot - 265g", qty: "4x", price: 0.99, cat: 9 },
+        { fr: "Bouillon Kub Or Maggi - 32 cubes - 128g", en: "Beef stock cubes x32", qty: "2x", price: 1.26, cat: 9 },
+        { fr: "Cannelle moulue Rustica - 45g", en: "Ground cinnamon - 45g", qty: "—", price: 1.00, cat: 9 },
+        { fr: "Cassoulet Saucisse de Toulouse - Côté Table - 840g", en: "Toulouse cassoulet - 840g", qty: "3x", price: 3.89, cat: 9 },
+        { fr: "Chips paysanne nature Lay's - Sel format familial - 295g", en: "Kettle chips - 295g", qty: "2x", price: 2.15, cat: 9 },
+        { fr: "Ciboulette Rustica - 6g", en: "Chives - 6g", qty: "—", price: 0.64, cat: 9 },
+        { fr: "Crackers Tuc - Bacon - 100g", en: "Bacon crackers - 100g", qty: "6x", price: 0.78, cat: 9 },
+        { fr: "Haricots rouges D'aucy - 500g", en: "Red kidney beans - 500g", qty: "2x", price: 2.01, cat: 9 },
+        { fr: "Herbe de provence Rustica - 40g", en: "Herbes de Provence - 40g", qty: "—", price: 0.80, cat: 9 },
+        { fr: "Maïs doux Eco+ - 285g", en: "Sweetcorn - 285g", qty: "4x", price: 0.65, cat: 9 },
+        { fr: "Miettes de Thon Eco + - Huile - 104g", en: "Tuna flakes in oil - 104g", qty: "6x", price: 0.81, cat: 9 },
+        { fr: "Muscade moulue Rustica - 42g", en: "Ground nutmeg - 42g", qty: "—", price: 0.99, cat: 9 },
+        { fr: "Paprika fumé Rustica - Doux - 46g", en: "Smoked paprika - 46g", qty: "—", price: 1.19, cat: 9 },
+        { fr: "Persillade Rustica Ail, Persil - Echalotte - 95g", en: "Garlic & parsley seasoning - 95g", qty: "—", price: 1.60, cat: 9 },
+        { fr: "Pop corn salé Menguy's - Micro-ondes - 3x90g", en: "Salted microwave popcorn 3x90g", qty: "—", price: 1.54, cat: 9 },
+        { fr: "Pâtes Spaghetti Turini - 1kg", en: "Spaghetti - 1kg", qty: "2x", price: 1.33, cat: 9 },
+        { fr: "Riz Thaï Comptoir du Grain - Sélection Riz long - 500g", en: "Thai rice - 500g", qty: "3x", price: 1.79, cat: 9 },
+        { fr: "Riz long Comptoir du Grain - Cuisson rapide 10min - 1kg", en: "Long grain rice - 1kg", qty: "3x", price: 1.67, cat: 9 },
+        { fr: "Riz long thaï Eco+ - 1kg", en: "Long Thai rice Eco+ - 1kg", qty: "—", price: 1.51, cat: 9 },
+        { fr: "Saucisses fumées lentilles - 840g", en: "Smoked sausages & lentils - 840g", qty: "3x", price: 1.75, cat: 9 },
+        { fr: "Thym Rustica - 18g", en: "Thyme - 18g", qty: "—", price: 0.49, cat: 9 },
+        { fr: "Arôme vanille Tablier Blanc - 200ml", en: "Vanilla flavouring - 200ml", qty: "—", price: 2.23, cat: 9 },
+        { fr: "Biscuit petit dej P'tit Déli - Miel/pépites chocolat - 400g", en: "Honey chocolate chip breakfast biscuits - 400g", qty: "2x", price: 2.15, cat: 9 },
+        { fr: "Biscuit roulé P'tit Deli - Cacao/vanille - 154g", en: "Swirl biscuits cocoa/vanilla - 154g", qty: "3x", price: 0.85, cat: 9 },
+        { fr: "Biscuits La Barquette Lulu LU - Fraise - 2x120g", en: "Strawberry barquette biscuits 2x120g", qty: "2x", price: 2.17, cat: 9 },
+        { fr: "Biscuits Mini BN - Goûter à la fraise - 350g", en: "Strawberry BN biscuits - 350g", qty: "2x", price: 2.47, cat: 9 },
+        { fr: "Biscuits Mini Rollos Pépito - Chocolat au lait - 225g", en: "Mini Rollos biscuits - 225g", qty: "3x", price: 1.84, cat: 9 },
+        { fr: "Biscuits galettes St Michel - 130g", en: "Galettes St Michel - 130g", qty: "2x", price: 0.84, cat: 9 },
+        { fr: "Biscuits langue chat P'tit Déli - 200g", en: "Cat tongue biscuits - 200g", qty: "2x", price: 1.35, cat: 9 },
+        { fr: "Biscuits petit déjeuner Eco+ - x25 - 350g", en: "Breakfast biscuits x25", qty: "—", price: 0.73, cat: 9 },
+        { fr: "Biscuits sablés P'tit Déli - Noix de coco - 120g", en: "Coconut shortbread biscuits - 120g", qty: "3x", price: 0.85, cat: 9 },
+        { fr: "Biscuits tablette Eco+ - Chocolat au lait - 150g", en: "Chocolate bars Eco+ - 150g", qty: "—", price: 0.92, cat: 9 },
+        { fr: "Brioche tranchée Eco+ - Nature - 500g", en: "Sliced brioche Eco+ - 500g", qty: "—", price: 1.14, cat: 9 },
+        { fr: "Brioche tressée Pasquier - Nature - 630g", en: "Braided brioche - 630g", qty: "—", price: 2.70, cat: 9 },
+        { fr: "Brioche tressée Pasquier - Tranchée nature - 500g", en: "Sliced braided brioche - 500g", qty: "—", price: 2.42, cat: 9 },
+        { fr: "Canderel liquide 200 ml -", en: "Liquid sweetener - 200ml", qty: "—", price: 2.43, cat: 9 },
+        { fr: "Chicorée café Eco+ - Soluble - 200g", en: "Chicory coffee - 200g", qty: "—", price: 2.06, cat: 9 },
+        { fr: "Chocolat poudre Banania - 400g", en: "Banania chocolate powder - 400g", qty: "—", price: 2.54, cat: 9 },
+        { fr: "Compote Douceur du Verger - Gourdes multivariétés - 12x90g", en: "Fruit pouches x12", qty: "—", price: 4.09, cat: 9 },
+        { fr: "Compote Douceur du Verger - Gourdes multivariétés - 20x90g", en: "Fruit pouches x20", qty: "—", price: 6.18, cat: 9 },
+        { fr: "Confiture Douceur du Verger - Mirabelles - 370g", en: "Mirabelle jam - 370g", qty: "—", price: 1.63, cat: 9 },
+        { fr: "Confiture Eco+ - Fraise - 1kg", en: "Strawberry jam - 1kg", qty: "—", price: 2.27, cat: 9 },
+        { fr: "Croissants Pasquier - x16 - 640g", en: "Croissants x16 - 640g", qty: "—", price: 3.68, cat: 9 },
+        { fr: "Céréales Bluey Kellogg's - Multigrain - 350g", en: "Bluey multigrain cereals - 350g", qty: "—", price: 3.19, cat: 9 },
+        { fr: "Céréales fourrées P'tit Déli - Chocolat noisette - 650g", en: "Filled cereals chocolate hazelnut - 650g", qty: "—", price: 2.95, cat: 9 },
+        { fr: "Madeleines coquilles P'tit déli - Sachet 600g", en: "Madeleines - 600g", qty: "2x", price: 2.39, cat: 9 },
+        { fr: "Pain de mie La Boulangère - Seigle graines - 500g", en: "Rye & seeds bread - 500g", qty: "—", price: 1.73, cat: 9 },
+        { fr: "Pain de mie complet Harrys - Sandwich Sans sucre ajouté 600g", en: "Wholemeal sandwich bread - 600g", qty: "2x", price: 1.64, cat: 9 },
+        { fr: "Pain de mie complet Jacquet - Maxi - Sans sucre ajouté - 550g", en: "Wholemeal bread - 550g", qty: "—", price: 1.49, cat: 9 },
+        { fr: "Pop corn sucrés Tokapi - Micro-ondable - 3x90g", en: "Sweet microwave popcorn 3x90g", qty: "—", price: 1.04, cat: 9 },
+        { fr: "Tartelettes à la fraise Eco+ - x12 - 200g", en: "Strawberry tartlets x12", qty: "4x", price: 0.79, cat: 9 },
+        { fr: "All Eco+ - Filet 250g", en: "Garlic Eco+ - 250g", qty: "—", price: 1.95, cat: 9 },
+        { fr: "Aubergine Eco+ - 500g", en: "Aubergine Eco+ - 500g", qty: "—", price: 0.99, cat: 9 },
+        { fr: "Banane Eco+ - x4", en: "Bananas Eco+ x4", qty: "3x", price: 0.79, cat: 9 },
+        { fr: "Bananes Bio - 600g", en: "Organic bananas - 600g", qty: "4x", price: 1.99, cat: 9 },
+        { fr: "Botte de thym laurier - 1p", en: "Thyme & bay leaf bunch", qty: "—", price: 1.45, cat: 9 },
+        { fr: "Carottes filière - Panier du Primeur - 1kg", en: "Carrots - 1kg", qty: "—", price: 1.33, cat: 9 },
+        { fr: "Champignons de Paris blancs - Panier du Primeur - 400g", en: "White button mushrooms - 400g", qty: "—", price: 2.39, cat: 9 },
+        { fr: "Citrons verts Panier du Primeur - 500g", en: "Limes - 500g", qty: "2x", price: 2.49, cat: 9 },
+        { fr: "Duo de raisins moelleux - Couleurs Vives - 250g", en: "Soft seedless grapes duo - 250g", qty: "—", price: 2.49, cat: 9 },
+        { fr: "Echalote traditionnelle filière - Panier du Primeur Filet 250g", en: "Traditional shallots - 250g", qty: "—", price: 0.99, cat: 9 },
+        { fr: "Echalotes Eco+ - Filet 500g", en: "Shallots Eco+ - 500g", qty: "—", price: 0.99, cat: 9 },
+        { fr: "Kiwi vert Eco+ - Barquette 750g", en: "Green kiwis - 750g", qty: "2x", price: 2.99, cat: 9 },
+        { fr: "Mandarines Panier du Primeur - Filet 1.5kg", en: "Mandarins - 1.5kg", qty: "2x", price: 4.99, cat: 9 },
+        { fr: "Mélange de poivrons doux - 500g", en: "Sweet pepper mix - 500g", qty: "—", price: 3.49, cat: 9 },
+        { fr: "Patate douce Panier du Primeur - 1kg", en: "Sweet potato - 1kg", qty: "—", price: 2.15, cat: 9 },
+        { fr: "Poivrons bicolores Eco+ - x2", en: "Bicolore peppers Eco+ x2", qty: "—", price: 0.99, cat: 9 },
+        { fr: "Salade laitue verte - 1p", en: "Green lettuce", qty: "—", price: 1.79, cat: 9 },
+        { fr: "Bain de bouche Dentamyl - Multi Protection - 500ml", en: "Mouthwash - 500ml", qty: "—", price: 1.89, cat: 10 },
+        { fr: "Brosse à dents Dentamyl - Extra souple x1", en: "Extra soft toothbrush", qty: "—", price: 0.84, cat: 10 },
+        { fr: "Brosse à dents junior Dentamyl - Jaune / Bleu - 1 pièce", en: "Junior toothbrush", qty: "2x", price: 0.49, cat: 10 },
+        { fr: "Crème corps karité - Pot - Mixa - 400ml", en: "Body cream shea - 400ml", qty: "—", price: 5.87, cat: 10 },
+        { fr: "Dentifrice Elmex enfant 0-6ans - Anti-caries - 75ml", en: "Kids toothpaste 0-6 - 75ml", qty: "—", price: 3.50, cat: 10 },
+        { fr: "Déodorant Sanex - zéro Pure Fresh - 200ml", en: "Deodorant - 200ml", qty: "—", price: 3.24, cat: 10 },
+        { fr: "Essuie-tout compact 3=9 Eco+ - x3", en: "Kitchen towels x3", qty: "—", price: 2.27, cat: 10 },
+        { fr: "Gel douche Cadum - Dermo Hydrate - 1L", en: "Shower gel dermo hydrate - 1L", qty: "—", price: 5.96, cat: 10 },
+        { fr: "Gel douche Surgras Coco - Cadum - 1L", en: "Shower gel coconut - 1L", qty: "—", price: 5.93, cat: 10 },
+        { fr: "Gel douche Surgras Karité - Cadum - 1L", en: "Shower gel shea butter - 1L", qty: "—", price: 5.96, cat: 10 },
+        { fr: "Papier Toilette Humide - - Aloe Vera Lotus - x80", en: "Moist toilet tissue x80", qty: "3x", price: 2.81, cat: 10 },
+        { fr: "Papier Toilette Mimosa - Blanc 2 plis x24", en: "Toilet paper 2-ply x24", qty: "—", price: 4.33, cat: 10 },
+        { fr: "Papier toilette Lotus Just.1 - Rouleaux blancs - x6", en: "Toilet paper rolls x6", qty: "2x", price: 3.58, cat: 10 },
+        { fr: "Recharge savon mains Manava - Crème perles d'oranger - 250ml", en: "Hand soap refill orange blossom - 250ml", qty: "—", price: 0.69, cat: 10 },
+        { fr: "Recharge savon mains Manava - Gel lavande - 250ml", en: "Hand soap refill lavender - 250ml", qty: "—", price: 0.69, cat: 10 },
+        { fr: "Beurre Tendre Les Croisés - Demi-sel - 80% MG - 250g", en: "Semi-salted butter - 250g", qty: "—", price: 2.52, cat: 9 },
+        { fr: "Beurre allégé Les Croisés - Demi-sel - 60% MG - 250g", en: "Light semi-salted butter - 250g", qty: "2x", price: 1.77, cat: 9 },
+        { fr: "Boisson lactée Candy'UP Candia - Chocolat - 6x20cl", en: "Chocolate milk drinks x6", qty: "—", price: 2.47, cat: 9 },
+        { fr: "Boisson lactée Candy'UP Candia - Vanille - 6x20cl", en: "Vanilla milk drinks x6", qty: "2x", price: 2.53, cat: 9 },
+        { fr: "Crème liquide UHT 3x20cl - Soutenons Nos Agriculteurs", en: "UHT liquid cream 3x20cl", qty: "2x", price: 3.49, cat: 9 },
+        { fr: "Crème semi-épaisse Soutenons - Nos Agriculteurs - 3x20cl", en: "Semi-thick cream 3x20cl", qty: "2x", price: 2.89, cat: 9 },
+        { fr: "Dessert Liégeois Délisse - Chocolat - 12x100g", en: "Chocolate dairy desserts x12", qty: "—", price: 3.14, cat: 9 },
+        { fr: "Emmental fromage rapé - Les Croisés - 500g", en: "Grated emmental - 500g", qty: "—", price: 3.99, cat: 9 },
+        { fr: "Fromage blanc Délisse - Fraise 5.5%MG - 500g", en: "Strawberry fromage blanc - 500g", qty: "—", price: 2.55, cat: 9 },
+        { fr: "Fromage blanc Délisse - Nature 7.8% MG - 8x100g", en: "Plain fromage blanc x8", qty: "—", price: 2.89, cat: 9 },
+        { fr: "Lait demi-écrémé Eco+ - UHT Bouteille - 1L", en: "Semi-skimmed milk Eco+ - 1L", qty: "3x", price: 0.96, cat: 9 },
+        { fr: "Lait demi-écrémé Eco+ - UHT Bouteille - 6x1L", en: "Semi-skimmed milk Eco+ - 6x1L", qty: "—", price: 5.76, cat: 9 },
+        { fr: "Lait frais Délisse - Entier Bouteille - 1L", en: "Whole fresh milk - 1L", qty: "—", price: 1.32, cat: 9 },
+        { fr: "Oeufs frais sol Eco+ - x30", en: "Fresh eggs x30", qty: "3x", price: 4.94, cat: 9 },
+        { fr: "Yaourt SMARTIES - Fraise bonbons chocolat 4x120g", en: "Smarties strawberry yogurts x4", qty: "2x", price: 2.26, cat: 9 },
+        { fr: "Yaourt SMARTIES - Vanille bonbons chocolat 4x120g", en: "Smarties vanilla yogurts x4", qty: "—", price: 2.40, cat: 9 },
+        { fr: "Yaourt à boire Déli'Max - Noix de coco - 850g", en: "Coconut drinking yogurt - 850g", qty: "—", price: 1.60, cat: 9 },
+        { fr: "Yaourt à boire Yop - Aromatisé Tropical - 825g", en: "Tropical drinking yogurt - 825g", qty: "2x", price: 1.98, cat: 9 },
+        { fr: "Yaourts brassés Délisse - Vanille - 8x125g", en: "Vanilla stirred yogurts x8", qty: "—", price: 2.64, cat: 9 },
+        { fr: "Pain burger Epi d'Or - Géant complet x4 - 330g", en: "Giant burger buns x4 - 330g", qty: "3x", price: 0.96, cat: 9 },
+        { fr: "Pain de mie Epi d'Or - Extra moelleux - 500g", en: "Soft sliced bread - 500g", qty: "2x", price: 0.99, cat: 9 },
+        { fr: "Crème coco Suzi Wan - 200ml", en: "Coconut cream - 200ml", qty: "—", price: 1.30, cat: 9 },
+        { fr: "Lait de coco Tables du monde - 400ml", en: "Coconut milk - 400ml", qty: "3x", price: 1.49, cat: 9 },
+        { fr: "Sauce soja salée Tanoshi - 200ml", en: "Salty soy sauce - 200ml", qty: "—", price: 2.72, cat: 9 },
+        { fr: "Batonnets Poissons panés Eco+ - x15 - 450g", en: "Breaded fish sticks x15 - 450g", qty: "—", price: 1.94, cat: 9 },
+        { fr: "Boulettes de boeuf Eco+ - x30 - 900g", en: "Beef meatballs x30 - 900g", qty: "—", price: 7.17, cat: 9 },
+        { fr: "Bâtonnets Trium - Noix de coco x4 - 292g", en: "Coconut ice cream sticks x4", qty: "—", price: 2.75, cat: 9 },
+        { fr: "Crevettes décortiquées Eco+ - 500g", en: " Peeled shrimps - 500g", qty: "2x", price: 4.99, cat: 9 },
+        { fr: "Epinards Notre Jardin - Hachés A la crème fraîche - 1kg", en: "Creamed spinach - 1kg", qty: "—", price: 1.67, cat: 9 },
+        { fr: "Frites allumettes Pom'lisse - 1kg", en: "Thin cut fries - 1kg", qty: "—", price: 1.65, cat: 9 },
+        { fr: "Glace cônes Smicy - Bonbons - x8 - 328g", en: "Candy ice cream cones x8", qty: "—", price: 3.45, cat: 9 },
+        { fr: "Glace à l'eau Smicy Star - Framboise Orange Citron x8 480g", en: "Water ice pops x8 - 480g", qty: "—", price: 2.59, cat: 9 },
+        { fr: "Haché moelleux oignon Férial - x10 - 1kg", en: "Minced beef patties x10 - 1kg", qty: "2x", price: 7.99, cat: 9 },
+        { fr: "Petits pois Eco+ - 1kg", en: "Green peas Eco+ - 1kg", qty: "—", price: 1.57, cat: 9 },
+        { fr: "Poêlée à la Mexicaine - Notre Jardin - 1kg", en: "Mexican vegetable mix - 1kg", qty: "—", price: 3.72, cat: 9 },
+        { fr: "Chipolatas Socopa - Façon charcutière x12 - 660g", en: "Chipolata sausages x12 - 660g", qty: "—", price: 6.99, cat: 9 },
+        { fr: "Cordons bleus Maître coq - Poulet - 1kg", en: "Chicken cordon bleu - 1kg", qty: "—", price: 5.60, cat: 9 },
+        { fr: "Côtes de porc échine - L'Atelier Boucherie x4 - 680g", en: "Pork loin chops x4 - 680g", qty: "2x", price: 5.14, cat: 9 },
+        { fr: "Haut de Cuisse Poulet Blanc - Les Accessibles - 1kg", en: "Chicken thighs - 1kg", qty: "—", price: 4.69, cat: 9 },
+        { fr: "Haut de cuisse de poulet blanc - Volaille Française - 1kg", en: "Chicken thigh fillets - 1kg", qty: "—", price: 4.30, cat: 9 },
+        { fr: "Pilons de Poulet Blanc - Les Accessibles - 1kg", en: "Chicken drumsticks - 1kg", qty: "—", price: 4.90, cat: 9 },
+        { fr: "Saucisse de Toulouse Socopa - x4 400g", en: "Toulouse sausage x4 - 400g", qty: "—", price: 3.29, cat: 9 }
+      ];
 
       var CATS = {
         1: { fr: "1 · Petit-déjeuner & nuit", en: "1 · Breakfast & night" },
@@ -308,7 +458,8 @@
         3: { fr: "3 · Laitiers 0 %", en: "3 · Fat-free dairy" },
         4: { fr: "4 · Légumes & crème", en: "4 · Vegetables & cream" },
         5: { fr: "5 · Légumineuses & base", en: "5 · Legumes & staples" },
-        9: { fr: "6 · Ajouts famille", en: "6 · Family additions" }
+        9: { fr: "6 · Ajouts famille", en: "6 · Family additions" },
+        10: { fr: "7 · Hygiène & entretien", en: "7 · Hygiene & cleaning" }
       };
 
       /* ================= MOTEUR DE FUSION =================
