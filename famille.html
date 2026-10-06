@@ -175,7 +175,7 @@
       @media print { .topbar, .orbs, .float-basket { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; } }
       @media (max-width: 720px) { .card { padding: 18px 16px; } table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } .kpi .value { font-size: 21px; } }
       @media screen and (min-width: 721px), print { td { overflow-wrap: anywhere; } }
-    /* ===== v4.16 : rubriques intelligentes ===== */
+    /* ===== v4.17 : rubriques intelligentes ===== */
       .fam-cat .fam-head { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; margin: 0; }
       .fam-cat .fam-title { flex: 1; }
       .fam-count { font-size: 12px; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 999px; background: var(--badge-bg); color: var(--ink); white-space: nowrap; }
@@ -186,6 +186,10 @@
       .fam-cat.open .fam-chev { transform: rotate(180deg); }
       .fam-cat.done .fam-count { background: #16a34a; color: #fff; }
       .fam-cat.done .fam-title { color: var(--muted); }
+      .fam-note { font-size: 12px; line-height: 1.5; color: var(--muted);
+        background: var(--badge-bg); border: 1px dashed var(--line-strong);
+        border-radius: 10px; padding: 0.55rem 0.75rem; margin: 0.6rem 0 0.8rem; }
+      .fam-note b { color: var(--ink); }
       .fam-all { font: inherit; font-size: 11px; font-weight: 700; color: #1d4ed8;
         background: none; border: 1px solid var(--line-strong); border-radius: 999px;
         padding: 0.1rem 0.55rem; cursor: pointer; }
@@ -243,7 +247,7 @@
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
         </div>
-        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.16. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.17. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <div id="lang-en" class="hidden">
@@ -271,14 +275,14 @@
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
         </div>
-        <p class="footer">Merge recomputed automatically from both quotes — v4.16. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Merge recomputed automatically from both quotes — v4.17. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
-        <span class="bb-ver">v4.16 · 2026</span>
+        <span class="bb-ver">v4.17 · 2026</span>
       </div>
     </footer>
 
@@ -329,6 +333,24 @@
         10: { fr: "7 · Hygiène & entretien", en: "7 · Hygiene & cleaning" }
       };
 
+      /* v4.17 : notice-astuce en sous-carte en haut de chaque rubrique */
+      var NOTICES = {
+        1: { fr: "💡 <b>Bases petit-déj & nuit :</b> flocons, lait en poudre et laitage du soir se conservent des semaines — les gros formats coûtent moins cher au kilo.",
+             en: "💡 <b>Breakfast & night staples:</b> oats, milk powder and evening dairy keep for weeks — bigger packs cost less per kilo." },
+        2: { fr: "💡 <b>Protéines maigres :</b> compare toujours le prix au kilo, pas l'étiquette. Les surgelés (filets de poulet, cabillaud) sont souvent 20–30 % moins chers que le frais.",
+             en: "💡 <b>Lean proteins:</b> always compare price per kilo, not the sticker. Frozen (chicken fillets, cod) is often 20–30 % cheaper than fresh." },
+        3: { fr: "💡 <b>Laitiers 0 % :</b> prends les packs du fond du rayon — les DLC y sont plus longues. Skyr et fromage blanc : les marques de magasin valent les grandes marques.",
+             en: "💡 <b>Fat-free dairy:</b> pick packs at the back of the shelf — longer best-before dates. Store brands of skyr and fromage blanc match the big brands." },
+        4: { fr: "💡 <b>Légumes & crème :</b> patates douces et crème légère : le hard-discount (Lidl) est souvent moins cher que Leclerc sur ces références.",
+             en: "💡 <b>Vegetables & cream:</b> sweet potatoes and light cream: hard-discount (Lidl) is often cheaper than Leclerc on these." },
+        5: { fr: "💡 <b>Riz, pâtes & légumineuses :</b> les sacs d'1 kg coûtent 2–3× moins cher au kilo que les petites boîtes. Un seul trajet : prends tout ici d'un coup.",
+             en: "💡 <b>Rice, pasta & legumes:</b> 1 kg bags cost 2–3× less per kilo than small boxes. One trip: grab everything here at once." },
+        9: { fr: "💡 <b>Ajouts famille :</b> liste issue de la facture Leclerc de ta sœur. Les quantités « 2x, 3x… » = plusieurs unités du même produit — le prix affiché est le total déjà multiplié.",
+             en: "💡 <b>Family additions:</b> list from your sister's Leclerc invoice. Quantities « 2x, 3x… » = several units of the same product — the price shown is the already-multiplied total." },
+        10: { fr: "💡 <b>Hygiène & entretien :</b> non alimentaire — vérifie les stocks maison avant d'acheter, c'est ici que s'accumulent les doublons (lessive, éponges, sacs poubelle).",
+              en: "💡 <b>Hygiene & cleaning:</b> not food — check home supplies before buying, this is where duplicates pile up (detergent, sponges, bin bags)." }
+      };
+
       /* ================= MOTEUR DE FUSION =================
          1. Normalisation des noms (minuscules, sans accents) pour
             rapprocher « Riz long grain » et « riz long grain 1kg ».
@@ -354,7 +376,7 @@
         });
         return words.sort().join(" ").replace(/(s)\b/g, "");
       }
-      /* v4.16 : quantité d'une ligne ("3x" -> 3, sinon 1).
+      /* v4.17 : quantité d'une ligne ("3x" -> 3, sinon 1).
          Le prix stocké est PRIX UNITAIRE : le total ligne est
          price x qtyN. Sans ça, le site sous-comptait la facture
          (354,01 € au lieu de 517,22 €). */
@@ -467,7 +489,7 @@
           updateRubriques(!silent);
         }
         var saved = loadChecks();
-        /* ===== v4.16 : rubriques intelligentes =====
+        /* ===== v4.17 : rubriques intelligentes =====
            Chaque carte catégorie est repliable ; un compteur montre
            la progression ; quand une rubrique est complète, elle se
            replie automatiquement et la suivante s'ouvre. */
@@ -486,6 +508,14 @@
             cardBoxes.forEach(function (b) { if (b.checked) doneC++; });
             var badge = card.querySelector(".fam-count");
             if (badge) badge.textContent = doneC + " / " + totalC;
+            var allBtn = card.querySelector(".fam-all");
+            if (allBtn) {
+              var full = doneC === totalC && totalC > 0;
+              allBtn.textContent = full ? (lang === "en" ? "✗ None" : "✗ Rien") : (lang === "en" ? "✓ All" : "✓ Tout");
+              allBtn.title = full
+                ? (lang === "en" ? "Untick every item in this aisle" : "Décocher tous les articles de ce rayon")
+                : (lang === "en" ? "Tick every item in this aisle" : "Cocher tous les articles de ce rayon");
+            }
             var wasOpen = card.classList.contains("open");
             var justDone = doneC === totalC && totalC > 0 && !card.dataset.donePrev;
             card.dataset.donePrev = (doneC === totalC && totalC > 0) ? "1" : "0";
@@ -505,11 +535,13 @@
           card.querySelector(".fam-head").addEventListener("click", function () {
             card.classList.toggle("open");
           });
-          /* v4.16 : tout cocher d'un coup dans ce rayon */
+          /* v4.17 : tout cocher d'un coup dans ce rayon */
           var allBtn = card.querySelector(".fam-all");
           if (allBtn) allBtn.addEventListener("click", function (ev) {
             ev.stopPropagation();
-            card.querySelectorAll(".item-check").forEach(function (b) { b.checked = true; });
+            var cbs = card.querySelectorAll(".item-check");
+            var allDone = Array.prototype.every.call(cbs, function (b) { return b.checked; });
+            cbs.forEach(function (b) { b.checked = !allDone; });
             refresh(false);
           });
         });
@@ -704,7 +736,7 @@
               "</td><td class=\"num\">" + fmtEur(m.price, lang) + "</td><td><span class=\"src " + m.src + "\">" +
               SRC_LABEL[lang][m.src] + "</span></td></tr>";
           }).join("");
-          html += '<div class="card fam-cat" data-cat="' + cat + '"><h2 class="fam-head"><span class="fam-title">' + CATS[cat][lang] + '</span><span class="fam-count"></span><button type="button" class="fam-all" title="' + (lang === "en" ? "Tick every item in this aisle" : "Cocher tous les articles de ce rayon") + '">' + (lang === "en" ? "✓ All" : "✓ Tout") + '</button><span class="fam-chev">&#9662;</span></h2><div class="fam-body">' +
+          html += '<div class="card fam-cat" data-cat="' + cat + '"><h2 class="fam-head"><span class="fam-title">' + CATS[cat][lang] + '</span><span class="fam-count"></span><button type="button" class="fam-all" title="' + (lang === "en" ? "Tick every item in this aisle" : "Cocher tous les articles de ce rayon") + '">' + (lang === "en" ? "✓ All" : "✓ Tout") + '</button><span class="fam-chev">&#9662;</span></h2><div class="fam-body">' + (NOTICES[cat] ? '<div class="fam-note">' + NOTICES[cat][lang] + '</div>' : '') +
             '<table><thead><tr><th class="chk">✓</th><th>' + (lang === "en" ? "Item" : "Article") + '</th><th>' + (lang === "en" ? "Qty" : "Qté") +
             '</th><th class="num">' + (lang === "en" ? "Total" : "Total") + '</th><th>' + (lang === "en" ? "Source" : "Source") + '</th></tr></thead>' +
             '<tbody>' + rows + '</tbody></table><p class="sous-total">' + (lang === "en" ? "Subtotal: " : "Sous-total : ") + fmtEur(catTotal, lang) + '</p></div></div>';
