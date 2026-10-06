@@ -268,7 +268,7 @@
           </div>
         </div>
 
-        <p class="footer">Courses Alimentaires · v4.15 · 2026</p>
+        <p class="footer">Courses Alimentaires · v4.16 · 2026</p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -316,14 +316,14 @@
           </div>
         </div>
 
-        <p class="footer">Grocery Lists · v4.15 · 2026</p>
+        <p class="footer">Grocery Lists · v4.16 · 2026</p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="🧾 Courses Alimentaires" data-en="🧾 Grocery Lists">🧾 Courses Alimentaires</span>
-        <span class="bb-ver">v4.15 · 2026</span>
+        <span class="bb-ver">v4.16 · 2026</span>
       </div>
     </footer>
 
@@ -612,11 +612,15 @@
       maybeImportFromUrl();
     </script>
     <script>
-      /* v4.15 : KPI famille CALCULÉS depuis data.js — plus aucune
+      /* v4.16 : KPI famille CALCULÉS depuis data.js — plus aucune
          valeur en dur. Si FAMILY_LIST change, l'accueil suit. */
       (function () {
-        var total = 0;
-        FAMILY_LIST.forEach(function (it) { total += it.price || 0; });
+        var total = 0, units = 0;
+        FAMILY_LIST.forEach(function (it) {
+          var m = /^(\d+)x/.exec(it.qty || "");
+          var n = m ? parseInt(m[1], 10) : 1;
+          total += (it.price || 0) * n; units += n;
+        });
         total = Math.round(total * 100) / 100;
         var count = FAMILY_LIST.length;
         var fr = total.toFixed(2).replace(".", ",") + " €";
@@ -624,8 +628,8 @@
         function set(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
         set("fam-kpi-value-fr", fr); set("fam-kpi-value-en", en);
         set("fam-vt-total-fr", fr); set("fam-vt-total-en", en);
-        set("fam-kpi-sub-fr", count + " articles · facture intégrée");
-        set("fam-kpi-sub-en", count + " items · invoice merged");
+        set("fam-kpi-sub-fr", count + " lignes · " + units + " articles · facture intégrée");
+        set("fam-kpi-sub-en", count + " lines · " + units + " items · invoice merged");
         set("fam-vt-count-fr", count + " articles");
         set("fam-vt-count-en", count + " items");
       })();
