@@ -233,7 +233,7 @@
         <div class="kpis">
           <div class="kpi"><div class="label">Devis perso</div><div class="value">55,00 €</div><div class="sub">21 articles · 7 jours</div></div>
           <div class="kpi"><div class="label">Protéines / jour</div><div class="value">~160 g</div><div class="sub">✅ Cible sèche atteinte</div></div>
-          <div class="kpi"><div class="label">Liste famille</div><div class="value">517,22 €</div><div class="sub">149 articles · facture intégrée</div></div>
+          <div class="kpi"><div class="label">Liste famille</div><div class="value" id="fam-kpi-value-fr">—</div><div class="sub" id="fam-kpi-sub-fr">—</div></div>
           <div class="kpi"><div class="label">Courses archivées</div><div class="value" id="hist-count-fr">0</div><div class="sub">Historique local</div></div>
         </div>
 
@@ -250,7 +250,7 @@
             <span class="vt-icon">👨‍👩‍👧‍👦</span>
             <div class="vt-title">Liste globale famille</div>
             <div class="vt-desc">Fusion intelligente des deux devis : dédoublonnage, quantités cumulées, budget consolidé et optimisations (prix, protéines).</div>
-            <div class="vt-meta"><span class="vt-pill">517,22 €</span><span class="vt-pill">149 articles</span></div>
+            <div class="vt-meta"><span class="vt-pill" id="fam-vt-total-fr">—</span><span class="vt-pill" id="fam-vt-count-fr">—</span></div>
           </a>
         </div>
 
@@ -268,7 +268,7 @@
           </div>
         </div>
 
-        <p class="footer">Courses Alimentaires · v4.14 · 2026</p>
+        <p class="footer">Courses Alimentaires · v4.15 · 2026</p>
       </div>
 
       <!-- ============ EN ============ -->
@@ -281,7 +281,7 @@
         <div class="kpis">
           <div class="kpi"><div class="label">Personal quote</div><div class="value">55,00 €</div><div class="sub">21 items · 7 days</div></div>
           <div class="kpi"><div class="label">Protein / day</div><div class="value">~160 g</div><div class="sub">✅ Cut target met</div></div>
-          <div class="kpi"><div class="label">Family list</div><div class="value">517.22 €</div><div class="sub">149 items · invoice merged</div></div>
+          <div class="kpi"><div class="label">Family list</div><div class="value" id="fam-kpi-value-en">—</div><div class="sub" id="fam-kpi-sub-en">—</div></div>
           <div class="kpi"><div class="label">Archived runs</div><div class="value" id="hist-count-en">0</div><div class="sub">Local history</div></div>
         </div>
 
@@ -298,7 +298,7 @@
             <span class="vt-icon">👨‍👩‍👧‍👦</span>
             <div class="vt-title">Global family list</div>
             <div class="vt-desc">Smart merge of both quotes: deduplication, combined quantities, consolidated budget and optimizations (price, protein).</div>
-            <div class="vt-meta"><span class="vt-pill">517.22 €</span><span class="vt-pill">149 items</span></div>
+            <div class="vt-meta"><span class="vt-pill" id="fam-vt-total-en">—</span><span class="vt-pill" id="fam-vt-count-en">—</span></div>
           </a>
         </div>
 
@@ -316,17 +316,18 @@
           </div>
         </div>
 
-        <p class="footer">Grocery Lists · v4.14 · 2026</p>
+        <p class="footer">Grocery Lists · v4.15 · 2026</p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="🧾 Courses Alimentaires" data-en="🧾 Grocery Lists">🧾 Courses Alimentaires</span>
-        <span class="bb-ver">v4.14 · 2026</span>
+        <span class="bb-ver">v4.15 · 2026</span>
       </div>
     </footer>
 
+    <script src="data.js"></script>
     <script>
       /* ---------- Langue (mémorisée) ---------- */
       function switchLang(lang) {
@@ -610,5 +611,24 @@
       renderHistory();
       maybeImportFromUrl();
     </script>
-  </body>
+    <script>
+      /* v4.15 : KPI famille CALCULÉS depuis data.js — plus aucune
+         valeur en dur. Si FAMILY_LIST change, l'accueil suit. */
+      (function () {
+        var total = 0;
+        FAMILY_LIST.forEach(function (it) { total += it.price || 0; });
+        total = Math.round(total * 100) / 100;
+        var count = FAMILY_LIST.length;
+        var fr = total.toFixed(2).replace(".", ",") + " €";
+        var en = total.toFixed(2) + " €";
+        function set(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
+        set("fam-kpi-value-fr", fr); set("fam-kpi-value-en", en);
+        set("fam-vt-total-fr", fr); set("fam-vt-total-en", en);
+        set("fam-kpi-sub-fr", count + " articles · facture intégrée");
+        set("fam-kpi-sub-en", count + " items · invoice merged");
+        set("fam-vt-count-fr", count + " articles");
+        set("fam-vt-count-en", count + " items");
+      })();
+    </script>
+</body>
 </html>
