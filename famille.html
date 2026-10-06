@@ -175,7 +175,7 @@
       @media print { .topbar, .orbs, .float-basket { display: none; } body { background: #fff; } .card, .kpi { box-shadow: none; } .card::before, .kpi::before { display: none; } .total-row { background: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none; } }
       @media (max-width: 720px) { .card { padding: 18px 16px; } table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } .kpi .value { font-size: 21px; } }
       @media screen and (min-width: 721px), print { td { overflow-wrap: anywhere; } }
-    /* ===== v4.17 : rubriques intelligentes ===== */
+    /* ===== v4.18 : rubriques intelligentes ===== */
       .fam-cat .fam-head { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; margin: 0; }
       .fam-cat .fam-title { flex: 1; }
       .fam-count { font-size: 12px; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 999px; background: var(--badge-bg); color: var(--ink); white-space: nowrap; }
@@ -247,7 +247,7 @@
           <h2>💡 Optimisations</h2>
           <div id="fr-opt-body"></div>
         </div>
-        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.17. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
+        <p class="footer">Fusion recalculée automatiquement à partir des deux devis — v4.18. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Accueil</a></p>
       </div>
 
       <div id="lang-en" class="hidden">
@@ -275,14 +275,14 @@
           <h2>💡 Optimizations</h2>
           <div id="en-opt-body"></div>
         </div>
-        <p class="footer">Merge recomputed automatically from both quotes — v4.17. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
+        <p class="footer">Merge recomputed automatically from both quotes — v4.18. — <a href="index.html" style="color:#1d4ed8;font-weight:600">🏠 Home</a></p>
       </div>
     </main>
 
     <footer class="botbar">
       <div class="botbar-inner">
         <span class="bb-brand" data-fr="👨‍👩‍👧‍👦 Liste famille" data-en="👨‍👩‍👧‍👦 Family List">👨‍👩‍👧‍👦 Liste famille</span>
-        <span class="bb-ver">v4.17 · 2026</span>
+        <span class="bb-ver">v4.18 · 2026</span>
       </div>
     </footer>
 
@@ -329,11 +329,18 @@
         3: { fr: "3 · Laitiers 0 %", en: "3 · Fat-free dairy" },
         4: { fr: "4 · Légumes & crème", en: "4 · Vegetables & cream" },
         5: { fr: "5 · Légumineuses & base", en: "5 · Legumes & staples" },
-        9: { fr: "6 · Ajouts famille", en: "6 · Family additions" },
-        10: { fr: "7 · Hygiène & entretien", en: "7 · Hygiene & cleaning" }
+        6: { fr: "6 · Fruits & légumes", en: "6 · Fruit & vegetables" },
+        7: { fr: "7 · Viande, poisson & œufs", en: "7 · Meat, fish & eggs" },
+        8: { fr: "8 · Charcuterie & traiteur", en: "8 · Deli & ready meals" },
+        9: { fr: "9 · Crémerie & desserts", en: "9 · Dairy & desserts" },
+        10: { fr: "10 · Pain, brioche & petit-déj", en: "10 · Bread, brioche & breakfast" },
+        11: { fr: "11 · Épicerie salée", en: "11 · Savoury grocery" },
+        12: { fr: "12 · Épicerie sucrée & goûters", en: "12 · Sweet grocery & snacks" },
+        13: { fr: "13 · Boissons", en: "13 · Drinks" },
+        14: { fr: "14 · Hygiène & entretien", en: "14 · Hygiene & cleaning" }
       };
 
-      /* v4.17 : notice-astuce en sous-carte en haut de chaque rubrique */
+      /* v4.18 : notice-astuce en sous-carte en haut de chaque rubrique */
       var NOTICES = {
         1: { fr: "💡 <b>Bases petit-déj & nuit :</b> flocons, lait en poudre et laitage du soir se conservent des semaines — les gros formats coûtent moins cher au kilo.",
              en: "💡 <b>Breakfast & night staples:</b> oats, milk powder and evening dairy keep for weeks — bigger packs cost less per kilo." },
@@ -345,9 +352,23 @@
              en: "💡 <b>Vegetables & cream:</b> sweet potatoes and light cream: hard-discount (Lidl) is often cheaper than Leclerc on these." },
         5: { fr: "💡 <b>Riz, pâtes & légumineuses :</b> les sacs d'1 kg coûtent 2–3× moins cher au kilo que les petites boîtes. Un seul trajet : prends tout ici d'un coup.",
              en: "💡 <b>Rice, pasta & legumes:</b> 1 kg bags cost 2–3× less per kilo than small boxes. One trip: grab everything here at once." },
-        9: { fr: "💡 <b>Ajouts famille :</b> liste issue de la facture Leclerc de ta sœur. Les quantités « 2x, 3x… » = plusieurs unités du même produit — le prix affiché est le total déjà multiplié.",
-             en: "💡 <b>Family additions:</b> list from your sister's Leclerc invoice. Quantities « 2x, 3x… » = several units of the same product — the price shown is the already-multiplied total." },
-        10: { fr: "💡 <b>Hygiène & entretien :</b> non alimentaire — vérifie les stocks maison avant d'acheter, c'est ici que s'accumulent les doublons (lessive, éponges, sacs poubelle).",
+        6: { fr: "💡 <b>Frais d'abord :</b> fragile, à prendre en dernier. Quantités « 2x, 3x… » = plusieurs unités du même produit — le prix affiché est le total déjà multiplié.",
+             en: "💡 <b>Fresh first… actually last:</b> fragile — grab it at the end. Quantities « 2x, 3x… » = several units of one product — the price shown is the multiplied total." },
+        7: { fr: "💡 <b>Viande & poisson :</b> compare le prix au kilo, pas l'étiquette. Les surgelés et les packs boucherie sont souvent 20–30 % moins chers.",
+             en: "💡 <b>Meat & fish:</b> compare price per kilo, not the sticker. Frozen and butcher packs are often 20–30 % cheaper." },
+        8: { fr: "💡 <b>Charcuterie :</b> les packs x10 à x20 coûtent bien moins cher à l'unité — vérifie les dates avant de prendre plusieurs.",
+             en: "💡 <b>Deli:</b> x10–x20 packs cost far less per unit — check dates before taking several." },
+        9: { fr: "💡 <b>Crémerie :</b> prends les packs du fond du rayon, les DLC y sont plus longues. Les laits UHT se conservent des mois : le pack de 6 est plus malin.",
+             en: "💡 <b>Dairy:</b> pick packs at the back — longer best-before dates. UHT milk keeps for months: the 6-pack is smarter." },
+        10: { fr: "💡 <b>Pain & brioche :</b> le pain de mie se congèle très bien — un pack suffit, l'autre au congélateur.",
+             en: "💡 <b>Bread & brioche:</b> sandwich bread freezes well — one pack out, the other in the freezer." },
+        11: { fr: "💡 <b>Épicerie salée :</b> riz, pâtes et légumes secs — les sacs d'1 kg coûtent 2–3× moins cher au kilo que les petits formats.",
+             en: "💡 <b>Savoury grocery:</b> rice, pasta, pulses — 1 kg bags cost 2–3× less per kilo than small formats." },
+        12: { fr: "💡 <b>Sucré & goûters :</b> c'est ici que se cachent les achats impulsifs — reste sur la liste, les promotions « 2e gratuit » ne comptent que si tu utilises tout.",
+             en: "💡 <b>Sweet & snacks:</b> impulse buys hide here — stick to the list, « 2nd free » deals only count if you use it all." },
+        13: { fr: "💡 <b>Boissons :</b> les sirops et jus en brique reviennent bien moins cher au litre que les petites bouteilles.",
+             en: "💡 <b>Drinks:</b> syrups and carton juice are far cheaper per litre than small bottles." },
+        14: { fr: "💡 <b>Hygiène & entretien :</b> non alimentaire — vérifie les stocks maison avant d'acheter, c'est ici que s'accumulent les doublons (lessive, éponges, sacs poubelle).",
               en: "💡 <b>Hygiene & cleaning:</b> not food — check home supplies before buying, this is where duplicates pile up (detergent, sponges, bin bags)." }
       };
 
@@ -376,7 +397,7 @@
         });
         return words.sort().join(" ").replace(/(s)\b/g, "");
       }
-      /* v4.17 : quantité d'une ligne ("3x" -> 3, sinon 1).
+      /* v4.18 : quantité d'une ligne ("3x" -> 3, sinon 1).
          Le prix stocké est PRIX UNITAIRE : le total ligne est
          price x qtyN. Sans ça, le site sous-comptait la facture
          (354,01 € au lieu de 517,22 €). */
@@ -489,7 +510,7 @@
           updateRubriques(!silent);
         }
         var saved = loadChecks();
-        /* ===== v4.17 : rubriques intelligentes =====
+        /* ===== v4.18 : rubriques intelligentes =====
            Chaque carte catégorie est repliable ; un compteur montre
            la progression ; quand une rubrique est complète, elle se
            replie automatiquement et la suivante s'ouvre. */
@@ -535,7 +556,7 @@
           card.querySelector(".fam-head").addEventListener("click", function () {
             card.classList.toggle("open");
           });
-          /* v4.17 : tout cocher d'un coup dans ce rayon */
+          /* v4.18 : tout cocher d'un coup dans ce rayon */
           var allBtn = card.querySelector(".fam-all");
           if (allBtn) allBtn.addEventListener("click", function (ev) {
             ev.stopPropagation();
